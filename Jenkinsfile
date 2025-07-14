@@ -58,7 +58,7 @@ pipeline {
             docker rm $CONTAINER_NAME || true &&
             docker run -d --name $CONTAINER_NAME \
               -p 8899:80 \
-              -p 8443:443 \
+              -p 8843:443 \
               --restart always \
               $IMAGE_NAME:$TAG
           '
