@@ -56,10 +56,10 @@ pipeline {
             docker pull $IMAGE_NAME:$TAG &&
             docker stop $CONTAINER_NAME || true &&
             docker rm $CONTAINER_NAME || true &&
-            docker run -d --name $CONTAINER_NAME \\
-              -p 8888:80 \\
-              -p 8443:443 \\
-              --restart always \\
+            docker run -d --name $CONTAINER_NAME \
+              -p 8899:80 \
+              -p 8443:443 \
+              --restart always \
               $IMAGE_NAME:$TAG
           '
           """
