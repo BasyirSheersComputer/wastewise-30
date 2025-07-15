@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Package, AlertTriangle, TrendingUp, TrendingDown, Plus, Filter, Search } from 'lucide-react';
 import AddInventoryModal from "./AddInventoryModal";
+import LLMRecommendations from './LLMRecommendations';
 
 const InventoryManager: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -272,6 +273,7 @@ const InventoryManager: React.FC = () => {
           </table>
         </div>
       </div>
+      <LLMRecommendations section="inventory" />
     </div>
   );
 };

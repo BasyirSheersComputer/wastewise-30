@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Trash2, TrendingDown, AlertTriangle, DollarSign, Calendar, Plus } from 'lucide-react';
+import LLMRecommendations from './LLMRecommendations';
 
 const WasteTracking: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('week');
@@ -270,6 +271,7 @@ const WasteTracking: React.FC = () => {
           </table>
         </div>
       </div>
+      <LLMRecommendations section="waste" />
     </div>
   );
 };

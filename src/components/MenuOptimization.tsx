@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Utensils, TrendingUp, TrendingDown, DollarSign, Clock, Star, AlertTriangle } from 'lucide-react';
+import LLMRecommendations from './LLMRecommendations';
 
 const MenuOptimization: React.FC = () => {
   const [activeTab, setActiveTab] = useState('performance');
@@ -314,29 +315,7 @@ const MenuOptimization: React.FC = () => {
         {/* Recommendations Tab */}
         {activeTab === 'recommendations' && (
           <div className="p-lg">
-            <div className="space-y-md">
-              {recommendations.map((rec, index) => (
-                <div key={index} className="border border-border rounded-md p-md">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-sm mb-sm">
-                        <span className={`${getPriorityBadge(rec.priority)}`}>
-                          {rec.priority} priority
-                        </span>
-                        <span className="text-sm text-text-secondary">{rec.item}</span>
-                      </div>
-                      <h4 className="text-sm font-medium text-text-primary mb-xs">{rec.suggestion}</h4>
-                      <p className="text-sm text-text-secondary">{rec.impact}</p>
-                    </div>
-                    <div className="flex space-x-sm">
-                      <button className="text-sm text-primary hover:text-primary-hover transition-default">Apply</button>
-                      <button className="text-sm text-text-secondary hover:text-text-primary transition-default">Dismiss</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
+            <LLMRecommendations section="menu" />
             <div className="mt-lg bg-primary/10 p-md rounded-md">
               <div className="flex items-center mb-sm">
                 <AlertTriangle className="text-primary mr-sm" size={14} />

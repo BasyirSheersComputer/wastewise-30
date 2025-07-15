@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { subscribeToAnalytics } from '../services/llmService';
 
-const LLMRecommendations: React.FC = () => {
+interface LLMRecommendationsProps {
+  section?: string;
+}
+
+const LLMRecommendations: React.FC<LLMRecommendationsProps> = ({ section = 'dashboard' }) => {
   const [recommendations, setRecommendations] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -11,20 +15,19 @@ const LLMRecommendations: React.FC = () => {
     setLoading(true);
     const unsubscribe = subscribeToAnalytics(
       (data) => {
-        console.log('Received data from backend:', data);
         setRecommendations(data.recommendations || '');
         setLastUpdated(new Date());
         setLoading(false);
         setError(null);
       },
       (err) => {
-        console.error('Error from analytics stream:', err);
         setError('Failed to connect to analytics stream.');
         setLoading(false);
-      }
+      },
+      section
     );
     return unsubscribe;
-  }, []);
+  }, [section]);
 
   return (
     <div className="glass-card p-lg mt-lg">

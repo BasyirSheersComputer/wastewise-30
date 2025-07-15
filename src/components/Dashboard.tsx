@@ -241,7 +241,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* AI Recommendations */}
-      <LLMRecommendations />
+      <LLMRecommendations section="dashboard" />
     </div>
   );
 };

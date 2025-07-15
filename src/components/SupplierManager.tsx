@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Truck, Star, Clock, DollarSign, AlertCircle, CheckCircle, Plus, Phone, Mail } from 'lucide-react';
+import LLMRecommendations from './LLMRecommendations';
 
 const SupplierManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState('suppliers');
@@ -315,6 +316,7 @@ const SupplierManager: React.FC = () => {
           </div>
         )}
       </div>
+      <LLMRecommendations section="supplier" />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Download, Calendar, TrendingUp, AlertTriangle, CheckCircle, Filter, Search } from 'lucide-react';
+import LLMRecommendations from './LLMRecommendations';
 
 const ReportsCompliance: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('month');
@@ -342,6 +343,7 @@ const ReportsCompliance: React.FC = () => {
           </div>
         </div>
       </div>
+      <LLMRecommendations section="compliance" />
     </div>
   );
 };

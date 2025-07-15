@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TrendingUp, Cloud, Calendar, BarChart3, AlertTriangle, CheckCircle } from 'lucide-react';
+import LLMRecommendations from './LLMRecommendations';
 
 const DemandForecasting: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('week');
@@ -198,6 +199,7 @@ const DemandForecasting: React.FC = () => {
           </table>
         </div>
       </div>
+      <LLMRecommendations section="demand" />
     </div>
   );
 };

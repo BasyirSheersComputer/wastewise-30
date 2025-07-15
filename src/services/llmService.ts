@@ -8,10 +8,11 @@
  */
 export function subscribeToAnalytics(
   onData: (data: any) => void,
-  onError?: (err: any) => void
+  onError?: (err: any) => void,
+  section: string = 'dashboard'
 ) {
   console.log('Connecting to analytics stream...');
-  const source = new EventSource('http://localhost:4000/stream/analytics');
+  const source = new EventSource(`http://localhost:4000/stream/analytics?section=${encodeURIComponent(section)}`);
   
   source.onopen = () => {
     console.log('EventSource connection opened');

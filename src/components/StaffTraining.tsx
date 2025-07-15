@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Users, BookOpen, Award, TrendingUp, Clock, CheckCircle, Play, Star } from 'lucide-react';
+import LLMRecommendations from './LLMRecommendations';
 
 const StaffTraining: React.FC = () => {
   const [activeTab, setActiveTab] = useState('training');
@@ -308,6 +309,7 @@ const StaffTraining: React.FC = () => {
           </div>
         )}
       </div>
+      <LLMRecommendations section="training" />
     </div>
   );
 };
