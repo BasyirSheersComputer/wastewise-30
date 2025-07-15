@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Package, AlertTriangle, TrendingUp, TrendingDown, Plus, Filter, Search } from 'lucide-react';
+import AddInventoryModal from "./AddInventoryModal";
 
 const InventoryManager: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const inventoryItems = [
     {
@@ -113,11 +115,15 @@ const InventoryManager: React.FC = () => {
     <div className="space-y-lg">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold text-text-primary">Inventory Management</h1>
-        <button className="glass-button flex items-center space-x-sm">
+        <button
+          className="glass-button flex items-center space-x-sm"
+          onClick={() => setShowAddModal(true)}
+        >
           <Plus size={16} />
           <span>Add Item</span>
         </button>
       </div>
+      <AddInventoryModal open={showAddModal} onClose={() => setShowAddModal(false)} />
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-lg">
