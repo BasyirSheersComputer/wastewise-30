@@ -1,5 +1,7 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, Package, Utensils, Users, DollarSign } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import LLMRecommendations from './LLMRecommendations';
 
 const Dashboard: React.FC = () => {
   const kpiData = [
@@ -35,6 +37,14 @@ const Dashboard: React.FC = () => {
       icon: Utensils,
       color: 'text-accent'
     }
+  ];
+
+  const wasteTrendData = [
+    { month: 'Sep', waste: 9.1 },
+    { month: 'Oct', waste: 8.7 },
+    { month: 'Nov', waste: 8.4 },
+    { month: 'Dec', waste: 8.9 },
+    { month: 'Jan', waste: 8.2 },
   ];
 
   const alerts = [
@@ -102,6 +112,23 @@ const Dashboard: React.FC = () => {
             </div>
           );
         })}
+      </div>
+
+      {/* Waste Trend Chart */}
+      <div className="glass-card p-lg">
+        <h3 className="text-md font-semibold text-text-primary mb-md">Food Waste Trend (last 5 months)</h3>
+        <div style={{ width: '100%', height: 250 }}>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={wasteTrendData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis unit="%" />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="waste" fill="#f87171" name="Food Waste %" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-lg">
@@ -212,6 +239,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      <LLMRecommendations />
     </div>
   );
 };
