@@ -11,12 +11,14 @@ const LLMRecommendations: React.FC = () => {
     setLoading(true);
     const unsubscribe = subscribeToAnalytics(
       (data) => {
+        console.log('Received data from backend:', data);
         setRecommendations(data.recommendations || '');
         setLastUpdated(new Date());
         setLoading(false);
         setError(null);
       },
       (err) => {
+        console.error('Error from analytics stream:', err);
         setError('Failed to connect to analytics stream.');
         setLoading(false);
       }
@@ -36,15 +38,18 @@ const LLMRecommendations: React.FC = () => {
       </h3>
       {loading && (
         <div className="flex items-center space-x-2 text-text-secondary">
-          <span className="loader" /> {/* You can style .loader with a spinner in CSS */}
+          <div className="loader"></div>
           <span>Loading recommendations...</span>
         </div>
       )}
       {error && (
         <div className="text-error bg-error/10 p-sm rounded mb-md">{error}</div>
       )}
-      {!loading && !error && (
+      {!loading && !error && recommendations && (
         <pre className="whitespace-pre-wrap text-sm text-text-primary">{recommendations}</pre>
+      )}
+      {!loading && !error && !recommendations && (
+        <div className="text-text-secondary">No recommendations available yet.</div>
       )}
     </div>
   );
