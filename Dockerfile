@@ -21,9 +21,6 @@ FROM nginx:alpine
 # Copy built frontend to Nginx html directory
 COPY --from=frontend-build /app/dist /usr/share/nginx/html
 
-# Copy Nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # Copy backend code
 COPY --from=backend-build /app/backend /app/backend
 
