@@ -1,11 +1,21 @@
 # Stage 1: Build frontend
 FROM node:20 AS frontend-build
 WORKDIR /app
+
+# Accept build args for Supabase
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_ANON_KEY
+
+# Set them as environment variables for Vite
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
+
 COPY package*.json ./
 COPY vite.config.ts ./
 COPY tsconfig*.json ./
 COPY index.html ./
 COPY ./src ./src
+
 RUN npm install
 RUN npm run build
 
