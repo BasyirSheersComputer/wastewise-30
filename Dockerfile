@@ -1,22 +1,11 @@
 # Stage 1: Build frontend
 FROM node:20 AS frontend-build
 WORKDIR /app
-
-# Accept build args for Supabase
-ARG VITE_SUPABASE_URL
-ARG VITE_SUPABASE_ANON_KEY
-
-# Set them as environment variables for Vite
-ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
-ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
-ENV VITE_BASE_PATH=/wastewise-30/
-
 COPY package*.json ./
 COPY vite.config.ts ./
 COPY tsconfig*.json ./
 COPY index.html ./
 COPY ./src ./src
-
 RUN npm install
 RUN npm run build
 
@@ -31,6 +20,9 @@ COPY ./backend .
 FROM nginx:alpine
 # Copy built frontend to Nginx html directory
 COPY --from=frontend-build /app/dist /usr/share/nginx/html
+
+# Copy Nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy backend code
 COPY --from=backend-build /app/backend /app/backend

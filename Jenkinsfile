@@ -9,8 +9,6 @@ pipeline {
     REMOTE_HOST = '192.168.20.215'
     REMOTE_USER = 'basyir'
     CONTAINER_NAME = 'wastewise-30'
-    VITE_SUPABASE_URL = credentials('wastewise-supabase-url')
-    VITE_SUPABASE_ANON_KEY = credentials('wastewise-supabase-anon-key')
   }
 
   stages {
@@ -26,10 +24,7 @@ pipeline {
         script {
           sh """
           set -e
-          docker build \
-            --build-arg VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
-            --build-arg VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY \
-            -t $IMAGE_NAME:$TAG .
+          docker build -t $IMAGE_NAME:$TAG .
           docker tag $IMAGE_NAME:$TAG $IMAGE_NAME:latest
           """
         }
