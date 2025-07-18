@@ -2,108 +2,66 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { askAI } from './ai-service.js';
 import { getAnalyticsData } from './analytics.js';
-import { getRecommendations } from './recommendations.js';
+import { prompts } from './recommendations.js';
+
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
+app.use(express.json());
 
-// --- WebSocket server for inventory ---
-import { WebSocketServer } from 'ws';
-import http from 'http';
-
-const server = http.createServer(app);
-const wss = new WebSocketServer({ server, path: '/inventory' });
-
-// In-memory inventory for demo (replace with DB in production)
-let inventory = [
-  { id: '1', name: 'Tomatoes', batch: 'A1', quantity: 50, expiry: '2024-07-20', received: '2024-07-01' },
-  { id: '2', name: 'Chicken Breast', batch: 'B2', quantity: 30, expiry: '2024-07-18', received: '2024-07-02' },
-  { id: '3', name: 'Mozzarella Cheese', batch: 'C3', quantity: 10, expiry: '2024-07-15', received: '2024-07-01' },
-];
-
-function broadcastInventory() {
-  const msg = JSON.stringify({ type: 'inventory_update', inventory });
-  wss.clients.forEach(client => {
-    if (client.readyState === 1) client.send(msg);
-  });
-}
-
-wss.on('connection', (ws) => {
-  console.log('Inventory WebSocket client connected');
-  ws.send(JSON.stringify({ type: 'inventory_update', inventory }));
-
-  ws.on('message', (message) => {
-    try {
-      const data = JSON.parse(message);
-      if (data.type === 'log') {
-        // Add new inventory log
-        const newItem = {
-          id: Date.now().toString(),
-          name: data.item,
-          batch: data.batch,
-          quantity: data.quantity,
-          expiry: data.expiry,
-          received: data.received,
-        };
-        inventory.push(newItem);
-        broadcastInventory();
-      }
-      // Add more message types as needed
-    } catch (e) {
-      console.error('WebSocket message error:', e);
-    }
-  });
-
-  ws.on('close', () => {
-    console.log('Inventory WebSocket client disconnected');
-  });
-});
-
-// --- Existing analytics SSE endpoint ---
-app.get('/stream/analytics', async (req, res) => {
-  console.log('Client connected to analytics stream');
+app.get('/stream/analytics', (req, res) => {
   const section = req.query.section || 'dashboard';
-  res.set({
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    Connection: 'keep-alive',
-    'Access-Control-Allow-Origin': '*',
-  });
-  res.flushHeaders();
+  const provider = req.query.provider === 'chatgpt' ? 'chatgpt' : 'gemini';
 
-  const sendUpdate = async () => {
+  // Set up Server-Sent Events headers
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache, no-transform',
+    Connection: 'keep-alive',
+  });
+
+  // Send a comment to establish the stream
+  res.write(': connected\n\n');
+
+  const sendData = async () => {
     try {
-      console.log('Fetching analytics data...');
       const analytics = await getAnalyticsData();
-      console.log('Analytics data:', analytics);
-      console.log('Getting recommendations for section:', section);
-      const recommendations = await getRecommendations(analytics, section);
-      console.log('Recommendations:', recommendations);
-      const data = { analytics, recommendations };
-      res.write(`data: ${JSON.stringify(data)}\n\n`);
-    } catch (e) {
-      console.error('Error in sendUpdate:', e);
-      res.write(`data: {"error":"${e.message}"}\n\n`);
+      const prompt = prompts[section](analytics);
+      const recommendations = await askAI(prompt, provider);
+
+      // Send combined analytics and recommendations
+      res.write(`data: ${JSON.stringify({ analytics, recommendations })}\n\n`);
+    } catch (error) {
+      console.error('LLM error:', error);
+      const isQuota = error.message.toLowerCase().includes('quota');
+      const eventType = isQuota ? 'quota_exceeded' : 'llm_error';
+
+      res.write(`event: error\ndata: ${JSON.stringify({
+        type: eventType,
+        message: error.message,
+      })}\n\n`);
+
+      // If desired, stop the stream on fatal errors:
+      // clearInterval(interval);
+      // res.end();
     }
   };
 
-  // Send initial data immediately
-  await sendUpdate();
-  // Send updates every 30 seconds
-  const interval = setInterval(sendUpdate, 30000);
+  // Send immediately, then every 2 seconds
+  sendData();
+  const interval = setInterval(sendData, 2000);
+
+  // Clean up on client disconnect
   req.on('close', () => {
-    console.log('Client disconnected');
     clearInterval(interval);
   });
 });
 
-// Add a simple test endpoint
-app.get('/test', (req, res) => {
-  res.json({ message: 'Backend is working!' });
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
-
-// --- Start both HTTP and WebSocket server ---
-const PORT = 4000;
-server.listen(PORT, () => console.log(`Backend (HTTP+WS) running on port ${PORT}`));
