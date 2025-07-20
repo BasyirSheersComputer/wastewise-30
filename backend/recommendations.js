@@ -92,4 +92,6 @@ export async function getRecommendations(analytics, section = 'dashboard') {
   const promptFn = prompts[section] || prompts['dashboard'];
   const prompt = promptFn(analytics);
   return await askGemini(prompt);
-} 
+}
+
+export { prompts }; 
