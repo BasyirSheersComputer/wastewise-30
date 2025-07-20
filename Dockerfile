@@ -1,29 +1,41 @@
-# Use the official Node.js image
-FROM node:16 AS build
+# Multi-stage build for frontend and backend
+FROM node:18-alpine AS base
 
-# Set the working directory
-WORKDIR /app
-
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the Vite application
+# Frontend build stage
+FROM base AS frontend-build
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci --only=production
+COPY frontend/ ./
 RUN npm run build
 
-# Use a lightweight web server to serve the app
-FROM nginx:alpine
+# Backend build stage
+FROM base AS backend-build
+WORKDIR /app/backend
+COPY backend/package*.json ./
+RUN npm ci --only=production
+COPY backend/ ./
 
-# Copy built files from the previous stage
-COPY --from=build /app/dist /usr/share/nginx/html
+# Production stage
+FROM node:18-alpine AS production
+WORKDIR /app
 
-# Expose port 80
-EXPOSE 80
+# Install nginx for serving frontend
+RUN apk add --no-cache nginx
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Copy backend
+COPY --from=backend-build /app/backend ./backend
+
+# Copy frontend build to nginx
+COPY --from=frontend-build /app/frontend/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose ports
+EXPOSE 80 3000
+
+# Start both nginx and backend
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+CMD ["/start.sh"]

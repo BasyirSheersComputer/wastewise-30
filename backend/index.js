@@ -105,5 +105,14 @@ app.get('/test', (req, res) => {
 });
 
 // --- Start both HTTP and WebSocket server ---
-const PORT = 4000;
-server.listen(PORT, () => console.log(`Backend (HTTP+WS) running on port ${PORT}`));
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => console.log(`Backend (HTTP+WS) running on port ${PORT}`))
+  .on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${PORT} is busy, trying port ${PORT + 1}...`);
+      server.listen(PORT + 1, () => console.log(`Backend (HTTP+WS) running on port ${PORT + 1}`));
+    } else {
+      console.error('Server error:', err);
+    }
+  });

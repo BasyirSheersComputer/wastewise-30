@@ -1,4 +1,5 @@
 // src/services/llmService.ts
+import { getBackendUrl } from '../config';
 
 /**
  * Subscribes to the backend analytics and recommendations stream.
@@ -12,7 +13,7 @@ export function subscribeToAnalytics(
   section: string = 'dashboard'
 ) {
   console.log('Connecting to analytics stream...');
-  const source = new EventSource(`http://localhost:4000/stream/analytics?section=${encodeURIComponent(section)}`);
+  const source = new EventSource(`${getBackendUrl('/stream/analytics')}?section=${encodeURIComponent(section)}`);
   
   source.onopen = () => {
     console.log('EventSource connection opened');

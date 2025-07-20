@@ -1,4 +1,5 @@
 // src/services/inventorySocket.ts
+import { getWebSocketUrl } from '../config';
 
 let socket: WebSocket | null = null;
 
@@ -6,7 +7,7 @@ export function connectInventorySocket(
   onMessage: (data: any) => void,
   onError?: (err: any) => void
 ) {
-  socket = new WebSocket('ws://localhost:4000/inventory');
+  socket = new WebSocket(getWebSocketUrl('/inventory'));
   socket.onopen = () => {
     console.log('Inventory WebSocket connected');
   };

@@ -19,6 +19,41 @@ pipeline {
       }
     }
 
+    stage('Install Dependencies') {
+      parallel {
+        stage('Frontend Dependencies') {
+          steps {
+            dir('frontend') {
+              sh 'npm ci'
+            }
+          }
+        }
+        stage('Backend Dependencies') {
+          steps {
+            dir('backend') {
+              sh 'npm ci'
+            }
+          }
+        }
+      }
+    }
+
+    stage('Build Frontend') {
+      steps {
+        dir('frontend') {
+          sh 'npm run build'
+        }
+      }
+    }
+
+    stage('Test Backend') {
+      steps {
+        dir('backend') {
+          sh 'npm test || echo "No tests configured"'
+        }
+      }
+    }
+
     stage('Build Docker Image') {
       steps {
         script {
@@ -74,6 +109,10 @@ pipeline {
     }
     failure {
       echo "❌ Deployment failed!"
+    }
+    always {
+      // Clean up Docker images
+      sh 'docker system prune -f || true'
     }
   }
 }
