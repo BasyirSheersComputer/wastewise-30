@@ -1,0 +1,70 @@
+{
+  "type": "module",
+  "name": "wastewise-backend",
+  "version": "1.0.0",
+  "description": "Backend API for WasteWise - AI-powered restaurant waste management SaaS platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node test.js",
+    "test:ai": "node run-gemini-test.js",
+    "test:saas": "node test-saas-features.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "health": "curl http://localhost:3000/health"
+  },
+  "keywords": [
+    "restaurant",
+    "waste-management",
+    "ai",
+    "analytics",
+    "supabase",
+    "express",
+    "saas",
+    "stripe",
+    "payment"
+  ],
+  "author": "WasteWise Team",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^1.9.0",
+    "@supabase/supabase-js": "^2.39.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "luxon": "^3.4.4",
+    "node-fetch": "^3.3.2",
+    "openai": "^5.10.1",
+    "stripe": "^14.0.0",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "multer": "^1.4.5-lts.1",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.7",
+    "twilio": "^4.19.0",
+    "redis": "^4.6.10",
+    "ioredis": "^5.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "jest": "^30.0.4",
+    "nodemon": "^3.0.3",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wastewise/backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wastewise/backend/issues"
+  },
+  "homepage": "https://github.com/wastewise/backend#readme"
+}
