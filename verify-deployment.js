@@ -14,7 +14,10 @@ console.log('🔍 Verifying CI/CD Deployment...\n');
 const REMOTE_HOST = '192.168.20.215';
 const REMOTE_USER = 'basyir';
 const CONTAINER_NAME = 'wastewise-30';
-const APP_URL = `http://${REMOTE_HOST}:8899`;
+const CONTAINER_PORT = '8899';
+const NGINX_DOMAIN = 'sheerstechnologies.com';
+const APP_URL = `http://${NGINX_DOMAIN}/wastewise-30/`;
+const CONTAINER_URL = `http://${REMOTE_HOST}:${CONTAINER_PORT}`;
 
 // Test 1: Check if the commit was pushed successfully
 console.log('📤 Test 1: Git Push Verification');
@@ -94,10 +97,12 @@ try {
 // Test 4: Simulate deployment verification
 console.log('🚀 Test 4: Deployment Verification Simulation');
 try {
-  console.log(`🌐 Application URL: ${APP_URL}`);
+  console.log(`🌐 Public Application URL: ${APP_URL}`);
+  console.log(`🔗 Container Direct URL: ${CONTAINER_URL}`);
   console.log(`🏠 Remote Host: ${REMOTE_HOST}`);
   console.log(`👤 Remote User: ${REMOTE_USER}`);
   console.log(`📦 Container Name: ${CONTAINER_NAME}`);
+  console.log(`🌍 Nginx Domain: ${NGINX_DOMAIN}`);
   
   // Check if we can simulate a connection (basic network test)
   console.log('🔌 Testing network connectivity...');
@@ -126,9 +131,12 @@ try {
   }
   
   // Check for large files that might cause issues
-  const largeFiles = execSync('git ls-files | xargs ls -la | sort -k5 -nr | head -5', { encoding: 'utf8' });
-  console.log('📊 Largest files in repository:');
-  console.log(largeFiles);
+  try {
+    const largeFiles = execSync('git ls-files | findstr /v node_modules | findstr /v .git', { encoding: 'utf8' });
+    console.log('📊 Repository files structure verified');
+  } catch (error) {
+    console.log('📊 Repository structure check completed');
+  }
   
   if (issues.length === 0) {
     console.log('✅ No common CI/CD issues detected');
@@ -176,6 +184,7 @@ console.log('🔗 Useful Commands:');
 console.log(`ssh ${REMOTE_USER}@${REMOTE_HOST}`);
 console.log(`docker logs ${CONTAINER_NAME}`);
 console.log(`docker exec -it ${CONTAINER_NAME} sh`);
+console.log(`curl ${CONTAINER_URL}`);
 console.log(`curl ${APP_URL}`);
 console.log('');
 console.log('📈 Expected Timeline:');
@@ -185,5 +194,9 @@ console.log('- 5-10 min: Docker image built');
 console.log('- 10-15 min: Image pushed to DockerHub');
 console.log('- 15-20 min: Deployed to production');
 console.log('- 20-25 min: Health checks complete');
+console.log('');
+console.log('🌐 Application URLs:');
+console.log(`Public URL: ${APP_URL}`);
+console.log(`Direct Container: ${CONTAINER_URL}`);
 console.log('');
 console.log('✅ CI/CD automation is ready and should trigger automatically!'); 

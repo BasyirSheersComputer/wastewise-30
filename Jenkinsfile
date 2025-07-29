@@ -198,8 +198,13 @@ pipeline {
           echo "🏥 Performing health check..."
           sh """
             sleep 15
-            curl -f http://$REMOTE_HOST:8899 || (echo "❌ Health check failed" && exit 1)
-            echo "✅ Health check passed"
+            # Check container directly
+            curl -f http://$REMOTE_HOST:8899 || (echo "⚠️ Container health check failed" && exit 1)
+            echo "✅ Container health check passed"
+            
+            # Check nginx proxy (if domain is accessible)
+            curl -f http://sheerstechnologies.com/wastewise-30/ || echo "⚠️ Nginx proxy check failed (may be normal if domain not accessible from Jenkins)"
+            echo "✅ Health check completed"
           """
         }
       }
@@ -223,7 +228,8 @@ pipeline {
     success {
       script {
         echo "✅ Pipeline completed successfully!"
-        echo "🌐 Application deployed at: http://$REMOTE_HOST:8899"
+        echo "🌐 Application deployed at: http://sheerstechnologies.com/wastewise-30/"
+        echo "🔗 Container direct access: http://$REMOTE_HOST:8899"
         echo "📊 Build Number: $BUILD_NUMBER"
         echo "🐳 Image: $IMAGE_NAME:$TAG"
       }
