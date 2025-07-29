@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-07-29T05:38:57.094Z",
+  "status": "failed",
+  "error": {
+    "message": "Command failed: chmod +x deploy-integrated.sh\n'chmod' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+    "stack": "Error: Command failed: chmod +x deploy-integrated.sh\n'chmod' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n\n    at checkExecSyncError (node:child_process:890:11)\n    at execSync (node:child_process:962:15)\n    at PlatformIntegration.deployIntegratedSystem (file:///D:/Priv/wastewise-30/integrate-platform.js:592:5)\n    at PlatformIntegration.integrate (file:///D:/Priv/wastewise-30/integrate-platform.js:40:18)",
+    "step": "unknown"
+  },
+  "recommendations": [
+    "Check service availability",
+    "Verify network connectivity",
+    "Review error logs",
+    "Contact support if issue persists"
+  ]
+}

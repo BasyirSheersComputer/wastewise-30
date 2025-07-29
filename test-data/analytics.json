@@ -1,0 +1,407 @@
+[
+  {
+    "id": "analytics-restaurant-1",
+    "restaurant_id": "restaurant-1",
+    "period": "last_30_days",
+    "metrics": {
+      "total_revenue": 1553,
+      "total_cost": 738.5,
+      "total_profit": 814.5,
+      "total_waste_cost": 250,
+      "profit_margin": 52.44687701223438,
+      "waste_percentage": 16.097875080489377,
+      "average_order_value": 24.650793650793652,
+      "total_orders": 63,
+      "total_waste_events": 14
+    },
+    "top_selling_items": [
+      {
+        "name": "Beef Rendang",
+        "quantity": 20,
+        "revenue": 500
+      },
+      {
+        "name": "Curry Chicken",
+        "quantity": 13,
+        "revenue": 260
+      },
+      {
+        "name": "Laksa",
+        "quantity": 12,
+        "revenue": 216
+      },
+      {
+        "name": "Ice Kacang",
+        "quantity": 16,
+        "revenue": 144
+      },
+      {
+        "name": "Cendol",
+        "quantity": 13,
+        "revenue": 104
+      }
+    ],
+    "waste_analysis": [
+      {
+        "reason": "Expired",
+        "count": 2,
+        "cost": 66.5
+      },
+      {
+        "reason": "Customer Return",
+        "count": 2,
+        "cost": 56
+      },
+      {
+        "reason": "Equipment Failure",
+        "count": 2,
+        "cost": 48
+      },
+      {
+        "reason": "Overcooked",
+        "count": 2,
+        "cost": 36
+      },
+      {
+        "reason": "Preparation Error",
+        "count": 3,
+        "cost": 26
+      },
+      {
+        "reason": "Staff Error",
+        "count": 1,
+        "cost": 12
+      },
+      {
+        "reason": "Overstocked",
+        "count": 1,
+        "cost": 4
+      },
+      {
+        "reason": "Quality Issue",
+        "count": 1,
+        "cost": 1.5
+      }
+    ],
+    "recommendations": [],
+    "created_at": "2025-07-29T06:04:27.824Z"
+  },
+  {
+    "id": "analytics-restaurant-2",
+    "restaurant_id": "restaurant-2",
+    "period": "last_30_days",
+    "metrics": {
+      "total_revenue": 1872,
+      "total_cost": 904,
+      "total_profit": 968,
+      "total_waste_cost": 345.5,
+      "profit_margin": 51.70940170940172,
+      "waste_percentage": 18.456196581196583,
+      "average_order_value": 30.193548387096776,
+      "total_orders": 62,
+      "total_waste_events": 19
+    },
+    "top_selling_items": [
+      {
+        "name": "Beef Rendang",
+        "quantity": 31,
+        "revenue": 775
+      },
+      {
+        "name": "Mee Goreng",
+        "quantity": 16,
+        "revenue": 224
+      },
+      {
+        "name": "Laksa",
+        "quantity": 11,
+        "revenue": 198
+      },
+      {
+        "name": "Chicken Satay",
+        "quantity": 10,
+        "revenue": 150
+      },
+      {
+        "name": "Nasi Lemak",
+        "quantity": 11,
+        "revenue": 132
+      }
+    ],
+    "waste_analysis": [
+      {
+        "reason": "Expired",
+        "count": 5,
+        "cost": 110
+      },
+      {
+        "reason": "Preparation Error",
+        "count": 5,
+        "cost": 64
+      },
+      {
+        "reason": "Overcooked",
+        "count": 2,
+        "cost": 64
+      },
+      {
+        "reason": "Equipment Failure",
+        "count": 3,
+        "cost": 47.5
+      },
+      {
+        "reason": "Customer Return",
+        "count": 2,
+        "cost": 38
+      },
+      {
+        "reason": "Quality Issue",
+        "count": 1,
+        "cost": 12
+      },
+      {
+        "reason": "Overstocked",
+        "count": 1,
+        "cost": 10
+      }
+    ],
+    "recommendations": [],
+    "created_at": "2025-07-29T06:04:27.824Z"
+  },
+  {
+    "id": "analytics-restaurant-3",
+    "restaurant_id": "restaurant-3",
+    "period": "last_30_days",
+    "metrics": {
+      "total_revenue": 1451,
+      "total_cost": 703,
+      "total_profit": 748,
+      "total_waste_cost": 418.5,
+      "profit_margin": 51.55065472088215,
+      "waste_percentage": 28.842177808407993,
+      "average_order_value": 27.37735849056604,
+      "total_orders": 53,
+      "total_waste_events": 19
+    },
+    "top_selling_items": [
+      {
+        "name": "Curry Chicken",
+        "quantity": 20,
+        "revenue": 400
+      },
+      {
+        "name": "Nasi Lemak",
+        "quantity": 19,
+        "revenue": 228
+      },
+      {
+        "name": "Beef Rendang",
+        "quantity": 9,
+        "revenue": 225
+      },
+      {
+        "name": "Laksa",
+        "quantity": 10,
+        "revenue": 180
+      },
+      {
+        "name": "Chicken Satay",
+        "quantity": 7,
+        "revenue": 105
+      }
+    ],
+    "waste_analysis": [
+      {
+        "reason": "Expired",
+        "count": 5,
+        "cost": 97
+      },
+      {
+        "reason": "Overstocked",
+        "count": 3,
+        "cost": 93.5
+      },
+      {
+        "reason": "Preparation Error",
+        "count": 3,
+        "cost": 74
+      },
+      {
+        "reason": "Customer Return",
+        "count": 2,
+        "cost": 57
+      },
+      {
+        "reason": "Quality Issue",
+        "count": 2,
+        "cost": 48
+      },
+      {
+        "reason": "Staff Error",
+        "count": 3,
+        "cost": 39
+      },
+      {
+        "reason": "Overcooked",
+        "count": 1,
+        "cost": 10
+      }
+    ],
+    "recommendations": [],
+    "created_at": "2025-07-29T06:04:27.824Z"
+  },
+  {
+    "id": "analytics-restaurant-4",
+    "restaurant_id": "restaurant-4",
+    "period": "last_30_days",
+    "metrics": {
+      "total_revenue": 1698,
+      "total_cost": 810.5,
+      "total_profit": 887.5,
+      "total_waste_cost": 328.5,
+      "profit_margin": 52.26737338044759,
+      "waste_percentage": 19.346289752650176,
+      "average_order_value": 22.051948051948052,
+      "total_orders": 77,
+      "total_waste_events": 20
+    },
+    "top_selling_items": [
+      {
+        "name": "Curry Chicken",
+        "quantity": 16,
+        "revenue": 320
+      },
+      {
+        "name": "Laksa",
+        "quantity": 17,
+        "revenue": 306
+      },
+      {
+        "name": "Cendol",
+        "quantity": 26,
+        "revenue": 208
+      },
+      {
+        "name": "Ice Kacang",
+        "quantity": 21,
+        "revenue": 189
+      },
+      {
+        "name": "Beef Rendang",
+        "quantity": 7,
+        "revenue": 175
+      }
+    ],
+    "waste_analysis": [
+      {
+        "reason": "Preparation Error",
+        "count": 7,
+        "cost": 140.5
+      },
+      {
+        "reason": "Quality Issue",
+        "count": 3,
+        "cost": 45
+      },
+      {
+        "reason": "Equipment Failure",
+        "count": 3,
+        "cost": 41
+      },
+      {
+        "reason": "Overstocked",
+        "count": 1,
+        "cost": 36
+      },
+      {
+        "reason": "Staff Error",
+        "count": 3,
+        "cost": 28
+      },
+      {
+        "reason": "Expired",
+        "count": 1,
+        "cost": 24
+      },
+      {
+        "reason": "Customer Return",
+        "count": 2,
+        "cost": 14
+      }
+    ],
+    "recommendations": [],
+    "created_at": "2025-07-29T06:04:27.824Z"
+  },
+  {
+    "id": "analytics-restaurant-5",
+    "restaurant_id": "restaurant-5",
+    "period": "last_30_days",
+    "metrics": {
+      "total_revenue": 1434,
+      "total_cost": 690,
+      "total_profit": 744,
+      "total_waste_cost": 231,
+      "profit_margin": 51.88284518828452,
+      "waste_percentage": 16.10878661087866,
+      "average_order_value": 28.68,
+      "total_orders": 50,
+      "total_waste_events": 11
+    },
+    "top_selling_items": [
+      {
+        "name": "Beef Rendang",
+        "quantity": 18,
+        "revenue": 450
+      },
+      {
+        "name": "Curry Chicken",
+        "quantity": 11,
+        "revenue": 220
+      },
+      {
+        "name": "Laksa",
+        "quantity": 12,
+        "revenue": 216
+      },
+      {
+        "name": "Chicken Satay",
+        "quantity": 8,
+        "revenue": 120
+      },
+      {
+        "name": "Cendol",
+        "quantity": 12,
+        "revenue": 96
+      }
+    ],
+    "waste_analysis": [
+      {
+        "reason": "Staff Error",
+        "count": 3,
+        "cost": 64
+      },
+      {
+        "reason": "Overcooked",
+        "count": 3,
+        "cost": 62
+      },
+      {
+        "reason": "Preparation Error",
+        "count": 3,
+        "cost": 59
+      },
+      {
+        "reason": "Customer Return",
+        "count": 1,
+        "cost": 34
+      },
+      {
+        "reason": "Overstocked",
+        "count": 1,
+        "cost": 12
+      }
+    ],
+    "recommendations": [],
+    "created_at": "2025-07-29T06:04:27.825Z"
+  }
+]

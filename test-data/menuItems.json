@@ -1,0 +1,1031 @@
+[
+  {
+    "id": "menu-restaurant-1-0",
+    "restaurant_id": "restaurant-1",
+    "name": "Chicken Satay",
+    "category": "Appetizers",
+    "cost": 8.5,
+    "price": 15,
+    "waste_factor": 0.05,
+    "description": "Delicious Chicken Satay prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 313,
+      "protein": 20,
+      "carbs": 17,
+      "fat": 7
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-1",
+    "restaurant_id": "restaurant-1",
+    "name": "Beef Rendang",
+    "category": "Main Course",
+    "cost": 12,
+    "price": 25,
+    "waste_factor": 0.08,
+    "description": "Delicious Beef Rendang prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 377,
+      "protein": 26,
+      "carbs": 38,
+      "fat": 19
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-2",
+    "restaurant_id": "restaurant-1",
+    "name": "Nasi Lemak",
+    "category": "Main Course",
+    "cost": 6,
+    "price": 12,
+    "waste_factor": 0.03,
+    "description": "Delicious Nasi Lemak prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 314,
+      "protein": 29,
+      "carbs": 35,
+      "fat": 9
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-3",
+    "restaurant_id": "restaurant-1",
+    "name": "Laksa",
+    "category": "Main Course",
+    "cost": 9,
+    "price": 18,
+    "waste_factor": 0.06,
+    "description": "Delicious Laksa prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 696,
+      "protein": 14,
+      "carbs": 48,
+      "fat": 14
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-4",
+    "restaurant_id": "restaurant-1",
+    "name": "Cendol",
+    "category": "Desserts",
+    "cost": 3,
+    "price": 8,
+    "waste_factor": 0.02,
+    "description": "Delicious Cendol prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 384,
+      "protein": 24,
+      "carbs": 17,
+      "fat": 14
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-5",
+    "restaurant_id": "restaurant-1",
+    "name": "Teh Tarik",
+    "category": "Beverages",
+    "cost": 1.5,
+    "price": 4,
+    "waste_factor": 0.01,
+    "description": "Delicious Teh Tarik prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 393,
+      "protein": 26,
+      "carbs": 46,
+      "fat": 21
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-6",
+    "restaurant_id": "restaurant-1",
+    "name": "Roti Canai",
+    "category": "Sides",
+    "cost": 2,
+    "price": 5,
+    "waste_factor": 0.04,
+    "description": "Delicious Roti Canai prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 350,
+      "protein": 15,
+      "carbs": 13,
+      "fat": 9
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-7",
+    "restaurant_id": "restaurant-1",
+    "name": "Curry Chicken",
+    "category": "Main Course",
+    "cost": 10,
+    "price": 20,
+    "waste_factor": 0.07,
+    "description": "Delicious Curry Chicken prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 460,
+      "protein": 11,
+      "carbs": 24,
+      "fat": 13
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-8",
+    "restaurant_id": "restaurant-1",
+    "name": "Mee Goreng",
+    "category": "Main Course",
+    "cost": 7,
+    "price": 14,
+    "waste_factor": 0.05,
+    "description": "Delicious Mee Goreng prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 219,
+      "protein": 16,
+      "carbs": 49,
+      "fat": 7
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-1-9",
+    "restaurant_id": "restaurant-1",
+    "name": "Ice Kacang",
+    "category": "Desserts",
+    "cost": 4,
+    "price": 9,
+    "waste_factor": 0.03,
+    "description": "Delicious Ice Kacang prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 593,
+      "protein": 5,
+      "carbs": 30,
+      "fat": 15
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-0",
+    "restaurant_id": "restaurant-2",
+    "name": "Chicken Satay",
+    "category": "Appetizers",
+    "cost": 8.5,
+    "price": 15,
+    "waste_factor": 0.05,
+    "description": "Delicious Chicken Satay prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 683,
+      "protein": 12,
+      "carbs": 34,
+      "fat": 5
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-1",
+    "restaurant_id": "restaurant-2",
+    "name": "Beef Rendang",
+    "category": "Main Course",
+    "cost": 12,
+    "price": 25,
+    "waste_factor": 0.08,
+    "description": "Delicious Beef Rendang prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 628,
+      "protein": 18,
+      "carbs": 38,
+      "fat": 13
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-2",
+    "restaurant_id": "restaurant-2",
+    "name": "Nasi Lemak",
+    "category": "Main Course",
+    "cost": 6,
+    "price": 12,
+    "waste_factor": 0.03,
+    "description": "Delicious Nasi Lemak prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 631,
+      "protein": 21,
+      "carbs": 31,
+      "fat": 24
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-3",
+    "restaurant_id": "restaurant-2",
+    "name": "Laksa",
+    "category": "Main Course",
+    "cost": 9,
+    "price": 18,
+    "waste_factor": 0.06,
+    "description": "Delicious Laksa prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 513,
+      "protein": 10,
+      "carbs": 26,
+      "fat": 5
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-4",
+    "restaurant_id": "restaurant-2",
+    "name": "Cendol",
+    "category": "Desserts",
+    "cost": 3,
+    "price": 8,
+    "waste_factor": 0.02,
+    "description": "Delicious Cendol prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 592,
+      "protein": 8,
+      "carbs": 23,
+      "fat": 11
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-5",
+    "restaurant_id": "restaurant-2",
+    "name": "Teh Tarik",
+    "category": "Beverages",
+    "cost": 1.5,
+    "price": 4,
+    "waste_factor": 0.01,
+    "description": "Delicious Teh Tarik prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 290,
+      "protein": 5,
+      "carbs": 16,
+      "fat": 11
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-6",
+    "restaurant_id": "restaurant-2",
+    "name": "Roti Canai",
+    "category": "Sides",
+    "cost": 2,
+    "price": 5,
+    "waste_factor": 0.04,
+    "description": "Delicious Roti Canai prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 518,
+      "protein": 24,
+      "carbs": 53,
+      "fat": 12
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-7",
+    "restaurant_id": "restaurant-2",
+    "name": "Curry Chicken",
+    "category": "Main Course",
+    "cost": 10,
+    "price": 20,
+    "waste_factor": 0.07,
+    "description": "Delicious Curry Chicken prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 452,
+      "protein": 17,
+      "carbs": 20,
+      "fat": 11
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-8",
+    "restaurant_id": "restaurant-2",
+    "name": "Mee Goreng",
+    "category": "Main Course",
+    "cost": 7,
+    "price": 14,
+    "waste_factor": 0.05,
+    "description": "Delicious Mee Goreng prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 475,
+      "protein": 26,
+      "carbs": 26,
+      "fat": 8
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-2-9",
+    "restaurant_id": "restaurant-2",
+    "name": "Ice Kacang",
+    "category": "Desserts",
+    "cost": 4,
+    "price": 9,
+    "waste_factor": 0.03,
+    "description": "Delicious Ice Kacang prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 557,
+      "protein": 32,
+      "carbs": 40,
+      "fat": 16
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-0",
+    "restaurant_id": "restaurant-3",
+    "name": "Chicken Satay",
+    "category": "Appetizers",
+    "cost": 8.5,
+    "price": 15,
+    "waste_factor": 0.05,
+    "description": "Delicious Chicken Satay prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 363,
+      "protein": 13,
+      "carbs": 27,
+      "fat": 20
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-1",
+    "restaurant_id": "restaurant-3",
+    "name": "Beef Rendang",
+    "category": "Main Course",
+    "cost": 12,
+    "price": 25,
+    "waste_factor": 0.08,
+    "description": "Delicious Beef Rendang prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 388,
+      "protein": 34,
+      "carbs": 18,
+      "fat": 7
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-2",
+    "restaurant_id": "restaurant-3",
+    "name": "Nasi Lemak",
+    "category": "Main Course",
+    "cost": 6,
+    "price": 12,
+    "waste_factor": 0.03,
+    "description": "Delicious Nasi Lemak prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 307,
+      "protein": 29,
+      "carbs": 14,
+      "fat": 14
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-3",
+    "restaurant_id": "restaurant-3",
+    "name": "Laksa",
+    "category": "Main Course",
+    "cost": 9,
+    "price": 18,
+    "waste_factor": 0.06,
+    "description": "Delicious Laksa prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 456,
+      "protein": 31,
+      "carbs": 41,
+      "fat": 16
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-4",
+    "restaurant_id": "restaurant-3",
+    "name": "Cendol",
+    "category": "Desserts",
+    "cost": 3,
+    "price": 8,
+    "waste_factor": 0.02,
+    "description": "Delicious Cendol prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 634,
+      "protein": 13,
+      "carbs": 31,
+      "fat": 16
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-5",
+    "restaurant_id": "restaurant-3",
+    "name": "Teh Tarik",
+    "category": "Beverages",
+    "cost": 1.5,
+    "price": 4,
+    "waste_factor": 0.01,
+    "description": "Delicious Teh Tarik prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 529,
+      "protein": 17,
+      "carbs": 51,
+      "fat": 12
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-6",
+    "restaurant_id": "restaurant-3",
+    "name": "Roti Canai",
+    "category": "Sides",
+    "cost": 2,
+    "price": 5,
+    "waste_factor": 0.04,
+    "description": "Delicious Roti Canai prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 429,
+      "protein": 23,
+      "carbs": 41,
+      "fat": 23
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-7",
+    "restaurant_id": "restaurant-3",
+    "name": "Curry Chicken",
+    "category": "Main Course",
+    "cost": 10,
+    "price": 20,
+    "waste_factor": 0.07,
+    "description": "Delicious Curry Chicken prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 593,
+      "protein": 5,
+      "carbs": 23,
+      "fat": 17
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-8",
+    "restaurant_id": "restaurant-3",
+    "name": "Mee Goreng",
+    "category": "Main Course",
+    "cost": 7,
+    "price": 14,
+    "waste_factor": 0.05,
+    "description": "Delicious Mee Goreng prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 366,
+      "protein": 20,
+      "carbs": 39,
+      "fat": 21
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-3-9",
+    "restaurant_id": "restaurant-3",
+    "name": "Ice Kacang",
+    "category": "Desserts",
+    "cost": 4,
+    "price": 9,
+    "waste_factor": 0.03,
+    "description": "Delicious Ice Kacang prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 471,
+      "protein": 20,
+      "carbs": 49,
+      "fat": 13
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-0",
+    "restaurant_id": "restaurant-4",
+    "name": "Chicken Satay",
+    "category": "Appetizers",
+    "cost": 8.5,
+    "price": 15,
+    "waste_factor": 0.05,
+    "description": "Delicious Chicken Satay prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 542,
+      "protein": 31,
+      "carbs": 39,
+      "fat": 23
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-1",
+    "restaurant_id": "restaurant-4",
+    "name": "Beef Rendang",
+    "category": "Main Course",
+    "cost": 12,
+    "price": 25,
+    "waste_factor": 0.08,
+    "description": "Delicious Beef Rendang prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 278,
+      "protein": 31,
+      "carbs": 53,
+      "fat": 15
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-2",
+    "restaurant_id": "restaurant-4",
+    "name": "Nasi Lemak",
+    "category": "Main Course",
+    "cost": 6,
+    "price": 12,
+    "waste_factor": 0.03,
+    "description": "Delicious Nasi Lemak prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 528,
+      "protein": 11,
+      "carbs": 33,
+      "fat": 22
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-3",
+    "restaurant_id": "restaurant-4",
+    "name": "Laksa",
+    "category": "Main Course",
+    "cost": 9,
+    "price": 18,
+    "waste_factor": 0.06,
+    "description": "Delicious Laksa prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 565,
+      "protein": 30,
+      "carbs": 32,
+      "fat": 17
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-4",
+    "restaurant_id": "restaurant-4",
+    "name": "Cendol",
+    "category": "Desserts",
+    "cost": 3,
+    "price": 8,
+    "waste_factor": 0.02,
+    "description": "Delicious Cendol prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 431,
+      "protein": 30,
+      "carbs": 20,
+      "fat": 7
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-5",
+    "restaurant_id": "restaurant-4",
+    "name": "Teh Tarik",
+    "category": "Beverages",
+    "cost": 1.5,
+    "price": 4,
+    "waste_factor": 0.01,
+    "description": "Delicious Teh Tarik prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 669,
+      "protein": 30,
+      "carbs": 26,
+      "fat": 9
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-6",
+    "restaurant_id": "restaurant-4",
+    "name": "Roti Canai",
+    "category": "Sides",
+    "cost": 2,
+    "price": 5,
+    "waste_factor": 0.04,
+    "description": "Delicious Roti Canai prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 572,
+      "protein": 24,
+      "carbs": 32,
+      "fat": 9
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-7",
+    "restaurant_id": "restaurant-4",
+    "name": "Curry Chicken",
+    "category": "Main Course",
+    "cost": 10,
+    "price": 20,
+    "waste_factor": 0.07,
+    "description": "Delicious Curry Chicken prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 511,
+      "protein": 26,
+      "carbs": 50,
+      "fat": 7
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-8",
+    "restaurant_id": "restaurant-4",
+    "name": "Mee Goreng",
+    "category": "Main Course",
+    "cost": 7,
+    "price": 14,
+    "waste_factor": 0.05,
+    "description": "Delicious Mee Goreng prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 306,
+      "protein": 34,
+      "carbs": 27,
+      "fat": 17
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-4-9",
+    "restaurant_id": "restaurant-4",
+    "name": "Ice Kacang",
+    "category": "Desserts",
+    "cost": 4,
+    "price": 9,
+    "waste_factor": 0.03,
+    "description": "Delicious Ice Kacang prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 652,
+      "protein": 20,
+      "carbs": 48,
+      "fat": 15
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-0",
+    "restaurant_id": "restaurant-5",
+    "name": "Chicken Satay",
+    "category": "Appetizers",
+    "cost": 8.5,
+    "price": 15,
+    "waste_factor": 0.05,
+    "description": "Delicious Chicken Satay prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 677,
+      "protein": 8,
+      "carbs": 36,
+      "fat": 7
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-1",
+    "restaurant_id": "restaurant-5",
+    "name": "Beef Rendang",
+    "category": "Main Course",
+    "cost": 12,
+    "price": 25,
+    "waste_factor": 0.08,
+    "description": "Delicious Beef Rendang prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 463,
+      "protein": 17,
+      "carbs": 37,
+      "fat": 5
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-2",
+    "restaurant_id": "restaurant-5",
+    "name": "Nasi Lemak",
+    "category": "Main Course",
+    "cost": 6,
+    "price": 12,
+    "waste_factor": 0.03,
+    "description": "Delicious Nasi Lemak prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 553,
+      "protein": 32,
+      "carbs": 28,
+      "fat": 5
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-3",
+    "restaurant_id": "restaurant-5",
+    "name": "Laksa",
+    "category": "Main Course",
+    "cost": 9,
+    "price": 18,
+    "waste_factor": 0.06,
+    "description": "Delicious Laksa prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 681,
+      "protein": 30,
+      "carbs": 21,
+      "fat": 11
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-4",
+    "restaurant_id": "restaurant-5",
+    "name": "Cendol",
+    "category": "Desserts",
+    "cost": 3,
+    "price": 8,
+    "waste_factor": 0.02,
+    "description": "Delicious Cendol prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 667,
+      "protein": 20,
+      "carbs": 58,
+      "fat": 21
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-5",
+    "restaurant_id": "restaurant-5",
+    "name": "Teh Tarik",
+    "category": "Beverages",
+    "cost": 1.5,
+    "price": 4,
+    "waste_factor": 0.01,
+    "description": "Delicious Teh Tarik prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 601,
+      "protein": 6,
+      "carbs": 24,
+      "fat": 22
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-6",
+    "restaurant_id": "restaurant-5",
+    "name": "Roti Canai",
+    "category": "Sides",
+    "cost": 2,
+    "price": 5,
+    "waste_factor": 0.04,
+    "description": "Delicious Roti Canai prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 667,
+      "protein": 17,
+      "carbs": 45,
+      "fat": 12
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-7",
+    "restaurant_id": "restaurant-5",
+    "name": "Curry Chicken",
+    "category": "Main Course",
+    "cost": 10,
+    "price": 20,
+    "waste_factor": 0.07,
+    "description": "Delicious Curry Chicken prepared fresh daily",
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "nutritional_info": {
+      "calories": 404,
+      "protein": 16,
+      "carbs": 47,
+      "fat": 16
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-8",
+    "restaurant_id": "restaurant-5",
+    "name": "Mee Goreng",
+    "category": "Main Course",
+    "cost": 7,
+    "price": 14,
+    "waste_factor": 0.05,
+    "description": "Delicious Mee Goreng prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 337,
+      "protein": 14,
+      "carbs": 51,
+      "fat": 15
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  },
+  {
+    "id": "menu-restaurant-5-9",
+    "restaurant_id": "restaurant-5",
+    "name": "Ice Kacang",
+    "category": "Desserts",
+    "cost": 4,
+    "price": 9,
+    "waste_factor": 0.03,
+    "description": "Delicious Ice Kacang prepared fresh daily",
+    "allergens": [
+      "gluten"
+    ],
+    "nutritional_info": {
+      "calories": 670,
+      "protein": 16,
+      "carbs": 16,
+      "fat": 23
+    },
+    "created_at": "2025-07-29T06:04:27.817Z"
+  }
+]

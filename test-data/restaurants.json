@@ -1,0 +1,117 @@
+[
+  {
+    "id": "restaurant-1",
+    "name": "Test Restaurant 1",
+    "type": "Casual Dining",
+    "location": {
+      "address": "111 Test Street",
+      "city": "Penang",
+      "state": "Malaysia",
+      "postalCode": "11111"
+    },
+    "settings": {
+      "theme": "default",
+      "timezone": "Asia/Kuala_Lumpur",
+      "currency": "MYR",
+      "language": "en"
+    },
+    "contact": {
+      "phone": "+60-11-111-1111",
+      "email": "restaurant1@test.com",
+      "website": "https://restaurant1.test.com"
+    },
+    "created_at": "2025-07-29T06:04:27.815Z"
+  },
+  {
+    "id": "restaurant-2",
+    "name": "Test Restaurant 2",
+    "type": "Fast Food",
+    "location": {
+      "address": "222 Test Street",
+      "city": "Johor Bahru",
+      "state": "Malaysia",
+      "postalCode": "22222"
+    },
+    "settings": {
+      "theme": "default",
+      "timezone": "Asia/Kuala_Lumpur",
+      "currency": "MYR",
+      "language": "en"
+    },
+    "contact": {
+      "phone": "+60-22-222-2222",
+      "email": "restaurant2@test.com",
+      "website": "https://restaurant2.test.com"
+    },
+    "created_at": "2025-07-29T06:04:27.816Z"
+  },
+  {
+    "id": "restaurant-3",
+    "name": "Test Restaurant 3",
+    "type": "Cafe",
+    "location": {
+      "address": "333 Test Street",
+      "city": "Ipoh",
+      "state": "Malaysia",
+      "postalCode": "33333"
+    },
+    "settings": {
+      "theme": "default",
+      "timezone": "Asia/Kuala_Lumpur",
+      "currency": "MYR",
+      "language": "en"
+    },
+    "contact": {
+      "phone": "+60-33-333-3333",
+      "email": "restaurant3@test.com",
+      "website": "https://restaurant3.test.com"
+    },
+    "created_at": "2025-07-29T06:04:27.816Z"
+  },
+  {
+    "id": "restaurant-4",
+    "name": "Test Restaurant 4",
+    "type": "Food Truck",
+    "location": {
+      "address": "444 Test Street",
+      "city": "Malacca",
+      "state": "Malaysia",
+      "postalCode": "44444"
+    },
+    "settings": {
+      "theme": "default",
+      "timezone": "Asia/Kuala_Lumpur",
+      "currency": "MYR",
+      "language": "en"
+    },
+    "contact": {
+      "phone": "+60-44-444-4444",
+      "email": "restaurant4@test.com",
+      "website": "https://restaurant4.test.com"
+    },
+    "created_at": "2025-07-29T06:04:27.816Z"
+  },
+  {
+    "id": "restaurant-5",
+    "name": "Test Restaurant 5",
+    "type": "Fine Dining",
+    "location": {
+      "address": "555 Test Street",
+      "city": "Kuala Lumpur",
+      "state": "Malaysia",
+      "postalCode": "55555"
+    },
+    "settings": {
+      "theme": "default",
+      "timezone": "Asia/Kuala_Lumpur",
+      "currency": "MYR",
+      "language": "en"
+    },
+    "contact": {
+      "phone": "+60-55-555-5555",
+      "email": "restaurant5@test.com",
+      "website": "https://restaurant5.test.com"
+    },
+    "created_at": "2025-07-29T06:04:27.816Z"
+  }
+]

@@ -1,0 +1,752 @@
+[
+  {
+    "id": "ai-rec-restaurant-1-0",
+    "restaurant_id": "restaurant-1",
+    "recommendation_type": "waste_reduction",
+    "title": "WASTE REDUCTION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for waste reduction",
+      "details": "This is a detailed recommendation for improving waste reduction at Test Restaurant 1",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 3326,
+        "waste_reduction": 26,
+        "efficiency_gain": 7
+      }
+    },
+    "confidence": 0.6901846369842433,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.821Z"
+  },
+  {
+    "id": "ai-rec-restaurant-1-1",
+    "restaurant_id": "restaurant-1",
+    "recommendation_type": "menu_optimization",
+    "title": "MENU OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for menu optimization",
+      "details": "This is a detailed recommendation for improving menu optimization at Test Restaurant 1",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 2768,
+        "waste_reduction": 18,
+        "efficiency_gain": 22
+      }
+    },
+    "confidence": 0.7444144100620997,
+    "priority": "low",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.821Z"
+  },
+  {
+    "id": "ai-rec-restaurant-1-2",
+    "restaurant_id": "restaurant-1",
+    "recommendation_type": "inventory_management",
+    "title": "INVENTORY MANAGEMENT Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for inventory management",
+      "details": "This is a detailed recommendation for improving inventory management at Test Restaurant 1",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 2487,
+        "waste_reduction": 39,
+        "efficiency_gain": 22
+      }
+    },
+    "confidence": 0.9994391443503552,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-1-3",
+    "restaurant_id": "restaurant-1",
+    "recommendation_type": "pricing_strategy",
+    "title": "PRICING STRATEGY Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for pricing strategy",
+      "details": "This is a detailed recommendation for improving pricing strategy at Test Restaurant 1",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 1001,
+        "waste_reduction": 29,
+        "efficiency_gain": 10
+      }
+    },
+    "confidence": 0.9087867412603486,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-1-4",
+    "restaurant_id": "restaurant-1",
+    "recommendation_type": "staff_training",
+    "title": "STAFF TRAINING Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for staff training",
+      "details": "This is a detailed recommendation for improving staff training at Test Restaurant 1",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 5846,
+        "waste_reduction": 10,
+        "efficiency_gain": 20
+      }
+    },
+    "confidence": 0.9279990838212553,
+    "priority": "high",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-1-5",
+    "restaurant_id": "restaurant-1",
+    "recommendation_type": "supplier_optimization",
+    "title": "SUPPLIER OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for supplier optimization",
+      "details": "This is a detailed recommendation for improving supplier optimization at Test Restaurant 1",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 4162,
+        "waste_reduction": 12,
+        "efficiency_gain": 15
+      }
+    },
+    "confidence": 0.8378079689179881,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-2-0",
+    "restaurant_id": "restaurant-2",
+    "recommendation_type": "waste_reduction",
+    "title": "WASTE REDUCTION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for waste reduction",
+      "details": "This is a detailed recommendation for improving waste reduction at Test Restaurant 2",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 1601,
+        "waste_reduction": 14,
+        "efficiency_gain": 5
+      }
+    },
+    "confidence": 0.7264133106434163,
+    "priority": "low",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-2-1",
+    "restaurant_id": "restaurant-2",
+    "recommendation_type": "menu_optimization",
+    "title": "MENU OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for menu optimization",
+      "details": "This is a detailed recommendation for improving menu optimization at Test Restaurant 2",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 3465,
+        "waste_reduction": 39,
+        "efficiency_gain": 11
+      }
+    },
+    "confidence": 0.9153475966414353,
+    "priority": "medium",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-2-2",
+    "restaurant_id": "restaurant-2",
+    "recommendation_type": "inventory_management",
+    "title": "INVENTORY MANAGEMENT Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for inventory management",
+      "details": "This is a detailed recommendation for improving inventory management at Test Restaurant 2",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 4328,
+        "waste_reduction": 25,
+        "efficiency_gain": 6
+      }
+    },
+    "confidence": 0.8964966153852019,
+    "priority": "high",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-2-3",
+    "restaurant_id": "restaurant-2",
+    "recommendation_type": "pricing_strategy",
+    "title": "PRICING STRATEGY Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for pricing strategy",
+      "details": "This is a detailed recommendation for improving pricing strategy at Test Restaurant 2",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 1601,
+        "waste_reduction": 12,
+        "efficiency_gain": 8
+      }
+    },
+    "confidence": 0.7407865220193247,
+    "priority": "medium",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-2-4",
+    "restaurant_id": "restaurant-2",
+    "recommendation_type": "staff_training",
+    "title": "STAFF TRAINING Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for staff training",
+      "details": "This is a detailed recommendation for improving staff training at Test Restaurant 2",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 4610,
+        "waste_reduction": 16,
+        "efficiency_gain": 29
+      }
+    },
+    "confidence": 0.9688139978290449,
+    "priority": "low",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-2-5",
+    "restaurant_id": "restaurant-2",
+    "recommendation_type": "supplier_optimization",
+    "title": "SUPPLIER OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for supplier optimization",
+      "details": "This is a detailed recommendation for improving supplier optimization at Test Restaurant 2",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 3128,
+        "waste_reduction": 37,
+        "efficiency_gain": 23
+      }
+    },
+    "confidence": 0.9098430489032702,
+    "priority": "high",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-3-0",
+    "restaurant_id": "restaurant-3",
+    "recommendation_type": "waste_reduction",
+    "title": "WASTE REDUCTION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for waste reduction",
+      "details": "This is a detailed recommendation for improving waste reduction at Test Restaurant 3",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 4515,
+        "waste_reduction": 24,
+        "efficiency_gain": 29
+      }
+    },
+    "confidence": 0.7239478202587944,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-3-1",
+    "restaurant_id": "restaurant-3",
+    "recommendation_type": "menu_optimization",
+    "title": "MENU OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for menu optimization",
+      "details": "This is a detailed recommendation for improving menu optimization at Test Restaurant 3",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 1466,
+        "waste_reduction": 18,
+        "efficiency_gain": 26
+      }
+    },
+    "confidence": 0.6701710973504815,
+    "priority": "high",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-3-2",
+    "restaurant_id": "restaurant-3",
+    "recommendation_type": "inventory_management",
+    "title": "INVENTORY MANAGEMENT Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for inventory management",
+      "details": "This is a detailed recommendation for improving inventory management at Test Restaurant 3",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 1660,
+        "waste_reduction": 35,
+        "efficiency_gain": 12
+      }
+    },
+    "confidence": 0.9601141850120496,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-3-3",
+    "restaurant_id": "restaurant-3",
+    "recommendation_type": "pricing_strategy",
+    "title": "PRICING STRATEGY Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for pricing strategy",
+      "details": "This is a detailed recommendation for improving pricing strategy at Test Restaurant 3",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 4197,
+        "waste_reduction": 31,
+        "efficiency_gain": 14
+      }
+    },
+    "confidence": 0.9504031025536629,
+    "priority": "low",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-3-4",
+    "restaurant_id": "restaurant-3",
+    "recommendation_type": "staff_training",
+    "title": "STAFF TRAINING Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for staff training",
+      "details": "This is a detailed recommendation for improving staff training at Test Restaurant 3",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 4594,
+        "waste_reduction": 18,
+        "efficiency_gain": 28
+      }
+    },
+    "confidence": 0.6791353284335178,
+    "priority": "low",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-3-5",
+    "restaurant_id": "restaurant-3",
+    "recommendation_type": "supplier_optimization",
+    "title": "SUPPLIER OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for supplier optimization",
+      "details": "This is a detailed recommendation for improving supplier optimization at Test Restaurant 3",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 2654,
+        "waste_reduction": 11,
+        "efficiency_gain": 12
+      }
+    },
+    "confidence": 0.8966512276335243,
+    "priority": "medium",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-4-0",
+    "restaurant_id": "restaurant-4",
+    "recommendation_type": "waste_reduction",
+    "title": "WASTE REDUCTION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for waste reduction",
+      "details": "This is a detailed recommendation for improving waste reduction at Test Restaurant 4",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 5038,
+        "waste_reduction": 28,
+        "efficiency_gain": 8
+      }
+    },
+    "confidence": 0.992076518683005,
+    "priority": "medium",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-4-1",
+    "restaurant_id": "restaurant-4",
+    "recommendation_type": "menu_optimization",
+    "title": "MENU OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for menu optimization",
+      "details": "This is a detailed recommendation for improving menu optimization at Test Restaurant 4",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 1364,
+        "waste_reduction": 26,
+        "efficiency_gain": 22
+      }
+    },
+    "confidence": 0.705749541162867,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-4-2",
+    "restaurant_id": "restaurant-4",
+    "recommendation_type": "inventory_management",
+    "title": "INVENTORY MANAGEMENT Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for inventory management",
+      "details": "This is a detailed recommendation for improving inventory management at Test Restaurant 4",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 5080,
+        "waste_reduction": 35,
+        "efficiency_gain": 14
+      }
+    },
+    "confidence": 0.9499173317703254,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-4-3",
+    "restaurant_id": "restaurant-4",
+    "recommendation_type": "pricing_strategy",
+    "title": "PRICING STRATEGY Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for pricing strategy",
+      "details": "This is a detailed recommendation for improving pricing strategy at Test Restaurant 4",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 5422,
+        "waste_reduction": 39,
+        "efficiency_gain": 7
+      }
+    },
+    "confidence": 0.6997790682742218,
+    "priority": "low",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-4-4",
+    "restaurant_id": "restaurant-4",
+    "recommendation_type": "staff_training",
+    "title": "STAFF TRAINING Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for staff training",
+      "details": "This is a detailed recommendation for improving staff training at Test Restaurant 4",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 3333,
+        "waste_reduction": 38,
+        "efficiency_gain": 13
+      }
+    },
+    "confidence": 0.7044626978664559,
+    "priority": "low",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-4-5",
+    "restaurant_id": "restaurant-4",
+    "recommendation_type": "supplier_optimization",
+    "title": "SUPPLIER OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for supplier optimization",
+      "details": "This is a detailed recommendation for improving supplier optimization at Test Restaurant 4",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 4762,
+        "waste_reduction": 26,
+        "efficiency_gain": 28
+      }
+    },
+    "confidence": 0.8597047856559636,
+    "priority": "high",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-5-0",
+    "restaurant_id": "restaurant-5",
+    "recommendation_type": "waste_reduction",
+    "title": "WASTE REDUCTION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for waste reduction",
+      "details": "This is a detailed recommendation for improving waste reduction at Test Restaurant 5",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 2492,
+        "waste_reduction": 18,
+        "efficiency_gain": 27
+      }
+    },
+    "confidence": 0.9375135522301618,
+    "priority": "low",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-5-1",
+    "restaurant_id": "restaurant-5",
+    "recommendation_type": "menu_optimization",
+    "title": "MENU OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for menu optimization",
+      "details": "This is a detailed recommendation for improving menu optimization at Test Restaurant 5",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 5565,
+        "waste_reduction": 18,
+        "efficiency_gain": 10
+      }
+    },
+    "confidence": 0.9746157003389556,
+    "priority": "high",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-5-2",
+    "restaurant_id": "restaurant-5",
+    "recommendation_type": "inventory_management",
+    "title": "INVENTORY MANAGEMENT Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for inventory management",
+      "details": "This is a detailed recommendation for improving inventory management at Test Restaurant 5",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 2555,
+        "waste_reduction": 16,
+        "efficiency_gain": 13
+      }
+    },
+    "confidence": 0.8232742628072569,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-5-3",
+    "restaurant_id": "restaurant-5",
+    "recommendation_type": "pricing_strategy",
+    "title": "PRICING STRATEGY Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for pricing strategy",
+      "details": "This is a detailed recommendation for improving pricing strategy at Test Restaurant 5",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 2629,
+        "waste_reduction": 27,
+        "efficiency_gain": 23
+      }
+    },
+    "confidence": 0.7349525902219347,
+    "priority": "high",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-5-4",
+    "restaurant_id": "restaurant-5",
+    "recommendation_type": "staff_training",
+    "title": "STAFF TRAINING Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for staff training",
+      "details": "This is a detailed recommendation for improving staff training at Test Restaurant 5",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 3227,
+        "waste_reduction": 28,
+        "efficiency_gain": 26
+      }
+    },
+    "confidence": 0.9646500210539969,
+    "priority": "low",
+    "status": "completed",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  },
+  {
+    "id": "ai-rec-restaurant-5-5",
+    "restaurant_id": "restaurant-5",
+    "recommendation_type": "supplier_optimization",
+    "title": "SUPPLIER OPTIMIZATION Recommendation",
+    "content": {
+      "summary": "AI-generated recommendation for supplier optimization",
+      "details": "This is a detailed recommendation for improving supplier optimization at Test Restaurant 5",
+      "actions": [
+        "Implement waste tracking system",
+        "Optimize menu pricing",
+        "Train staff on waste reduction",
+        "Review supplier contracts"
+      ],
+      "expected_impact": {
+        "cost_savings": 1570,
+        "waste_reduction": 25,
+        "efficiency_gain": 22
+      }
+    },
+    "confidence": 0.7390882112408141,
+    "priority": "low",
+    "status": "in_progress",
+    "created_at": "2025-07-29T06:04:27.822Z"
+  }
+]
