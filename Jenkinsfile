@@ -29,20 +29,50 @@ pipeline {
         stage('Install Dependencies') {
             parallel {
                 stage('Frontend Dependencies') {
-                    agent { docker DOCKER_IMAGE }
+                    agent { 
+                        docker { 
+                            image DOCKER_IMAGE
+                            args '-u root -v npm-cache:/root/.npm'
+                        } 
+                    }
                     steps {
                         dir('frontend') {
                             echo '📦 Installing frontend dependencies...'
-                            sh 'npm ci --only=production'
+                            sh '''
+                                # Fix npm cache permissions
+                                npm config set cache /root/.npm
+                                npm cache clean --force
+                                
+                                # Install dependencies with proper cache handling
+                                npm ci --only=production --cache /root/.npm --prefer-offline
+                                
+                                # Verify installation
+                                npm list --depth=0 || echo "Dependencies installed with warnings"
+                            '''
                         }
                     }
                 }
                 stage('Backend Dependencies') {
-                    agent { docker DOCKER_IMAGE }
+                    agent { 
+                        docker { 
+                            image DOCKER_IMAGE
+                            args '-u root -v npm-cache:/root/.npm'
+                        } 
+                    }
                     steps {
                         dir('backend') {
                             echo '📦 Installing backend dependencies...'
-                            sh 'npm ci --only=production'
+                            sh '''
+                                # Fix npm cache permissions
+                                npm config set cache /root/.npm
+                                npm cache clean --force
+                                
+                                # Install dependencies with proper cache handling
+                                npm ci --only=production --cache /root/.npm --prefer-offline
+                                
+                                # Verify installation
+                                npm list --depth=0 || echo "Dependencies installed with warnings"
+                            '''
                         }
                     }
                 }
@@ -52,20 +82,42 @@ pipeline {
         stage('Lint and Test') {
             parallel {
                 stage('Frontend Lint') {
-                    agent { docker DOCKER_IMAGE }
+                    agent { 
+                        docker { 
+                            image DOCKER_IMAGE
+                            args '-u root -v npm-cache:/root/.npm'
+                        } 
+                    }
                     steps {
                         dir('frontend') {
                             echo '🔍 Linting frontend code...'
-                            sh 'npm run lint || echo "Linting completed with warnings"'
+                            sh '''
+                                # Fix npm cache permissions
+                                npm config set cache /root/.npm
+                                
+                                # Run linting with proper cache
+                                npm run lint || echo "Linting completed with warnings"
+                            '''
                         }
                     }
                 }
                 stage('Backend Lint') {
-                    agent { docker DOCKER_IMAGE }
+                    agent { 
+                        docker { 
+                            image DOCKER_IMAGE
+                            args '-u root -v npm-cache:/root/.npm'
+                        } 
+                    }
                     steps {
                         dir('backend') {
                             echo '🔍 Linting backend code...'
-                            sh 'npm run lint || echo "Linting completed with warnings"'
+                            sh '''
+                                # Fix npm cache permissions
+                                npm config set cache /root/.npm
+                                
+                                # Run linting with proper cache
+                                npm run lint || echo "Linting completed with warnings"
+                            '''
                         }
                     }
                 }
@@ -140,11 +192,9 @@ pipeline {
             steps {
                 script {
                     echo '🏥 Verifying deployment...'
-                    sh '''
-                        sleep 15
-                        ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health || exit 1"
-                        echo "✅ Deployment verification passed"
-                    '''
+                    sleep 15
+                    ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health || exit 1"
+                    echo "✅ Deployment verification passed"
                 }
             }
         }
@@ -157,8 +207,6 @@ pipeline {
                 echo "🌐 Application deployed at: http://sheerstechnologies.com/wastewise-30/"
                 echo "🔗 Container direct access: http://$REMOTE_HOST:8899"
                 echo "🏥 Health check: http://$REMOTE_HOST:8899/health"
-                echo "📊 Build Number: $BUILD_NUMBER"
-                echo "🐳 Image: $IMAGE_NAME:$TAG"
                 echo "📋 Docker Commands:"
                 echo "   - Check container: docker ps | grep $CONTAINER_NAME"
                 echo "   - View logs: docker logs $CONTAINER_NAME"
