@@ -6,7 +6,7 @@
     "email": "user0@testrestaurant 1.com",
     "role": "owner",
     "name": "User 0 Test Restaurant 1",
-    "phone": "+60-273-8719",
+    "phone": "+60-353-8328",
     "permissions": [
       "read",
       "write",
@@ -16,8 +16,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
   },
   {
     "id": "user-restaurant-1-1",
@@ -26,7 +26,7 @@
     "email": "user1@testrestaurant 1.com",
     "role": "manager",
     "name": "User 1 Test Restaurant 1",
-    "phone": "+60-290-9220",
+    "phone": "+60-177-4974",
     "permissions": [
       "read",
       "write",
@@ -34,8 +34,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
   },
   {
     "id": "user-restaurant-1-2",
@@ -44,14 +44,52 @@
     "email": "user2@testrestaurant 1.com",
     "role": "staff",
     "name": "User 2 Test Restaurant 1",
-    "phone": "+60-528-9983",
+    "phone": "+60-137-9183",
     "permissions": [
       "read",
       "write"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
+  },
+  {
+    "id": "user-restaurant-1-3",
+    "restaurant_id": "restaurant-1",
+    "username": "user3@testrestaurant 1.com",
+    "email": "user3@testrestaurant 1.com",
+    "role": "admin",
+    "name": "User 3 Test Restaurant 1",
+    "phone": "+60-150-2881",
+    "permissions": [
+      "read",
+      "write",
+      "delete",
+      "admin"
+    ],
+    "is_active": true,
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
+  },
+  {
+    "id": "user-restaurant-1-4",
+    "restaurant_id": "restaurant-1",
+    "username": "user4@testrestaurant 1.com",
+    "email": "user4@testrestaurant 1.com",
+    "role": "owner",
+    "name": "User 4 Test Restaurant 1",
+    "phone": "+60-699-3047",
+    "permissions": [
+      "read",
+      "write",
+      "delete",
+      "admin",
+      "analytics",
+      "reports"
+    ],
+    "is_active": true,
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
   },
   {
     "id": "user-restaurant-2-0",
@@ -60,7 +98,7 @@
     "email": "user0@testrestaurant 2.com",
     "role": "owner",
     "name": "User 0 Test Restaurant 2",
-    "phone": "+60-541-2759",
+    "phone": "+60-767-8176",
     "permissions": [
       "read",
       "write",
@@ -70,8 +108,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
   },
   {
     "id": "user-restaurant-2-1",
@@ -80,7 +118,7 @@
     "email": "user1@testrestaurant 2.com",
     "role": "manager",
     "name": "User 1 Test Restaurant 2",
-    "phone": "+60-732-4372",
+    "phone": "+60-101-1532",
     "permissions": [
       "read",
       "write",
@@ -88,8 +126,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
   },
   {
     "id": "user-restaurant-2-2",
@@ -98,14 +136,14 @@
     "email": "user2@testrestaurant 2.com",
     "role": "staff",
     "name": "User 2 Test Restaurant 2",
-    "phone": "+60-900-5685",
+    "phone": "+60-280-5876",
     "permissions": [
       "read",
       "write"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
   },
   {
     "id": "user-restaurant-2-3",
@@ -114,7 +152,7 @@
     "email": "user3@testrestaurant 2.com",
     "role": "admin",
     "name": "User 3 Test Restaurant 2",
-    "phone": "+60-168-1182",
+    "phone": "+60-540-1155",
     "permissions": [
       "read",
       "write",
@@ -122,8 +160,8 @@
       "admin"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.769Z",
+    "created_at": "2025-07-30T06:12:30.769Z"
   },
   {
     "id": "user-restaurant-3-0",
@@ -132,7 +170,7 @@
     "email": "user0@testrestaurant 3.com",
     "role": "owner",
     "name": "User 0 Test Restaurant 3",
-    "phone": "+60-662-7032",
+    "phone": "+60-211-3641",
     "permissions": [
       "read",
       "write",
@@ -142,8 +180,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-3-1",
@@ -152,7 +190,7 @@
     "email": "user1@testrestaurant 3.com",
     "role": "manager",
     "name": "User 1 Test Restaurant 3",
-    "phone": "+60-930-6912",
+    "phone": "+60-137-1788",
     "permissions": [
       "read",
       "write",
@@ -160,8 +198,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.822Z",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-3-2",
@@ -170,14 +208,32 @@
     "email": "user2@testrestaurant 3.com",
     "role": "staff",
     "name": "User 2 Test Restaurant 3",
-    "phone": "+60-781-4906",
+    "phone": "+60-539-7107",
     "permissions": [
       "read",
       "write"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
+  },
+  {
+    "id": "user-restaurant-3-3",
+    "restaurant_id": "restaurant-3",
+    "username": "user3@testrestaurant 3.com",
+    "email": "user3@testrestaurant 3.com",
+    "role": "admin",
+    "name": "User 3 Test Restaurant 3",
+    "phone": "+60-649-6460",
+    "permissions": [
+      "read",
+      "write",
+      "delete",
+      "admin"
+    ],
+    "is_active": true,
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-4-0",
@@ -186,7 +242,7 @@
     "email": "user0@testrestaurant 4.com",
     "role": "owner",
     "name": "User 0 Test Restaurant 4",
-    "phone": "+60-115-9746",
+    "phone": "+60-906-4681",
     "permissions": [
       "read",
       "write",
@@ -196,8 +252,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-4-1",
@@ -206,7 +262,7 @@
     "email": "user1@testrestaurant 4.com",
     "role": "manager",
     "name": "User 1 Test Restaurant 4",
-    "phone": "+60-748-2446",
+    "phone": "+60-296-1672",
     "permissions": [
       "read",
       "write",
@@ -214,8 +270,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-4-2",
@@ -224,32 +280,14 @@
     "email": "user2@testrestaurant 4.com",
     "role": "staff",
     "name": "User 2 Test Restaurant 4",
-    "phone": "+60-227-4249",
+    "phone": "+60-631-5059",
     "permissions": [
       "read",
       "write"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
-  },
-  {
-    "id": "user-restaurant-4-3",
-    "restaurant_id": "restaurant-4",
-    "username": "user3@testrestaurant 4.com",
-    "email": "user3@testrestaurant 4.com",
-    "role": "admin",
-    "name": "User 3 Test Restaurant 4",
-    "phone": "+60-694-6710",
-    "permissions": [
-      "read",
-      "write",
-      "delete",
-      "admin"
-    ],
-    "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-5-0",
@@ -258,7 +296,7 @@
     "email": "user0@testrestaurant 5.com",
     "role": "owner",
     "name": "User 0 Test Restaurant 5",
-    "phone": "+60-806-9189",
+    "phone": "+60-548-6705",
     "permissions": [
       "read",
       "write",
@@ -268,8 +306,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-5-1",
@@ -278,7 +316,7 @@
     "email": "user1@testrestaurant 5.com",
     "role": "manager",
     "name": "User 1 Test Restaurant 5",
-    "phone": "+60-345-8537",
+    "phone": "+60-951-9513",
     "permissions": [
       "read",
       "write",
@@ -286,8 +324,8 @@
       "reports"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-5-2",
@@ -296,14 +334,14 @@
     "email": "user2@testrestaurant 5.com",
     "role": "staff",
     "name": "User 2 Test Restaurant 5",
-    "phone": "+60-133-5252",
+    "phone": "+60-450-9248",
     "permissions": [
       "read",
       "write"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   },
   {
     "id": "user-restaurant-5-3",
@@ -312,7 +350,7 @@
     "email": "user3@testrestaurant 5.com",
     "role": "admin",
     "name": "User 3 Test Restaurant 5",
-    "phone": "+60-361-9875",
+    "phone": "+60-519-9992",
     "permissions": [
       "read",
       "write",
@@ -320,7 +358,7 @@
       "admin"
     ],
     "is_active": true,
-    "last_login": "2025-07-29T06:04:27.823Z",
-    "created_at": "2025-07-29T06:04:27.823Z"
+    "last_login": "2025-07-30T06:12:30.770Z",
+    "created_at": "2025-07-30T06:12:30.770Z"
   }
 ]

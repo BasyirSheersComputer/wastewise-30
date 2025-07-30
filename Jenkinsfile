@@ -169,10 +169,9 @@ pipeline {
                 
                 echo "🚀 Starting new container..."
                 docker run -d --name $CONTAINER_NAME \
-                  -p 8899:80 \
-                  -p 8843:443 \
+                  -p 8899:8899 \
                   --restart always \
-                  --health-cmd "curl -f http://localhost/ || exit 1" \
+                  --health-cmd "curl -f http://localhost:8899/ || exit 1" \
                   --health-interval=30s \
                   --health-timeout=10s \
                   --health-retries=3 \
@@ -230,6 +229,7 @@ pipeline {
         echo "✅ Pipeline completed successfully!"
         echo "🌐 Application deployed at: http://sheerstechnologies.com/wastewise-30/"
         echo "🔗 Container direct access: http://$REMOTE_HOST:8899"
+        echo "🏥 Health check: http://$REMOTE_HOST:8899/health"
         echo "📊 Build Number: $BUILD_NUMBER"
         echo "🐳 Image: $IMAGE_NAME:$TAG"
       }

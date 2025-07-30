@@ -14,15 +14,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 3326,
-        "waste_reduction": 26,
-        "efficiency_gain": 7
+        "cost_savings": 2536,
+        "waste_reduction": 18,
+        "efficiency_gain": 28
       }
     },
-    "confidence": 0.6901846369842433,
-    "priority": "medium",
+    "confidence": 0.8119994966974251,
+    "priority": "low",
     "status": "pending",
-    "created_at": "2025-07-29T06:04:27.821Z"
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-1-1",
@@ -39,15 +39,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 2768,
-        "waste_reduction": 18,
-        "efficiency_gain": 22
+        "cost_savings": 3520,
+        "waste_reduction": 39,
+        "efficiency_gain": 13
       }
     },
-    "confidence": 0.7444144100620997,
+    "confidence": 0.739860849137344,
     "priority": "low",
     "status": "pending",
-    "created_at": "2025-07-29T06:04:27.821Z"
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-1-2",
@@ -64,15 +64,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 2487,
-        "waste_reduction": 39,
-        "efficiency_gain": 22
+        "cost_savings": 2051,
+        "waste_reduction": 16,
+        "efficiency_gain": 8
       }
     },
-    "confidence": 0.9994391443503552,
-    "priority": "high",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.8773985414440801,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-1-3",
@@ -89,15 +89,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 1001,
-        "waste_reduction": 29,
-        "efficiency_gain": 10
+        "cost_savings": 1027,
+        "waste_reduction": 17,
+        "efficiency_gain": 8
       }
     },
-    "confidence": 0.9087867412603486,
+    "confidence": 0.8667029284525952,
     "priority": "high",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-1-4",
@@ -114,15 +114,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 5846,
-        "waste_reduction": 10,
-        "efficiency_gain": 20
+        "cost_savings": 1687,
+        "waste_reduction": 21,
+        "efficiency_gain": 28
       }
     },
-    "confidence": 0.9279990838212553,
-    "priority": "high",
-    "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.9805916189646706,
+    "priority": "low",
+    "status": "in_progress",
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-1-5",
@@ -139,15 +139,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 4162,
-        "waste_reduction": 12,
-        "efficiency_gain": 15
+        "cost_savings": 3903,
+        "waste_reduction": 13,
+        "efficiency_gain": 27
       }
     },
-    "confidence": 0.8378079689179881,
-    "priority": "high",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.8059802657247553,
+    "priority": "low",
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-2-0",
@@ -164,15 +164,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 1601,
-        "waste_reduction": 14,
-        "efficiency_gain": 5
+        "cost_savings": 2171,
+        "waste_reduction": 33,
+        "efficiency_gain": 20
       }
     },
-    "confidence": 0.7264133106434163,
+    "confidence": 0.6892436935731061,
     "priority": "low",
     "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-2-1",
@@ -189,15 +189,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 3465,
-        "waste_reduction": 39,
-        "efficiency_gain": 11
+        "cost_savings": 2152,
+        "waste_reduction": 25,
+        "efficiency_gain": 26
       }
     },
-    "confidence": 0.9153475966414353,
-    "priority": "medium",
-    "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.8153557402888247,
+    "priority": "low",
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-2-2",
@@ -214,15 +214,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 4328,
-        "waste_reduction": 25,
-        "efficiency_gain": 6
+        "cost_savings": 4145,
+        "waste_reduction": 37,
+        "efficiency_gain": 17
       }
     },
-    "confidence": 0.8964966153852019,
+    "confidence": 0.8294871899204566,
     "priority": "high",
     "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-2-3",
@@ -239,15 +239,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 1601,
-        "waste_reduction": 12,
-        "efficiency_gain": 8
+        "cost_savings": 5861,
+        "waste_reduction": 14,
+        "efficiency_gain": 11
       }
     },
-    "confidence": 0.7407865220193247,
-    "priority": "medium",
+    "confidence": 0.9064244177510574,
+    "priority": "high",
     "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-2-4",
@@ -264,15 +264,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 4610,
-        "waste_reduction": 16,
-        "efficiency_gain": 29
+        "cost_savings": 5195,
+        "waste_reduction": 34,
+        "efficiency_gain": 22
       }
     },
-    "confidence": 0.9688139978290449,
-    "priority": "low",
+    "confidence": 0.791860668285756,
+    "priority": "high",
     "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-2-5",
@@ -289,15 +289,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 3128,
-        "waste_reduction": 37,
-        "efficiency_gain": 23
+        "cost_savings": 1517,
+        "waste_reduction": 34,
+        "efficiency_gain": 5
       }
     },
-    "confidence": 0.9098430489032702,
-    "priority": "high",
-    "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.9728681668072303,
+    "priority": "low",
+    "status": "in_progress",
+    "created_at": "2025-07-30T06:12:30.766Z"
   },
   {
     "id": "ai-rec-restaurant-3-0",
@@ -314,15 +314,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 4515,
-        "waste_reduction": 24,
-        "efficiency_gain": 29
+        "cost_savings": 3653,
+        "waste_reduction": 23,
+        "efficiency_gain": 10
       }
     },
-    "confidence": 0.7239478202587944,
-    "priority": "high",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.7964309753334374,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-3-1",
@@ -339,15 +339,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 1466,
-        "waste_reduction": 18,
-        "efficiency_gain": 26
+        "cost_savings": 2547,
+        "waste_reduction": 17,
+        "efficiency_gain": 10
       }
     },
-    "confidence": 0.6701710973504815,
+    "confidence": 0.9312923137096691,
     "priority": "high",
-    "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "status": "completed",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-3-2",
@@ -364,15 +364,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 1660,
-        "waste_reduction": 35,
-        "efficiency_gain": 12
+        "cost_savings": 2009,
+        "waste_reduction": 10,
+        "efficiency_gain": 11
       }
     },
-    "confidence": 0.9601141850120496,
-    "priority": "high",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.8535371889043843,
+    "priority": "medium",
+    "status": "completed",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-3-3",
@@ -389,15 +389,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 4197,
-        "waste_reduction": 31,
-        "efficiency_gain": 14
+        "cost_savings": 2833,
+        "waste_reduction": 26,
+        "efficiency_gain": 25
       }
     },
-    "confidence": 0.9504031025536629,
+    "confidence": 0.8918978855436308,
     "priority": "low",
-    "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-3-4",
@@ -414,15 +414,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 4594,
-        "waste_reduction": 18,
+        "cost_savings": 3507,
+        "waste_reduction": 28,
         "efficiency_gain": 28
       }
     },
-    "confidence": 0.6791353284335178,
+    "confidence": 0.7731364648989777,
     "priority": "low",
     "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-3-5",
@@ -439,15 +439,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 2654,
-        "waste_reduction": 11,
-        "efficiency_gain": 12
+        "cost_savings": 4211,
+        "waste_reduction": 25,
+        "efficiency_gain": 16
       }
     },
-    "confidence": 0.8966512276335243,
+    "confidence": 0.8100992832285226,
     "priority": "medium",
-    "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "status": "in_progress",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-4-0",
@@ -464,15 +464,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 5038,
-        "waste_reduction": 28,
-        "efficiency_gain": 8
+        "cost_savings": 2805,
+        "waste_reduction": 31,
+        "efficiency_gain": 11
       }
     },
-    "confidence": 0.992076518683005,
+    "confidence": 0.6097443504941948,
     "priority": "medium",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "status": "completed",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-4-1",
@@ -489,15 +489,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 1364,
-        "waste_reduction": 26,
-        "efficiency_gain": 22
+        "cost_savings": 4320,
+        "waste_reduction": 13,
+        "efficiency_gain": 14
       }
     },
-    "confidence": 0.705749541162867,
-    "priority": "high",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.9124355611994515,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-4-2",
@@ -514,15 +514,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 5080,
-        "waste_reduction": 35,
-        "efficiency_gain": 14
+        "cost_savings": 3873,
+        "waste_reduction": 33,
+        "efficiency_gain": 29
       }
     },
-    "confidence": 0.9499173317703254,
-    "priority": "medium",
-    "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.8700774926152661,
+    "priority": "low",
+    "status": "completed",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-4-3",
@@ -539,15 +539,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 5422,
-        "waste_reduction": 39,
-        "efficiency_gain": 7
+        "cost_savings": 4768,
+        "waste_reduction": 13,
+        "efficiency_gain": 13
       }
     },
-    "confidence": 0.6997790682742218,
-    "priority": "low",
+    "confidence": 0.8865809410598611,
+    "priority": "high",
     "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-4-4",
@@ -564,15 +564,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 3333,
-        "waste_reduction": 38,
-        "efficiency_gain": 13
+        "cost_savings": 4977,
+        "waste_reduction": 14,
+        "efficiency_gain": 18
       }
     },
-    "confidence": 0.7044626978664559,
+    "confidence": 0.7788700940176486,
     "priority": "low",
-    "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "status": "in_progress",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-4-5",
@@ -589,15 +589,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 4762,
-        "waste_reduction": 26,
-        "efficiency_gain": 28
+        "cost_savings": 4185,
+        "waste_reduction": 15,
+        "efficiency_gain": 22
       }
     },
-    "confidence": 0.8597047856559636,
-    "priority": "high",
+    "confidence": 0.8927235827470208,
+    "priority": "low",
     "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-5-0",
@@ -614,15 +614,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 2492,
-        "waste_reduction": 18,
-        "efficiency_gain": 27
+        "cost_savings": 3133,
+        "waste_reduction": 22,
+        "efficiency_gain": 5
       }
     },
-    "confidence": 0.9375135522301618,
+    "confidence": 0.8759956188190583,
     "priority": "low",
-    "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-5-1",
@@ -639,15 +639,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 5565,
-        "waste_reduction": 18,
-        "efficiency_gain": 10
+        "cost_savings": 2074,
+        "waste_reduction": 39,
+        "efficiency_gain": 24
       }
     },
-    "confidence": 0.9746157003389556,
-    "priority": "high",
+    "confidence": 0.8532376942626461,
+    "priority": "low",
     "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-5-2",
@@ -664,15 +664,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 2555,
-        "waste_reduction": 16,
-        "efficiency_gain": 13
+        "cost_savings": 3845,
+        "waste_reduction": 17,
+        "efficiency_gain": 20
       }
     },
-    "confidence": 0.8232742628072569,
-    "priority": "medium",
-    "status": "pending",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.8268090898894791,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-5-3",
@@ -689,15 +689,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 2629,
-        "waste_reduction": 27,
-        "efficiency_gain": 23
+        "cost_savings": 3735,
+        "waste_reduction": 12,
+        "efficiency_gain": 7
       }
     },
-    "confidence": 0.7349525902219347,
-    "priority": "high",
-    "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.726330149915753,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-5-4",
@@ -714,15 +714,15 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 3227,
-        "waste_reduction": 28,
-        "efficiency_gain": 26
+        "cost_savings": 4963,
+        "waste_reduction": 23,
+        "efficiency_gain": 14
       }
     },
-    "confidence": 0.9646500210539969,
-    "priority": "low",
-    "status": "completed",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.9619929453943328,
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-07-30T06:12:30.767Z"
   },
   {
     "id": "ai-rec-restaurant-5-5",
@@ -739,14 +739,14 @@
         "Review supplier contracts"
       ],
       "expected_impact": {
-        "cost_savings": 1570,
-        "waste_reduction": 25,
-        "efficiency_gain": 22
+        "cost_savings": 5862,
+        "waste_reduction": 13,
+        "efficiency_gain": 18
       }
     },
-    "confidence": 0.7390882112408141,
-    "priority": "low",
-    "status": "in_progress",
-    "created_at": "2025-07-29T06:04:27.822Z"
+    "confidence": 0.9595585595599312,
+    "priority": "medium",
+    "status": "pending",
+    "created_at": "2025-07-30T06:12:30.767Z"
   }
 ]

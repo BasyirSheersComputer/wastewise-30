@@ -34,7 +34,7 @@ COPY --from=backend-build /app/backend /app/backend
 # Install Node.js (for backend)
 RUN apk add --no-cache nodejs npm
 
-# Create nginx configuration
+# Create nginx configuration for /wastewise-30/ path structure
 RUN echo 'events { worker_connections 1024; }' > /etc/nginx/nginx.conf && \
     echo 'http {' >> /etc/nginx/nginx.conf && \
     echo '  include /etc/nginx/mime.types;' >> /etc/nginx/nginx.conf && \
@@ -42,13 +42,15 @@ RUN echo 'events { worker_connections 1024; }' > /etc/nginx/nginx.conf && \
     echo '  sendfile on;' >> /etc/nginx/nginx.conf && \
     echo '  keepalive_timeout 65;' >> /etc/nginx/nginx.conf && \
     echo '  server {' >> /etc/nginx/nginx.conf && \
-    echo '    listen 80;' >> /etc/nginx/nginx.conf && \
+    echo '    listen 8899;' >> /etc/nginx/nginx.conf && \
     echo '    server_name localhost;' >> /etc/nginx/nginx.conf && \
     echo '    root /usr/share/nginx/html;' >> /etc/nginx/nginx.conf && \
     echo '    index index.html;' >> /etc/nginx/nginx.conf && \
+    echo '    # Handle SPA routing for /wastewise-30/ path' >> /etc/nginx/nginx.conf && \
     echo '    location / {' >> /etc/nginx/nginx.conf && \
     echo '      try_files $uri $uri/ /index.html;' >> /etc/nginx/nginx.conf && \
     echo '    }' >> /etc/nginx/nginx.conf && \
+    echo '    # API routes' >> /etc/nginx/nginx.conf && \
     echo '    location /api {' >> /etc/nginx/nginx.conf && \
     echo '      proxy_pass http://localhost:3000;' >> /etc/nginx/nginx.conf && \
     echo '      proxy_http_version 1.1;' >> /etc/nginx/nginx.conf && \
@@ -60,6 +62,19 @@ RUN echo 'events { worker_connections 1024; }' > /etc/nginx/nginx.conf && \
     echo '      proxy_set_header X-Forwarded-Proto $scheme;' >> /etc/nginx/nginx.conf && \
     echo '      proxy_cache_bypass $http_upgrade;' >> /etc/nginx/nginx.conf && \
     echo '    }' >> /etc/nginx/nginx.conf && \
+    echo '    # Health check endpoint' >> /etc/nginx/nginx.conf && \
+    echo '    location /health {' >> /etc/nginx/nginx.conf && \
+    echo '      proxy_pass http://localhost:3000/health;' >> /etc/nginx/nginx.conf && \
+    echo '      proxy_set_header Host $host;' >> /etc/nginx/nginx.conf && \
+    echo '      proxy_set_header X-Real-IP $remote_addr;' >> /etc/nginx/nginx.conf && \
+    echo '      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' >> /etc/nginx/nginx.conf && \
+    echo '      proxy_set_header X-Forwarded-Proto $scheme;' >> /etc/nginx/nginx.conf && \
+    echo '    }' >> /etc/nginx/nginx.conf && \
+    echo '    # Static assets' >> /etc/nginx/nginx.conf && \
+    echo '    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {' >> /etc/nginx/nginx.conf && \
+    echo '      expires 1y;' >> /etc/nginx/nginx.conf && \
+    echo '      add_header Cache-Control "public, immutable";' >> /etc/nginx/nginx.conf && \
+    echo '    }' >> /etc/nginx/nginx.conf && \
     echo '  }' >> /etc/nginx/nginx.conf && \
     echo '}' >> /etc/nginx/nginx.conf
 
@@ -70,8 +85,8 @@ RUN echo '#!/bin/sh' > /start.sh && \
     echo 'nginx -g "daemon off;"' >> /start.sh && \
     chmod +x /start.sh
 
-# Expose port 80
-EXPOSE 80
+# Expose port 8899 (as specified in your Nginx config)
+EXPOSE 8899
 
 # Start both backend and nginx
 CMD ["/start.sh"]
