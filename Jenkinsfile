@@ -1,12 +1,12 @@
 pipeline {
     agent any
-    
     environment {
         IMAGE_NAME = 'basyir/wastewise-30'
         TAG = 'latest'
         CONTAINER_NAME = 'wastewise-30'
         REMOTE_HOST = '192.168.20.215'
         DOCKER_IMAGE = 'node:20-alpine'
+        COMPOSE_FILE = 'docker-compose.yml'
     }
     
     stages {
@@ -19,7 +19,11 @@ pipeline {
                         test -d backend
                         test -f frontend/package.json
                         test -f backend/package.json
-                        test -f Dockerfile
+                        test -f docker-compose.yml
+                        test -f Dockerfile.frontend
+                        test -f Dockerfile.backend
+                        test -f nginx.conf
+                        test -f nginx-frontend.conf
                         echo "✅ Project structure validation passed"
                     '''
                 }
@@ -124,77 +128,134 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
+        stage('Build Multi-Container Images') {
             steps {
                 script {
-                    echo '🐳 Building Docker image...'
-                    sh 'docker build -t $IMAGE_NAME:$TAG .'
-                    echo '✅ Docker image built successfully'
-                }
-            }
-        }
-        
-        stage('Test Docker Image') {
-            steps {
-                script {
-                    echo '🧪 Testing Docker image...'
+                    echo '🐳 Building multi-container images...'
                     sh '''
-                        docker run -d --name test-wastewise -p 8899:8899 $IMAGE_NAME:$TAG
-                        sleep 10
-                        curl -f http://localhost:8899/ || exit 1
-                        echo "✅ Docker image test passed"
+                        # Build frontend image
+                        docker build -f Dockerfile.frontend -t $IMAGE_NAME:frontend-$TAG .
+                        
+                        # Build backend image
+                        docker build -f Dockerfile.backend -t $IMAGE_NAME:backend-$TAG .
+                        
+                        # Tag images
+                        docker tag $IMAGE_NAME:frontend-$TAG $IMAGE_NAME:frontend-latest
+                        docker tag $IMAGE_NAME:backend-$TAG $IMAGE_NAME:backend-latest
+                        
+                        echo "✅ Multi-container images built successfully"
                     '''
                 }
             }
         }
         
-        stage('Push to DockerHub') {
+        stage('Test Multi-Container Setup') {
             steps {
                 script {
-                    echo '📤 Pushing to DockerHub...'
+                    echo '🧪 Testing multi-container setup...'
+                    sh '''
+                        # Create .env file for testing
+                        echo "NODE_ENV=production" > .env
+                        echo "PORT=3001" >> .env
+                        echo "DATABASE_URL=postgresql://test:test@localhost:5432/test" >> .env
+                        echo "JWT_SECRET=test-secret" >> .env
+                        echo "SUPABASE_URL=https://test.supabase.co" >> .env
+                        echo "SUPABASE_KEY=test-key" >> .env
+                        echo "STRIPE_SECRET_KEY=sk_test_test" >> .env
+                        echo "GOOGLE_API_KEY=test-key" >> .env
+                        
+                        # Start services
+                        docker-compose -f $COMPOSE_FILE up -d
+                        
+                        # Wait for services to be ready
+                        sleep 30
+                        
+                        # Test health endpoints
+                        curl -f http://localhost:3000/health || exit 1
+                        curl -f http://localhost:3001/health || exit 1
+                        curl -f http://localhost:8899/health || exit 1
+                        
+                        echo "✅ Multi-container test passed"
+                        
+                        # Stop services
+                        docker-compose -f $COMPOSE_FILE down
+                    '''
+                }
+            }
+        }
+        
+        stage('Push Images to DockerHub') {
+            steps {
+                script {
+                    echo '📤 Pushing images to DockerHub...'
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh '''
                             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-                            docker push $IMAGE_NAME:$TAG
+                            docker push $IMAGE_NAME:frontend-$TAG
+                            docker push $IMAGE_NAME:frontend-latest
+                            docker push $IMAGE_NAME:backend-$TAG
+                            docker push $IMAGE_NAME:backend-latest
                         '''
                     }
-                    echo '✅ Image pushed to DockerHub'
+                    echo '✅ Images pushed to DockerHub'
                 }
             }
         }
         
-        stage('Deploy with Docker') {
+        stage('Deploy Multi-Container Setup') {
             steps {
                 script {
-                    echo '🚀 Deploying with Docker...'
+                    echo '🚀 Deploying multi-container setup...'
                     sshagent(['jenkins-ssh-key']) {
                         sh '''
-                            # Pull latest image
-                            ssh root@$REMOTE_HOST "docker pull $IMAGE_NAME:$TAG"
+                            # Pull latest images
+                            ssh root@$REMOTE_HOST "docker pull $IMAGE_NAME:frontend-latest"
+                            ssh root@$REMOTE_HOST "docker pull $IMAGE_NAME:backend-latest"
                             
-                            # Stop and remove existing container
-                            ssh root@$REMOTE_HOST "docker stop $CONTAINER_NAME || true"
-                            ssh root@$REMOTE_HOST "docker rm $CONTAINER_NAME || true"
+                            # Stop existing containers
+                            ssh root@$REMOTE_HOST "docker-compose -f $COMPOSE_FILE down --remove-orphans || true"
                             
-                            # Deploy new container with Docker
-                            ssh root@$REMOTE_HOST "docker run -d --name $CONTAINER_NAME -p 8899:8899 --restart always --health-cmd 'curl -f http://localhost:8899/ || exit 1' --health-interval=30s --health-timeout=10s --health-retries=3 $IMAGE_NAME:$TAG"
+                            # Copy compose file and configs
+                            scp docker-compose.yml root@$REMOTE_HOST:/root/
+                            scp nginx.conf root@$REMOTE_HOST:/root/
+                            scp nginx-frontend.conf root@$REMOTE_HOST:/root/
                             
-                            # Wait for container to be healthy
-                            ssh root@$REMOTE_HOST "timeout 60 bash -c 'until docker inspect $CONTAINER_NAME --format=\"{{.State.Health.Status}}\" | grep -q healthy; do sleep 2; done' || echo 'Container started but health check pending'"
+                            # Create .env file on remote
+                            ssh root@$REMOTE_HOST "cat > .env << 'EOF'
+NODE_ENV=production
+PORT=3001
+DATABASE_URL=postgresql://username:password@localhost:5432/wastewise
+JWT_SECRET=your-super-secret-jwt-key-here
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your-supabase-anon-key
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+GOOGLE_API_KEY=your-google-api-key
+EOF"
+                            
+                            # Start services
+                            ssh root@$REMOTE_HOST "docker-compose -f $COMPOSE_FILE up -d"
+                            
+                            # Wait for services to be ready
+                            ssh root@$REMOTE_HOST "sleep 30"
+                            
+                            # Verify deployment
+                            ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health || exit 1"
                         '''
                     }
-                    echo '✅ Application deployed with Docker'
+                    echo '✅ Multi-container deployment completed'
                 }
             }
         }
         
-        stage('Verify Deployment') {
+        stage('Verify Multi-Container Deployment') {
             steps {
                 script {
-                    echo '🏥 Verifying deployment...'
+                    echo '🏥 Verifying multi-container deployment...'
                     sleep 15
                     ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health || exit 1"
-                    echo "✅ Deployment verification passed"
+                    ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health/frontend || exit 1"
+                    ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health/backend || exit 1"
+                    echo "✅ Multi-container deployment verification passed"
                 }
             }
         }
@@ -204,14 +265,16 @@ pipeline {
         success {
             script {
                 echo '✅ Pipeline completed successfully!'
-                echo "🌐 Application deployed at: http://sheerstechnologies.com/wastewise-30/"
-                echo "🔗 Container direct access: http://$REMOTE_HOST:8899"
-                echo "🏥 Health check: http://$REMOTE_HOST:8899/health"
-                echo "📋 Docker Commands:"
-                echo "   - Check container: docker ps | grep $CONTAINER_NAME"
-                echo "   - View logs: docker logs $CONTAINER_NAME"
-                echo "   - Restart: docker restart $CONTAINER_NAME"
-                echo "   - Stop: docker stop $CONTAINER_NAME"
+                echo "🌐 Multi-container application deployed:"
+                echo "   - Frontend: http://$REMOTE_HOST:3000"
+                echo "   - Backend API: http://$REMOTE_HOST:3001"
+                echo "   - Nginx Proxy: http://$REMOTE_HOST:8899"
+                echo "   - Health Check: http://$REMOTE_HOST:8899/health"
+                echo "📋 Docker Compose Commands:"
+                echo "   - View logs: docker-compose -f $COMPOSE_FILE logs -f"
+                echo "   - Stop services: docker-compose -f $COMPOSE_FILE down"
+                echo "   - Restart services: docker-compose -f $COMPOSE_FILE restart"
+                echo "   - Scale backend: docker-compose -f $COMPOSE_FILE up -d --scale backend=2"
             }
         }
         failure {
@@ -219,17 +282,16 @@ pipeline {
                 echo '❌ Pipeline failed!'
                 echo '🔍 Check the logs above for details'
                 echo '🐳 Docker troubleshooting:'
-                echo '   - Check container status: docker ps -a'
-                echo '   - View container logs: docker logs $CONTAINER_NAME'
-                echo '   - Check image: docker images | grep $IMAGE_NAME'
+                echo '   - Check containers: docker-compose -f $COMPOSE_FILE ps'
+                echo '   - View logs: docker-compose -f $COMPOSE_FILE logs'
+                echo '   - Check images: docker images | grep $IMAGE_NAME'
             }
         }
         always {
             script {
                 echo '🧹 Cleaning up workspace...'
                 sh '''
-                    docker stop test-wastewise || true
-                    docker rm test-wastewise || true
+                    docker-compose -f $COMPOSE_FILE down --remove-orphans || true
                     docker image prune -f
                 '''
             }

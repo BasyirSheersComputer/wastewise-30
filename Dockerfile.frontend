@@ -1,0 +1,92 @@
+# Multi-stage build for frontend
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY frontend/package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy frontend source code
+COPY frontend/ ./
+
+# Build the application
+RUN npm run build
+
+# Production stage
+FROM nginx:alpine AS production
+
+# Install Node.js for serving the app
+RUN apk add --no-cache nodejs npm
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# Copy built frontend assets
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy custom nginx configuration for frontend
+COPY nginx-frontend.conf /etc/nginx/nginx.conf
+
+# Set proper ownership
+RUN chown -R nodejs:nodejs /usr/share/nginx/html && \
+    chown -R nodejs:nodejs /var/cache/nginx && \
+    chown -R nodejs:nodejs /var/log/nginx && \
+    chown -R nodejs:nodejs /etc/nginx/conf.d && \
+    touch /var/run/nginx.pid && \
+    chown -R nodejs:nodejs /var/run/nginx.pid
+
+# Create startup script
+RUN cat > /start.sh << 'EOF'
+#!/bin/sh
+set -e
+
+# Function to handle graceful shutdown
+cleanup() {
+    echo "🛑 Shutting down frontend gracefully..."
+    kill -TERM $NGINX_PID 2>/dev/null || true
+    wait $NGINX_PID 2>/dev/null || true
+    echo "✅ Frontend shutdown complete"
+    exit 0
+}
+
+# Set up signal handlers
+trap cleanup TERM INT
+
+# Start Nginx
+echo "🌐 Starting frontend server..."
+nginx -g "daemon off;" &
+NGINX_PID=$!
+
+# Wait for processes
+wait $NGINX_PID
+EOF
+
+# Make startup script executable
+RUN chmod +x /start.sh
+
+# Create health check script
+RUN cat > /healthcheck.sh << 'EOF'
+#!/bin/sh
+# Health check for the frontend container
+curl -f http://localhost:3000 >/dev/null 2>&1 || exit 1
+EOF
+
+RUN chmod +x /healthcheck.sh
+
+# Expose port
+EXPOSE 3000
+
+# Set health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD /healthcheck.sh
+
+# Use non-root user for security
+USER nodejs
+
+# Start the application
+CMD ["/start.sh"] 
