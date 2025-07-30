@@ -111,31 +111,39 @@ pipeline {
             }
         }
         
-        stage('Deploy to Production') {
+        stage('Deploy with Docker') {
             steps {
                 script {
-                    echo '🚀 Deploying to production...'
+                    echo '🚀 Deploying with Docker...'
                     sshagent(['jenkins-ssh-key']) {
                         sh '''
+                            # Pull latest image
                             ssh root@$REMOTE_HOST "docker pull $IMAGE_NAME:$TAG"
+                            
+                            # Stop and remove existing container
                             ssh root@$REMOTE_HOST "docker stop $CONTAINER_NAME || true"
                             ssh root@$REMOTE_HOST "docker rm $CONTAINER_NAME || true"
+                            
+                            # Deploy new container with Docker
                             ssh root@$REMOTE_HOST "docker run -d --name $CONTAINER_NAME -p 8899:8899 --restart always --health-cmd 'curl -f http://localhost:8899/ || exit 1' --health-interval=30s --health-timeout=10s --health-retries=3 $IMAGE_NAME:$TAG"
+                            
+                            # Wait for container to be healthy
+                            ssh root@$REMOTE_HOST "timeout 60 bash -c 'until docker inspect $CONTAINER_NAME --format=\"{{.State.Health.Status}}\" | grep -q healthy; do sleep 2; done' || echo 'Container started but health check pending'"
                         '''
                     }
-                    echo '✅ Application deployed successfully'
+                    echo '✅ Application deployed with Docker'
                 }
             }
         }
         
-        stage('Health Check') {
+        stage('Verify Deployment') {
             steps {
                 script {
-                    echo '🏥 Running health checks...'
+                    echo '🏥 Verifying deployment...'
                     sh '''
                         sleep 15
                         ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health || exit 1"
-                        echo "✅ Health check passed"
+                        echo "✅ Deployment verification passed"
                     '''
                 }
             }
@@ -151,12 +159,21 @@ pipeline {
                 echo "🏥 Health check: http://$REMOTE_HOST:8899/health"
                 echo "📊 Build Number: $BUILD_NUMBER"
                 echo "🐳 Image: $IMAGE_NAME:$TAG"
+                echo "📋 Docker Commands:"
+                echo "   - Check container: docker ps | grep $CONTAINER_NAME"
+                echo "   - View logs: docker logs $CONTAINER_NAME"
+                echo "   - Restart: docker restart $CONTAINER_NAME"
+                echo "   - Stop: docker stop $CONTAINER_NAME"
             }
         }
         failure {
             script {
                 echo '❌ Pipeline failed!'
                 echo '🔍 Check the logs above for details'
+                echo '🐳 Docker troubleshooting:'
+                echo '   - Check container status: docker ps -a'
+                echo '   - View container logs: docker logs $CONTAINER_NAME'
+                echo '   - Check image: docker images | grep $IMAGE_NAME'
             }
         }
         always {
