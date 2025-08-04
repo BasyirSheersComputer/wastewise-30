@@ -1,0 +1,16 @@
+# Base image
+FROM node:16
+
+# Set workdir
+WORKDIR /app
+
+# Install dependencies
+COPY backend/package*.json ./
+RUN npm install
+
+# Copy backend source
+COPY backend .
+
+# Assume your backend starts with: npm run start
+EXPOSE 3000
+CMD ["npm", "run", "start"]

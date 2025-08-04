@@ -1,0 +1,20 @@
+# Stage 1: Build the Vite frontend
+FROM node:16 AS build
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Serve on port 8899
+EXPOSE 8899
+
+# Override default Nginx config to listen on 8899
+RUN sed -i 's/80;/8899;/g' /etc/nginx/conf.d/default.conf
+
+CMD ["nginx", "-g", "daemon off;"]
