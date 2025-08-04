@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { subscribeToAnalytics } from '../../services/llmService';
-import { Lightbulb, Clock, AlertTriangle, CheckCircle, Database, Zap } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { getSectionRecommendations } from '../../services/llmService';
+import { Lightbulb, Clock, AlertTriangle, CheckCircle, Database, Zap, RefreshCw } from 'lucide-react';
 
 interface LLMRecommendationsProps {
   section?: string;
@@ -22,26 +22,75 @@ const LLMRecommendations: React.FC<LLMRecommendationsProps> = ({ section = 'dash
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [provider, setProvider] = useState<string>('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [quotaMessage, setQuotaMessage] = useState<string | null>(null);
+  const hasInitialized = useRef(false);
 
+  // Load recommendations on first access (trigger-based)
   useEffect(() => {
-    setLoading(true);
-    const unsubscribe = subscribeToAnalytics(
-      (data: AnalyticsData) => {
-        setRecommendations(data.recommendations || '');
-        setAnalytics(data.analytics);
-        setProvider(data.provider);
-        setLastUpdated(new Date(data.timestamp));
-        setLoading(false);
-        setError(null);
-      },
-      (err) => {
-        setError('Failed to connect to analytics stream.');
-        setLoading(false);
-      },
-      section
-    );
-    return unsubscribe;
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
+      loadRecommendations();
+    }
   }, [section]);
+
+  const loadRecommendations = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      setQuotaMessage(null);
+      
+      const data = await getSectionRecommendations(section);
+      
+      setRecommendations(data.recommendations || '');
+      setAnalytics(data.analytics);
+      setProvider(data.provider);
+      setLastUpdated(new Date(data.timestamp));
+      
+      // Handle quota exceeded and fallback messages
+      if (data.quotaExceeded) {
+        setQuotaMessage(`Quota exceeded for ${data.originalProvider || 'AI provider'}. Using fallback provider: ${data.provider}`);
+      } else if (data.fallbackUsed) {
+        setQuotaMessage(`Switched to ${data.provider} due to quota limits on ${data.originalProvider}`);
+      } else if (data.fallbackFailed) {
+        setQuotaMessage('All AI providers have reached quota limits. Using default recommendations.');
+      }
+      
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load recommendations.');
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    try {
+      setIsRefreshing(true);
+      setError(null);
+      setQuotaMessage(null);
+      
+      const data = await getSectionRecommendations(section, 'auto');
+      
+      setRecommendations(data.recommendations || '');
+      setAnalytics(data.analytics);
+      setProvider(data.provider);
+      setLastUpdated(new Date(data.timestamp));
+      
+      // Handle quota exceeded and fallback messages
+      if (data.quotaExceeded) {
+        setQuotaMessage(`Quota exceeded for ${data.originalProvider || 'AI provider'}. Using fallback provider: ${data.provider}`);
+      } else if (data.fallbackUsed) {
+        setQuotaMessage(`Switched to ${data.provider} due to quota limits on ${data.originalProvider}`);
+      } else if (data.fallbackFailed) {
+        setQuotaMessage('All AI providers have reached quota limits. Using default recommendations.');
+      }
+      
+      setIsRefreshing(false);
+    } catch (err) {
+      setError('Failed to refresh recommendations.');
+      setIsRefreshing(false);
+    }
+  };
 
   const getRecommendationIcon = (recommendation: string) => {
     if (recommendation.includes('🚨') || recommendation.includes('⚠️')) {
@@ -87,6 +136,14 @@ const LLMRecommendations: React.FC<LLMRecommendationsProps> = ({ section = 'dash
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900">AI Recommendations</h3>
           <div className="flex items-center space-x-2">
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center space-x-1 text-xs text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span>{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
+            </button>
             {provider && (
               <div className="flex items-center space-x-1 text-xs text-gray-500">
                 {getProviderIcon()}
@@ -115,6 +172,15 @@ const LLMRecommendations: React.FC<LLMRecommendationsProps> = ({ section = 'dash
             <div className="flex items-center space-x-2">
               <AlertTriangle className="w-4 h-4 text-red-600" />
               <span className="text-red-800 text-sm">{error}</span>
+            </div>
+          </div>
+        )}
+        
+        {quotaMessage && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2">
+              <AlertTriangle className="w-4 h-4 text-blue-600" />
+              <span className="text-blue-800 text-sm">{quotaMessage}</span>
             </div>
           </div>
         )}

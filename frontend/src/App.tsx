@@ -6,6 +6,7 @@ import {
   Link,
   useLocation,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import {
   BarChart3,
@@ -19,6 +20,10 @@ import {
   Menu,
   X,
   CreditCard,
+  Coffee,
+  Calculator,
+  Target,
+  Settings,
 } from "lucide-react";
 import Dashboard from "./components/UI/Dashboard";
 import InventoryManager from "./components/UI/InventoryManager";
@@ -39,10 +44,13 @@ import TrialEnded from "./components/Auth/TrialEnded";
 
 import { supabase } from "./supabaseClient";
 import { useEffect } from "react";
+import UserSettings from "./components/UI/UserSettings";
+import IdleWarning from "./components/UI/IdleWarning";
+import useIdleLogout from "./hooks/useIdleLogout";
 
 const navigationItems = [
-  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
-  { id: "inventory", label: "Inventory", icon: Package },
+  { id: "dashboard", label: "Operational Intelligence", icon: BarChart3 },
+  { id: "inventory", label: "Recipe & Inventory", icon: Package },
   { id: "forecasting", label: "Demand Forecasting", icon: TrendingUp },
   { id: "waste", label: "Waste Tracking", icon: Trash2 },
   { id: "suppliers", label: "Suppliers", icon: Truck },
@@ -50,6 +58,7 @@ const navigationItems = [
   { id: "staff", label: "Staff Training", icon: Users },
   { id: "reports", label: "Reports & Compliance", icon: FileText },
   { id: "subscription", label: "My Subscription", icon: CreditCard },
+  { id: "settings", label: "Settings", icon: Settings },
 ];
 
 function LoadingSpinner() {
@@ -69,8 +78,10 @@ function Sidebar({
   setSidebarOpen: (v: boolean) => void;
 }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [session, setSession] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
+  const { extendSession } = useIdleLogout();
   
   React.useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -89,7 +100,20 @@ function Sidebar({
   }, []);
   
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+      // Redirect to login page after successful logout
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still redirect to login even if there's an error
+      navigate('/login');
+    }
+  };
+
+  const handleNavClick = () => {
+    setSidebarOpen(false);
+    extendSession(); // Reset idle timer on navigation
   };
   
   return (
@@ -118,7 +142,7 @@ function Sidebar({
             <Link
               key={item.id}
               to={to}
-              onClick={() => setSidebarOpen(false)}
+              onClick={handleNavClick}
               className={`glass-nav-item w-full ${isActive ? "active" : ""}`}
             >
               <Icon size={18} className="mr-md" />
@@ -161,7 +185,7 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
   }
   
   if (!session) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
   
   return <>{children}</>;
@@ -169,6 +193,7 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const { isIdle, timeUntilLogout, extendSession } = useIdleLogout();
   
   return (
     <div className="min-h-screen bg-background flex">
@@ -206,31 +231,20 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* Idle Warning */}
+      {isIdle && timeUntilLogout && (
+        <IdleWarning
+          timeUntilLogout={timeUntilLogout}
+          onExtendSession={extendSession}
+          onDismiss={() => {}} // Dismiss functionality can be added later
+        />
+      )}
     </div>
   );
 }
 
-function useAutoLogout(timeoutMs: number = 30 * 60 * 1000) {
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    const resetTimer = () => {
-      clearTimeout(timer);
-      timer = setTimeout(async () => {
-        await supabase.auth.signOut();
-      }, timeoutMs);
-    };
-    const events = ["mousemove", "keydown", "mousedown", "touchstart"];
-    events.forEach((event) => window.addEventListener(event, resetTimer));
-    resetTimer();
-    return () => {
-      clearTimeout(timer);
-      events.forEach((event) => window.removeEventListener(event, resetTimer));
-    };
-  }, [timeoutMs]);
-}
-
 function App() {
-  useAutoLogout();
 
   return (
     <Router>
@@ -340,6 +354,16 @@ function App() {
             <RequireAuth>
               <AuthenticatedLayout>
                 <ReportsCompliance />
+              </AuthenticatedLayout>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <RequireAuth>
+              <AuthenticatedLayout>
+                <UserSettings />
               </AuthenticatedLayout>
             </RequireAuth>
           }

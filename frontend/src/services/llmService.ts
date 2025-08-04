@@ -9,50 +9,8 @@ interface AnalyticsData {
   error?: string;
 }
 
-interface RecommendationResponse {
-  section: string;
-  analytics: any;
-  recommendations: string;
-  timestamp: string;
-  provider: string;
-  error?: string;
-}
-
 /**
- * Subscribe to real-time analytics stream with database-driven recommendations
- * @param onData Callback for successful data
- * @param onError Callback for errors
- * @param section The section to get recommendations for
- * @returns Unsubscribe function
- */
-export function subscribeToAnalytics(
-  onData: (data: AnalyticsData) => void,
-  onError: (error: any) => void,
-  section: string
-) {
-  const eventSource = new EventSource(`http://localhost:3000/stream/analytics?section=${section}`);
-  
-  eventSource.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      onData(data);
-    } catch (error) {
-      onError(error);
-    }
-  };
-  
-  eventSource.onerror = (error) => {
-    onError(error);
-  };
-  
-  // Return unsubscribe function
-  return () => {
-    eventSource.close();
-  };
-}
-
-/**
- * Get recommendations for a specific section
+ * Get recommendations for a specific section (trigger-based, not continuous)
  * @param section The section to get recommendations for
  * @param provider AI provider to use ('auto', 'gemini', 'chatgpt')
  * @returns Promise with recommendation data
@@ -60,7 +18,7 @@ export function subscribeToAnalytics(
 export async function getSectionRecommendations(
   section: string, 
   provider: 'auto' | 'gemini' | 'chatgpt' = 'auto'
-): Promise<RecommendationResponse> {
+): Promise<AnalyticsData> {
   try {
     const response = await fetch(
       `http://localhost:3000/api/recommendations/${section}?provider=${provider}`
@@ -84,6 +42,8 @@ export async function getSectionRecommendations(
   }
 }
 
+
+
 /**
  * Get recommendations for multiple sections
  * @param sections Array of sections to get recommendations for
@@ -93,7 +53,7 @@ export async function getSectionRecommendations(
 export async function getMultiSectionRecommendations(
   sections: string[],
   provider: 'auto' | 'gemini' | 'chatgpt' = 'auto'
-): Promise<RecommendationResponse[]> {
+): Promise<AnalyticsData[]> {
   try {
     const sectionsParam = sections.join(',');
     const response = await fetch(
