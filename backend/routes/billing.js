@@ -364,7 +364,7 @@ router.post('/payment-intent', async (req, res) => {
 // Stripe webhook handler - DISABLED
 // router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
 //   const sig = req.headers['stripe-signature'];
-//   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+//   // const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET; // DISABLED - Stripe webhook functionality disabled
 
 //   let event;
 

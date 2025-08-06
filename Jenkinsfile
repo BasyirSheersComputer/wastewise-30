@@ -65,12 +65,12 @@ pipeline {
           withCredentials([
             string(credentialsId: 'wastewise-supabase-url', variable: 'VITE_SUPABASE_URL'),
             string(credentialsId: 'wastewise-supabase-anon-key', variable: 'VITE_SUPABASE_ANON_KEY'),
-            string(credentialsId: 'stripe-secret-key', variable: 'STRIPE_SECRET_KEY'),
-            string(credentialsId: 'stripe-publishable-key', variable: 'STRIPE_PUBLISHABLE_KEY'),
-            string(credentialsId: 'stripe-webhook-secret', variable: 'STRIPE_WEBHOOK_SECRET'),
-            string(credentialsId: 'stripe-price-basic', variable: 'STRIPE_PRICE_BASIC'),
-            string(credentialsId: 'stripe-price-pro', variable: 'STRIPE_PRICE_PRO'),
-            string(credentialsId: 'stripe-price-enterprise', variable: 'STRIPE_PRICE_ENTERPRISE'),
+                    string(credentialsId: 'stripe-secret-key', variable: 'STRIPE_SECRET_KEY'),
+        string(credentialsId: 'stripe-publishable-key', variable: 'STRIPE_PUBLISHABLE_KEY'),
+        // string(credentialsId: 'stripe-webhook-secret', variable: 'STRIPE_WEBHOOK_SECRET'), // DISABLED - Stripe webhook functionality disabled
+        string(credentialsId: 'stripe-price-basic', variable: 'STRIPE_PRICE_BASIC'),
+        string(credentialsId: 'stripe-price-pro', variable: 'STRIPE_PRICE_PRO'),
+        string(credentialsId: 'stripe-price-enterprise', variable: 'STRIPE_PRICE_ENTERPRISE'),
             string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
             string(credentialsId: 'openai-api-key', variable: 'OPENAI_API_KEY'),
             string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET'),
@@ -106,12 +106,12 @@ pipeline {
                 docker run -d --name $BACKEND_CONTAINER \\
                   -p 3000:3000 \\
                   --restart always \\
-                  -e STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \\
-                  -e STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \\
-                  -e STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \\
-                  -e STRIPE_PRICE_BASIC="$STRIPE_PRICE_BASIC" \\
-                  -e STRIPE_PRICE_PRO="$STRIPE_PRICE_PRO" \\
-                  -e STRIPE_PRICE_ENTERPRISE="$STRIPE_PRICE_ENTERPRISE" \\
+                          -e STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \\
+        -e STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \\
+        // -e STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \\ // DISABLED - Stripe webhook functionality disabled
+        -e STRIPE_PRICE_BASIC="$STRIPE_PRICE_BASIC" \\
+        -e STRIPE_PRICE_PRO="$STRIPE_PRICE_PRO" \\
+        -e STRIPE_PRICE_ENTERPRISE="$STRIPE_PRICE_ENTERPRISE" \\
                   -e GEMINI_API_KEY="$GEMINI_API_KEY" \\
                   -e OPENAI_API_KEY="$OPENAI_API_KEY" \\
                   -e JWT_SECRET="$JWT_SECRET" \\

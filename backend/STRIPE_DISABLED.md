@@ -25,12 +25,17 @@ The following Stripe webhook functionality has been disabled to simplify the app
 ### 4. Environment Variables (`env.example`)
 - **Disabled**: `STRIPE_SECRET_KEY`
 - **Disabled**: `STRIPE_PUBLISHABLE_KEY` 
-- **Disabled**: `STRIPE_WEBHOOK_SECRET`
+- **Disabled**: `STRIPE_WEBHOOK_SECRET` (completely removed)
 - **Disabled**: `STRIPE_PRICE_BASIC`
 - **Disabled**: `STRIPE_PRICE_PRO`
 - **Disabled**: `STRIPE_PRICE_ENTERPRISE`
 - **Disabled**: `PAYMENT_PROCESSING_ENABLED` (set to false)
 - **Status**: All variables commented out
+
+### 5. CI/CD Configuration (`Jenkinsfile`)
+- **Disabled**: `stripe-webhook-secret` credential reference
+- **Disabled**: `STRIPE_WEBHOOK_SECRET` environment variable in Docker deployment
+- **Status**: Commented out with explanatory comments
 
 ## ✅ What Remains Active
 
@@ -75,7 +80,7 @@ To re-enable Stripe webhook functionality:
 # In .env file, uncomment and set:
 STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-STRIPE_WEBHOOK_SECRET=your_webhook_secret
+STRIPE_WEBHOOK_SECRET=your_webhook_secret  # Also uncomment in Jenkinsfile
 STRIPE_PRICE_BASIC=price_basic_monthly
 STRIPE_PRICE_PRO=price_pro_monthly
 STRIPE_PRICE_ENTERPRISE=price_enterprise_monthly
