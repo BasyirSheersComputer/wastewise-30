@@ -95,14 +95,17 @@ pipeline {
                 docker rm $BACKEND_CONTAINER || true
 
                 docker run -d --name $FRONTEND_CONTAINER \\
-                  -p 8899:8899 \\
+                  -p 127.0.0.1:8899:8899 \\
                   --restart always \\
                   -e VITE_SUPABASE_URL="$VITE_SUPABASE_URL" \\
                   -e VITE_SUPABASE_ANON_KEY="$VITE_SUPABASE_ANON_KEY" \\
+                  -e VITE_STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \\
+                  -e VITE_FRONTEND_URL="https://sheerstechnologies.com/wastewise-30" \\
+                  -e VITE_BACKEND_URL="https://sheerstechnologies.com/wastewise-30/api" \\
                   $IMAGE_NAME-frontend:$TAG
 
                 docker run -d --name $BACKEND_CONTAINER \\
-                  -p 3000:3000 \\
+                  -p 127.0.0.1:3000:3000 \\
                   --restart always \\
                   -e STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \\
                   -e STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \\
@@ -120,9 +123,9 @@ pipeline {
                   -e DATABASE_URL="$DATABASE_URL" \\
                   -e NODE_ENV="development" \\
                   -e PORT="3000" \\
-                  -e FRONTEND_URL="http://localhost:5173" \\
+                  -e FRONTEND_URL="https://sheerstechnologies.com/wastewise-30" \\
                   -e LOG_LEVEL="info" \\
-                  -e CORS_ORIGIN="http://localhost:5173" \\
+                  -e CORS_ORIGIN="https://sheerstechnologies.com" \\
                   -e RATE_LIMIT_WINDOW_MS="900000" \\
                   -e RATE_LIMIT_MAX_REQUESTS="100" \\
                   -e FPX_BANKS_ENABLED="true" \\
@@ -131,7 +134,7 @@ pipeline {
                   -e TRIAL_DURATION_DAYS="30" \\
                   -e TRIAL_EXTENSION_DAYS="7" \\
                   -e AI_RECOMMENDATIONS_ENABLED="true" \\
-                  -e PAYMENT_PROCESSING_ENABLED="true" \\
+                  -e PAYMENT_PROCESSING_ENABLED="false" \\
                   -e EMAIL_NOTIFICATIONS_ENABLED="true" \\
                   -e SMS_NOTIFICATIONS_ENABLED="false" \\
                   $IMAGE_NAME-backend:$TAG
