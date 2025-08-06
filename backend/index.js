@@ -49,6 +49,86 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Database connection test endpoint
+app.get('/api/test-db', async (req, res) => {
+  try {
+    // Test 1: Basic connection by checking if we can connect to Supabase
+    const { data: connectionTest, error: connectionError } = await supabase
+      .from('_supabase_migrations')
+      .select('*')
+      .limit(1);
+    
+    // Test 2: Check if we can perform a simple query (this should work even if tables don't exist)
+    const { data: rpcTest, error: rpcError } = await supabase
+      .rpc('version');
+    
+    // Test 3: Check authentication service
+    const { data: authTest, error: authError } = await supabase.auth.getSession();
+    
+    // Test 4: Try to get schema information
+    let schemaInfo = null;
+    try {
+      const { data: schemaData, error: schemaError } = await supabase
+        .from('information_schema.tables')
+        .select('table_name')
+        .eq('table_schema', 'public')
+        .limit(5);
+      
+      if (!schemaError) {
+        schemaInfo = schemaData;
+      }
+    } catch (schemaErr) {
+      // Schema query might not be available with anon key
+    }
+    
+    const tests = {
+      connection: !connectionError,
+      rpc: !rpcError,
+      auth: !authError,
+      schema: schemaInfo !== null
+    };
+    
+    const passedTests = Object.values(tests).filter(Boolean).length;
+    const totalTests = Object.keys(tests).length;
+    
+    res.json({
+      status: passedTests === totalTests ? 'success' : 'partial',
+      message: passedTests === totalTests ? 'Database connection successful' : 'Database connection partially working',
+      connection: {
+        url: process.env.VITE_SUPABASE_URL ? 'configured' : 'missing',
+        key: process.env.VITE_SUPABASE_ANON_KEY ? 'configured' : 'missing'
+      },
+      tests: {
+        basic_connection: tests.connection,
+        rpc_functions: tests.rpc,
+        auth_service: tests.auth,
+        schema_access: tests.schema
+      },
+      details: {
+        connection_error: connectionError?.message || null,
+        rpc_error: rpcError?.message || null,
+        auth_error: authError?.message || null,
+        available_tables: schemaInfo?.map(t => t.table_name) || []
+      },
+      summary: {
+        passed: passedTests,
+        total: totalTests,
+        percentage: Math.round((passedTests / totalTests) * 100)
+      },
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    logger.apiError('GET', '/api/test-db', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Database connection test failed',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', authenticateUser, userRoutes);
