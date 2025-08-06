@@ -3,21 +3,22 @@ pipeline {
 
   environment {
     // Docker image base name
-    IMAGE_NAME = 'basyir/wastewise-30'
-    TAG = "${env.BUILD_NUMBER}"
+    IMAGE_NAME       = 'basyir/wastewise-30'
+    TAG              = "${env.BUILD_NUMBER}"
 
     // Credentials & deployment
-    SSH_CRED_ID = 'vm-ssh-key'
-    DOCKER_CRED_ID = 'dockerhub-creds'
-    REMOTE_HOST = '192.168.20.215'
-    REMOTE_USER = 'basyir'
+    SSH_CRED_ID      = 'vm-ssh-key'
+    DOCKER_CRED_ID   = 'dockerhub-creds'
+    REMOTE_HOST      = '192.168.20.215'
+    REMOTE_USER      = 'basyir'
 
     // Container names
     FRONTEND_CONTAINER = 'wastewise-frontend'
-    BACKEND_CONTAINER = 'wastewise-backend'
+    BACKEND_CONTAINER  = 'wastewise-backend'
   }
 
   stages {
+
     stage('Checkout Source') {
       steps {
         git url: 'https://github.com/BasyirSheersComputer/wastewise-30.git', branch: 'main'
@@ -65,19 +66,19 @@ pipeline {
           withCredentials([
             string(credentialsId: 'wastewise-supabase-url', variable: 'VITE_SUPABASE_URL'),
             string(credentialsId: 'wastewise-supabase-anon-key', variable: 'VITE_SUPABASE_ANON_KEY'),
-                    string(credentialsId: 'stripe-secret-key', variable: 'STRIPE_SECRET_KEY'),
-        string(credentialsId: 'stripe-publishable-key', variable: 'STRIPE_PUBLISHABLE_KEY'),
-        // string(credentialsId: 'stripe-webhook-secret', variable: 'STRIPE_WEBHOOK_SECRET'), // DISABLED - Stripe webhook functionality disabled
-        string(credentialsId: 'stripe-price-basic', variable: 'STRIPE_PRICE_BASIC'),
-        string(credentialsId: 'stripe-price-pro', variable: 'STRIPE_PRICE_PRO'),
-        string(credentialsId: 'stripe-price-enterprise', variable: 'STRIPE_PRICE_ENTERPRISE'),
+            string(credentialsId: 'stripe-secret-key', variable: 'STRIPE_SECRET_KEY'),
+            string(credentialsId: 'stripe-publishable-key', variable: 'STRIPE_PUBLISHABLE_KEY'),
+            // string(credentialsId: 'stripe-webhook-secret', variable: 'STRIPE_WEBHOOK_SECRET'), // ❌ DISABLED: Stripe webhook
+            string(credentialsId: 'stripe-price-basic', variable: 'STRIPE_PRICE_BASIC'),
+            string(credentialsId: 'stripe-price-pro', variable: 'STRIPE_PRICE_PRO'),
+            string(credentialsId: 'stripe-price-enterprise', variable: 'STRIPE_PRICE_ENTERPRISE'),
             string(credentialsId: 'gemini-api-key', variable: 'GEMINI_API_KEY'),
             string(credentialsId: 'openai-api-key', variable: 'OPENAI_API_KEY'),
             string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET'),
             string(credentialsId: 'smtp-user', variable: 'SMTP_USER'),
             string(credentialsId: 'smtp-pass', variable: 'SMTP_PASS'),
-            string(credentialsId: 'google-client-id', variable: 'GOOGLE_CLIENT_ID'),
-            string(credentialsId: 'google-client-secret', variable: 'GOOGLE_CLIENT_SECRET'),
+            //string(credentialsId: 'google-client-id', variable: 'GOOGLE_CLIENT_ID'),
+            //string(credentialsId: 'google-client-secret', variable: 'GOOGLE_CLIENT_SECRET'),
             string(credentialsId: 'twilio-sid', variable: 'TWILIO_ACCOUNT_SID'),
             string(credentialsId: 'twilio-token', variable: 'TWILIO_AUTH_TOKEN'),
             string(credentialsId: 'twilio-phone', variable: 'TWILIO_PHONE_NUMBER'),
@@ -106,12 +107,12 @@ pipeline {
                 docker run -d --name $BACKEND_CONTAINER \\
                   -p 3000:3000 \\
                   --restart always \\
-                          -e STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \\
-        -e STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \\
-        // -e STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \\ // DISABLED - Stripe webhook functionality disabled
-        -e STRIPE_PRICE_BASIC="$STRIPE_PRICE_BASIC" \\
-        -e STRIPE_PRICE_PRO="$STRIPE_PRICE_PRO" \\
-        -e STRIPE_PRICE_ENTERPRISE="$STRIPE_PRICE_ENTERPRISE" \\
+                  -e STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \\
+                  -e STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \\
+                  # -e STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \\
+                  -e STRIPE_PRICE_BASIC="$STRIPE_PRICE_BASIC" \\
+                  -e STRIPE_PRICE_PRO="$STRIPE_PRICE_PRO" \\
+                  -e STRIPE_PRICE_ENTERPRISE="$STRIPE_PRICE_ENTERPRISE" \\
                   -e GEMINI_API_KEY="$GEMINI_API_KEY" \\
                   -e OPENAI_API_KEY="$OPENAI_API_KEY" \\
                   -e JWT_SECRET="$JWT_SECRET" \\
