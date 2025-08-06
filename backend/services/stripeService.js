@@ -1,11 +1,16 @@
-import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import { DateTime } from 'luxon';
 import logger from '../utils/logger.js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-06-20',
-});
+// Stripe is temporarily disabled - using mock implementation
+// import Stripe from 'stripe';
+let stripe = {
+  customers: { create: () => Promise.resolve({ id: 'mock_customer_id' }) },
+  subscriptions: { create: () => Promise.resolve({ id: 'mock_subscription_id' }) },
+  paymentIntents: { create: () => Promise.resolve({ id: 'mock_payment_intent_id' }) },
+  webhooks: { constructEvent: () => ({ type: 'mock_event' }) }
+};
+logger.warn('Stripe package disabled - using mock implementation');
 
 const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
 
