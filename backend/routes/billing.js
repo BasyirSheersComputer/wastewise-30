@@ -361,28 +361,28 @@ router.post('/payment-intent', async (req, res) => {
   }
 });
 
-// Stripe webhook handler
-router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+// Stripe webhook handler - DISABLED
+// router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+//   const sig = req.headers['stripe-signature'];
+//   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-  let event;
+//   let event;
 
-  try {
-    event = stripeService.stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-  } catch (err) {
-    logger.error('Webhook signature verification failed', err);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+//   try {
+//     event = stripeService.stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+//   } catch (err) {
+//     logger.error('Webhook signature verification failed', err);
+//     return res.status(400).send(`Webhook Error: ${err.message}`);
+//   }
 
-  try {
-    await stripeService.handleWebhook(event);
-    res.json({ received: true });
-  } catch (error) {
-    logger.error('Error handling webhook', error);
-    res.status(500).json({ error: 'Webhook handler failed' });
-  }
-});
+//   try {
+//     await stripeService.handleWebhook(event);
+//     res.json({ received: true });
+//   } catch (error) {
+//     logger.error('Error handling webhook', error);
+//     res.status(500).json({ error: 'Webhook handler failed' });
+//   }
+// });
 
 // Get customer portal URL
 router.post('/customer-portal', async (req, res) => {

@@ -192,176 +192,179 @@ class StripeService {
     return bankNames[bankId] || bankId;
   }
 
-  // Handle webhook events
-  async handleWebhook(event) {
-    try {
-      switch (event.type) {
-        case 'customer.subscription.created':
-          await this.handleSubscriptionCreated(event.data.object);
-          break;
-        case 'customer.subscription.updated':
-          await this.handleSubscriptionUpdated(event.data.object);
-          break;
-        case 'customer.subscription.deleted':
-          await this.handleSubscriptionDeleted(event.data.object);
-          break;
-        case 'invoice.payment_succeeded':
-          await this.handlePaymentSucceeded(event.data.object);
-          break;
-        case 'invoice.payment_failed':
-          await this.handlePaymentFailed(event.data.object);
-          break;
-        default:
-          logger.info('Unhandled webhook event', { type: event.type });
-      }
-    } catch (error) {
-      logger.error('Error handling webhook', error);
-      throw error;
-    }
-  }
+  // Handle webhook events - DISABLED
+  // async handleWebhook(event) {
+  //   try {
+  //     switch (event.type) {
+  //       case 'customer.subscription.created':
+  //       await this.handleSubscriptionCreated(event.data.object);
+  //       break;
+  //       case 'customer.subscription.updated':
+  //       await this.handleSubscriptionUpdated(event.data.object);
+  //       break;
+  //       case 'customer.subscription.deleted':
+  //       await this.handleSubscriptionDeleted(event.data.object);
+  //       break;
+  //       case 'invoice.payment_succeeded':
+  //       await this.handlePaymentSucceeded(event.data.object);
+  //       break;
+  //       case 'invoice.payment_failed':
+  //       await this.handlePaymentFailed(event.data.object);
+  //       break;
+  //       default:
+  //       logger.info('Unhandled webhook event', { type: event.type });
+  //     }
+  //   } catch (error) {
+  //     logger.error('Error handling webhook', error);
+  //     throw error;
+  //   }
+  // }
 
-  // Handle subscription created
-  async handleSubscriptionCreated(subscription) {
-    try {
-      const customerId = subscription.customer;
-      
-      // Get user by Stripe customer ID
-      const { data: user, error } = await this.supabase
-        .from('users')
-        .select('*')
-        .eq('stripe_customer_id', customerId)
-        .single();
+  // Handle subscription created - DISABLED
+  // async handleSubscriptionCreated(subscription) {
+  //   try {
+  //     const customerId = subscription.customer;
+  //     
+  //     // Get user by Stripe customer ID
+  //     const { data: user, error } = await this.supabase
+  //       .from('users')
+  //       .select('*')
+  //       .eq('stripe_customer_id', customerId)
+  //       .single();
 
-      if (error || !user) {
-        logger.error('User not found for subscription', { customer_id: customerId });
-        return;
-      }
+  //     if (error || !user) {
+  //       logger.error('User not found for subscription', { customer_id: customerId });
+  //       return;
+  //     }
 
-      // Update user subscription status
-      await this.supabase
-        .from('users')
-        .update({
-          subscription_status: 'active',
-          subscription_plan: this.getPlanFromPriceId(subscription.items.data[0].price.id),
-          stripe_subscription_id: subscription.id,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
+  //     // Update user subscription status
+  //     await this.supabase
+  //       .from('users')
+  //       .update({
+  //       subscription_status: 'active',
+  //       subscription_plan: this.getPlanFromPriceId(subscription.items.data[0].price.id),
+  //       stripe_subscription_id: subscription.id,
+  //       updated_at: new Date().toISOString()
+  //     })
+  //     .eq('id', user.id);
 
-      logger.info('Subscription created and user updated', { 
-        user_id: user.id, 
-        subscription_id: subscription.id 
-      });
-    } catch (error) {
-      logger.error('Error handling subscription created', error);
-    }
-  }
+  //     logger.info('Subscription created and user updated', { 
+  //       user_id: user.id, 
+  //       subscription_id: subscription.id 
+  //     });
+  //   } catch (error) {
+  //     logger.error('Error handling subscription created', error);
+  //   }
+  // }
 
-  // Handle subscription updated
-  async handleSubscriptionUpdated(subscription) {
-    try {
-      const { data: user, error } = await this.supabase
-        .from('users')
-        .select('*')
-        .eq('stripe_subscription_id', subscription.id)
-        .single();
+  // Handle subscription updated - DISABLED
+  // async handleSubscriptionUpdated(subscription) {
+  //   try {
+  //     const { data: user, error } = await this.supabase
+  //     .from('users')
+  //     .select('*')
+  //     .eq('stripe_subscription_id', subscription.id)
+  //     .single();
 
-      if (error || !user) {
-        logger.error('User not found for subscription update', { subscription_id: subscription.id });
-        return;
-      }
+  //     if (error || !user) {
+  //     logger.error('User not found for subscription update', { subscription_id: subscription.id });
+  //     return;
+  //     }
 
-      const status = subscription.status;
-      const plan = this.getPlanFromPriceId(subscription.items.data[0].price.id);
+  //     const status = subscription.status;
+  //     const plan = this.getPlanFromPriceId(subscription.items.data[0].price.id);
 
-      await this.supabase
-        .from('users')
-        .update({
-          subscription_status: status,
-          subscription_plan: plan,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
+  //     await this.supabase
+  //     .from('users')
+  //     .update({
+  //     subscription_status: status,
+  //     subscription_plan: plan,
+  //     updated_at: new Date().toISOString()
+  //     })
+  //     .eq('id', user.id);
 
-      logger.info('Subscription updated', { 
-        user_id: user.id, 
-        status, 
-        plan 
-      });
-    } catch (error) {
-      logger.error('Error handling subscription updated', error);
-    }
-  }
+  //     logger.info('Subscription updated', { 
+  //     user_id: user.id, 
+  //     status, 
+  //     plan 
+  //     });
+  //   } catch (error) {
+  //     logger.error('Error handling subscription updated', error);
+  //   }
+  // }
 
-  // Handle subscription deleted
-  async handleSubscriptionDeleted(subscription) {
-    try {
-      const { data: user, error } = await this.supabase
-        .from('users')
-        .select('*')
-        .eq('stripe_subscription_id', subscription.id)
-        .single();
+  // Handle subscription deleted - DISABLED
+  // async handleSubscriptionDeleted(subscription) {
+  //   try {
+  //     const { data: user, error } = await this.supabase
+  //     .from('users')
+  //     .select('*')
+  //     .eq('stripe_subscription_id', subscription.id)
+  //     .single();
 
-      if (error || !user) {
-        logger.error('User not found for subscription deletion', { subscription_id: subscription.id });
-        return;
-      }
+  //     if (error || !user) {
+  //     logger.error('User not found for subscription deletion', { subscription_id: subscription.id });
+  //     return;
+  //     }
 
-      await this.supabase
-        .from('users')
-        .update({
-          subscription_status: 'cancelled',
-          subscription_plan: 'free',
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
+  //     await this.supabase
+  //     .from('users')
+  //     .update({
+  //     subscription_status: 'cancelled',
+  //     subscription_plan: 'free',
+  //     updated_at: new Date().toISOString()
+  //     })
+  //     .eq('id', user.id);
 
-      logger.info('Subscription cancelled', { user_id: user.id });
-    } catch (error) {
-      logger.error('Error handling subscription deleted', error);
-    }
-  }
+  //     logger.info('Subscription cancelled', { user_id: user.id });
+  //   } catch (error) {
+  //     logger.error('Error handling subscription deleted', error);
+  //   }
+  // }
 
-  // Handle payment succeeded
-  async handlePaymentSucceeded(invoice) {
-    try {
-      logger.info('Payment succeeded', { 
-        invoice_id: invoice.id, 
-        customer_id: invoice.customer 
-      });
-    } catch (error) {
-      logger.error('Error handling payment succeeded', error);
-    }
-  }
+  // Handle payment succeeded - DISABLED
+  // async handlePaymentSucceeded(invoice) {
+  //   try {
+  //     logger.info('Payment succeeded', { 
+  //     invoice_id: invoice.id, 
+  //     customer_id: invoice.customer 
+  //     });
+  //   } catch (error) {
+  //     logger.error('Error handling payment succeeded', error);
+  //   }
+  // }
 
-  // Handle payment failed
-  async handlePaymentFailed(invoice) {
-    try {
-      const { data: user, error } = await this.supabase
-        .from('users')
-        .select('*')
-        .eq('stripe_customer_id', invoice.customer)
-        .single();
+  // Handle payment failed - DISABLED
+  // async handlePaymentFailed(invoice) {
+  //   try {
+  //     const { data: user, error } = await this.supabase
+  //     .from('users')
+  //     .select('*')
+  //     .eq('stripe_customer_id', invoice.customer)
+  //     .single();
 
-      if (error || !user) {
-        logger.error('User not found for payment failure', { customer_id: invoice.customer });
-        return;
-      }
+  //     if (error || !user) {
+  //     logger.error('User not found for payment failure', { customer_id: invoice.customer });
+  //     return;
+  //     if (error || !user) {
+  //     logger.error('User not found for payment failure', { customer_id: invoice.customer });
+  //     return;
+  //     }
 
-      // Update user status to past_due
-      await this.supabase
-        .from('users')
-        .update({
-          subscription_status: 'past_due',
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
+  //     // Update user status to past_due
+  //     await this.supabase
+  //     .from('users')
+  //     .update({
+  //     subscription_status: 'past_due',
+  //     updated_at: new Date().toISOString()
+  //     })
+  //     .eq('id', user.id);
 
-      logger.info('Payment failed, user status updated', { user_id: user.id });
-    } catch (error) {
-      logger.error('Error handling payment failed', error);
-    }
-  }
+  //     logger.info('Payment failed, user status updated', { user_id: user.id });
+  //   } catch (error) {
+  //     logger.error('Error handling payment failed', error);
+  //   }
+  // }
 
   // Get plan from Stripe price ID
   getPlanFromPriceId(priceId) {
