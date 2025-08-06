@@ -68,6 +68,7 @@ pipeline {
             string(credentialsId: 'wastewise-supabase-anon-key', variable: 'VITE_SUPABASE_ANON_KEY'),
             string(credentialsId: 'stripe-secret-key', variable: 'STRIPE_SECRET_KEY'),
             string(credentialsId: 'stripe-publishable-key', variable: 'STRIPE_PUBLISHABLE_KEY'),
+            // string(credentialsId: 'stripe-webhook-secret', variable: 'STRIPE_WEBHOOK_SECRET'), // ❌ DISABLED: Stripe webhook
             string(credentialsId: 'stripe-price-basic', variable: 'STRIPE_PRICE_BASIC'),
             string(credentialsId: 'stripe-price-pro', variable: 'STRIPE_PRICE_PRO'),
             string(credentialsId: 'stripe-price-enterprise', variable: 'STRIPE_PRICE_ENTERPRISE'),
@@ -76,6 +77,8 @@ pipeline {
             string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET'),
             string(credentialsId: 'smtp-user', variable: 'SMTP_USER'),
             string(credentialsId: 'smtp-pass', variable: 'SMTP_PASS'),
+            //string(credentialsId: 'google-client-id', variable: 'GOOGLE_CLIENT_ID'),
+            //string(credentialsId: 'google-client-secret', variable: 'GOOGLE_CLIENT_SECRET'),
             string(credentialsId: 'twilio-sid', variable: 'TWILIO_ACCOUNT_SID'),
             string(credentialsId: 'twilio-token', variable: 'TWILIO_AUTH_TOKEN'),
             string(credentialsId: 'twilio-phone', variable: 'TWILIO_PHONE_NUMBER'),
@@ -106,6 +109,7 @@ pipeline {
                   --restart always \\
                   -e STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \\
                   -e STRIPE_PUBLISHABLE_KEY="$STRIPE_PUBLISHABLE_KEY" \\
+                  # -e STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \\
                   -e STRIPE_PRICE_BASIC="$STRIPE_PRICE_BASIC" \\
                   -e STRIPE_PRICE_PRO="$STRIPE_PRICE_PRO" \\
                   -e STRIPE_PRICE_ENTERPRISE="$STRIPE_PRICE_ENTERPRISE" \\
@@ -114,6 +118,8 @@ pipeline {
                   -e JWT_SECRET="$JWT_SECRET" \\
                   -e SMTP_USER="$SMTP_USER" \\
                   -e SMTP_PASS="$SMTP_PASS" \\
+                  -e GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" \\
+                  -e GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET" \\
                   -e TWILIO_ACCOUNT_SID="$TWILIO_ACCOUNT_SID" \\
                   -e TWILIO_AUTH_TOKEN="$TWILIO_AUTH_TOKEN" \\
                   -e TWILIO_PHONE_NUMBER="$TWILIO_PHONE_NUMBER" \\
