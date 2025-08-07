@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  wastewise-frontend:
+    image: basyir/wastewise-30-frontend:latest
+    container_name: wastewise-frontend
+    restart: always
+    ports:
+      # Map the container port 8899 to the host's localhost port 8899,
+      # as expected by your Nginx config.
+      - "127.0.0.1:8899:8899"
+    environment:
+      # These variables must be passed by Jenkins to the host, or be present in a .env file
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+      - VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY}
+      - VITE_FRONTEND_URL=https://sheerstechnologies.com/wastewise-30
+      # The frontend now talks to the backend using its service name "wastewise-backend"
+      - VITE_BACKEND_URL=http://wastewise-backend:3000
+    depends_on:
+      - wastewise-backend
+
+  wastewise-backend:
+    image: basyir/wastewise-30-backend:latest
+    container_name: wastewise-backend
+    restart: always
+    ports:
+      # Map the container port 3000 to the host's localhost port 3000,
+      # as expected by your Nginx config.
+      - "127.0.0.1:3000:3000"
+    environment:
+      # These variables must be passed by Jenkins to the host, or be present in a .env file
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      # ... other backend environment variables from your Jenkinsfile
+      - DATABASE_URL=${DATABASE_URL}
+      - CORS_ORIGIN=https://sheerstechnologies.com
