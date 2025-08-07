@@ -11,11 +11,7 @@ pipeline {
         DOCKER_CRED_ID = 'dockerhub-creds'
         REMOTE_HOST = '192.168.20.215'
         REMOTE_USER = 'basyir'
-        REMOTE_PATH = '/home/basyir/wastewise-30-deploy' // IMPORTANT: Define the absolute path here
-
-        // Container names
-        FRONTEND_CONTAINER = 'wastewise-frontend'
-        BACKEND_CONTAINER = 'wastewise-backend'
+        REMOTE_PATH = '/home/basyir/wastewise-30-deploy'
     }
 
     stages {
@@ -28,31 +24,23 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh """
-                        set -e
-                        docker build -f Dockerfile.frontend -t $IMAGE_NAME-frontend:$TAG .
-                        docker tag $IMAGE_NAME-frontend:$TAG $IMAGE_NAME-frontend:latest
-                        docker build -f Dockerfile.backend -t $IMAGE_NAME-backend:$TAG .
-                        docker tag $IMAGE_NAME-backend:$TAG $IMAGE_NAME-backend:latest
-                    """
+                    sh "docker build -f Dockerfile.frontend -t ${IMAGE_NAME}-frontend:${TAG} ."
+                    sh "docker tag ${IMAGE_NAME}-frontend:${TAG} ${IMAGE_NAME}-frontend:latest"
+
+                    sh "docker build -f Dockerfile.backend -t ${IMAGE_NAME}-backend:${TAG} ."
+                    sh "docker tag ${IMAGE_NAME}-backend:${TAG} ${IMAGE_NAME}-backend:latest"
                 }
             }
         }
 
         stage('Push to DockerHub') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: DOCKER_CRED_ID,
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh """
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push $IMAGE_NAME-frontend:$TAG
-                        docker push $IMAGE_NAME-frontend:latest
-                        docker push $IMAGE_NAME-backend:$TAG
-                        docker push $IMAGE_NAME-backend:latest
-                    """
+                // This block securely handles Docker login and push
+                withDockerRegistry(credentialsId: DOCKER_CRED_ID, url: '') {
+                    sh "docker push ${IMAGE_NAME}-frontend:${TAG}"
+                    sh "docker push ${IMAGE_NAME}-frontend:latest"
+                    sh "docker push ${IMAGE_NAME}-backend:${TAG}"
+                    sh "docker push ${IMAGE_NAME}-backend:latest"
                 }
             }
         }
@@ -68,6 +56,8 @@ pipeline {
         stage('Deploy Containers on Host') {
             steps {
                 sshagent([SSH_CRED_ID]) {
+                    // It's still safe to use withCredentials here because the variables are not
+                    // being passed into a sh '...' command that interpolates them
                     withCredentials([
                         string(credentialsId: 'wastewise-supabase-url', variable: 'VITE_SUPABASE_URL'),
                         string(credentialsId: 'wastewise-supabase-anon-key', variable: 'VITE_SUPABASE_ANON_KEY'),
@@ -87,17 +77,16 @@ pipeline {
                         string(credentialsId: 'database-url', variable: 'DATABASE_URL')
                     ]) {
                         sh """
-                            # SSH into the remote host
+                            # SSH into the remote host and perform deployment
                             ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
                                 set -e
-                                
-                                # Use the REMOTE_PATH variable
                                 cd ${REMOTE_PATH} 
-
-                                # Pull the latest images
+                                
+                                # Stop and remove old containers before starting new ones
+                                docker-compose down
+                                
+                                # Pull the latest images and restart containers
                                 docker-compose pull
-
-                                # Stop and remove old containers, then start new ones in detached mode
                                 docker-compose up -d
                             '
                         """
