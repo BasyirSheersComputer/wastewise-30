@@ -1,28 +1,41 @@
-# Stage 1: Build the Vite frontend
-FROM node:20 AS build
+# Stage 1: Build the Vite application
+FROM node:18-alpine AS builder
 
+# Set the working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY ./frontend/package*.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy frontend source
-COPY ./frontend ./
+# Copy the rest of the application source code
+COPY . .
 
-# Build the frontend
+# Build the application for production.
+# The `dist` folder will contain the static assets.
 RUN npm run build
 
-# Stage 2: Serve with Nginx
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
 
-# Override default Nginx config to listen on 8899
-RUN sed -i 's/80;/8899;/g' /etc/nginx/conf.d/default.conf
+# Stage 2: Serve the application with Nginx
+FROM nginx:1.23-alpine
 
-# Serve on port 8899
-EXPOSE 8899
+# Set the working directory to the Nginx content directory
+WORKDIR /usr/share/nginx/html
 
+# Remove the default Nginx configuration file
+RUN rm -f /etc/nginx/conf.d/default.conf
+
+# Copy our custom Nginx configuration to handle SPA routing
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/dist .
+
+# The Nginx container will expose port 80 by default.
+# The Jenkins pipeline's port mapping (8899:8899) will handle this.
+EXPOSE 80
+
+# Command to run Nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
