@@ -74,7 +74,11 @@ pipeline {
                         string(credentialsId: 'twilio-phone', variable: 'TWILIO_PHONE_NUMBER'),
                         string(credentialsId: 'database-url', variable: 'DATABASE_URL')
                     ]) {
-                        sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'cd ${REMOTE_PATH} && docker-compose pull && docker-compose up -d --build --force-recreate'"
+                        // This is the corrected command. It sets all environment variables before running docker-compose.
+                        // We use the `sshagent` block around this command to ensure the SSH key is available.
+                        sshagent([SSH_CRED_ID]) {
+                            sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'cd ${REMOTE_PATH} && VITE_SUPABASE_URL=${VITE_SUPABASE_URL} VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY} STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY} STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY} STRIPE_PRICE_BASIC=${STRIPE_PRICE_BASIC} STRIPE_PRICE_PRO=${STRIPE_PRICE_PRO} STRIPE_PRICE_ENTERPRISE=${STRIPE_PRICE_ENTERPRISE} GEMINI_API_KEY=${GEMINI_API_KEY} OPENAI_API_KEY=${OPENAI_API_KEY} JWT_SECRET=${JWT_SECRET} SMTP_USER=${SMTP_USER} SMTP_PASS=${SMTP_PASS} TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID} TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN} TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER} DATABASE_URL=${DATABASE_URL} docker-compose pull && docker-compose up -d --build --force-recreate'"
+                        }
                     }
                 }
             }
