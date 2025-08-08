@@ -103,6 +103,7 @@ pipeline {
                                     EOL
                                     
                                     # Stop and remove old containers, then restart with the new .env file
+                                    docker-compose down
                                     docker-compose pull
                                     docker-compose up -d --build --force-recreate
                                 '
