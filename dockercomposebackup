@@ -32,12 +32,6 @@ services:
       # These variables must be passed by Jenkins to the host, or be present in a .env file
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - JWT_SECRET=${JWT_SECRET}
-      - SMTP_USER=${SMTP_USER}
-      - SMTP_PASS=${SMTP_PASS}
-      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      # ... other backend environment variables from your Jenkinsfile
       - DATABASE_URL=${DATABASE_URL}
       - CORS_ORIGIN=https://sheerstechnologies.com

@@ -55,7 +55,9 @@ pipeline {
 
         stage('Deploy Containers on Host') {
             steps {
-                script {
+                sshagent([SSH_CRED_ID]) {
+                    // It's still safe to use withCredentials here because the variables are not
+                    // being passed into a sh '...' command that interpolates them
                     withCredentials([
                         string(credentialsId: 'wastewise-supabase-url', variable: 'VITE_SUPABASE_URL'),
                         string(credentialsId: 'wastewise-supabase-anon-key', variable: 'VITE_SUPABASE_ANON_KEY'),
@@ -74,7 +76,20 @@ pipeline {
                         string(credentialsId: 'twilio-phone', variable: 'TWILIO_PHONE_NUMBER'),
                         string(credentialsId: 'database-url', variable: 'DATABASE_URL')
                     ]) {
-                        sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'cd ${REMOTE_PATH} && docker-compose pull && docker-compose up -d --build --force-recreate'"
+                        sh """
+                            # SSH into the remote host and perform deployment
+                            ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                                set -e
+                                cd ${REMOTE_PATH} 
+                                
+                                # Stop and remove old containers before starting new ones
+                                docker-compose down
+                                
+                                # Pull the latest images and restart containers
+                                docker-compose pull
+                                docker-compose up -d
+                            '
+                        """
                     }
                 }
             }
