@@ -8,32 +8,42 @@ wastewise-30/
 │   ├── 📁 deployment/                # Deployment guides
 │   │   ├── DEPLOYMENT.md
 │   │   ├── QUICK_DEPLOYMENT.md
-│   │   └── DEPLOYMENT_WITH_NGINX.md
+│   │   ├── DEPLOYMENT_WITH_NGINX.md
+│   │   ├── MULTI_CONTAINER_DEPLOYMENT.md
+│   │   ├── DEPLOYMENT_TROUBLESHOOTING.md
+│   │   ├── NGINX_INTEGRATION_SUMMARY.md
+│   │   └── NGINX_WASTEWISE_30_FIX.md
 │   ├── 📁 cicd/                     # CI/CD documentation
 │   │   ├── CICD_INITIALIZATION_SUMMARY.md
-│   │   └── test-cicd.md
+│   │   ├── WEBHOOK_ISSUE_SUMMARY.md
+│   │   └── WEBHOOK_QUICK_FIX.md
 │   ├── 📁 troubleshooting/          # Troubleshooting guides
 │   │   ├── JENKINS_WEBHOOK_TROUBLESHOOTING.md
 │   │   ├── JENKINS_NODEJS_FIX_SUMMARY.md
 │   │   ├── JENKINS_NPM_CACHE_FIX.md
-│   │   ├── WEBHOOK_ISSUE_SUMMARY.md
-│   │   ├── WEBHOOK_QUICK_FIX.md
-│   │   └── CONFIGURATION_SUMMARY.md
+│   │   └── WEBHOOK_ISSUE_SUMMARY.md
 │   ├── 📁 architecture/             # Architecture documentation
 │   │   ├── DOCKER_DEPLOYMENT_GUIDE.md
 │   │   ├── DOCKER_FOCUSED_ARCHITECTURE_SUMMARY.md
 │   │   ├── DOCKERFILE_IMPROVEMENTS.md
 │   │   └── MULTI_CONTAINER_DEPLOYMENT.md
-│   ├── README.md                    # Main project README
-│   ├── QUICK_START.md               # Quick start guide
-│   ├── SAAS_IMPLEMENTATION_SUMMARY.md
-│   ├── SYSTEM_STATUS_SUMMARY.md
-│   ├── USER_STORY_DEMO.md
-│   ├── DEMO_GUIDE.md
-│   ├── SYSTEM_RUNNING_STATUS.md
-│   ├── DATA_PLATFORM_SUMMARY.md
-│   ├── FINAL_SUMMARY.md
-│   └── verify-deployment.js         # Deployment verification
+│   ├── 📁 security/                 # Security and secrets management
+│   │   ├── DEPLOYMENT_SECRETS_GUIDE.md
+│   │   └── SECRET_PASSING_FIX_SUMMARY.md
+│   ├── 📁 ai/                       # AI and machine learning
+│   │   ├── AI_RECOMMENDATION_OPTIMIZATION.md
+│   │   ├── LLM_INTEGRATION_SUMMARY.md
+│   │   └── FNB_CHAIN_EXPANSION_FEATURES.md
+│   ├── 📁 testing/                  # Testing documentation
+│   │   ├── DEVELOPMENT_VS_PRODUCTION_TESTING.md
+│   │   └── COFFEE_CHAIN_TEST_RESULTS.md
+│   ├── 📁 maintenance/              # Maintenance guides
+│   │   ├── HOUSEKEEPING_SUMMARY.md
+│   │   ├── CLEANUP_SUMMARY.md
+│   │   ├── IDLE_LOGOUT_AND_LLM_OPTIMIZATION.md
+│   │   └── LOGOUT_REDIRECT_SUMMARY.md
+│   ├── README.md                    # Documentation index
+│   └── QUICK_START.md               # Quick start guide
 ├── 📁 scripts/                      # Scripts and utilities
 │   ├── 📁 deployment/               # Deployment scripts
 │   │   ├── deploy-all.sh
@@ -45,6 +55,9 @@ wastewise-30/
 │   ├── 📁 troubleshooting/          # Troubleshooting scripts
 │   │   ├── diagnose-webhook.js
 │   │   └── fix-jenkins-nodejs.js
+│   ├── build-and-push-images.sh     # Docker build and push
+│   ├── build-and-push-images.ps1    # PowerShell build script
+│   ├── verify-secrets.js            # Secret verification
 │   ├── comprehensive-test.js        # Comprehensive testing
 │   ├── test-entire-system.js       # System testing
 │   ├── check-system-status.js      # Status checking
@@ -71,18 +84,50 @@ wastewise-30/
 │       └── Jenkinsfile              # CI/CD pipeline
 ├── 📁 frontend/                     # Frontend application
 │   ├── src/                         # Source code
-│   ├── components/                  # React components
-│   ├── modules/                     # Feature modules
-│   ├── routes/                      # Routing
-│   ├── services/                    # API services
-│   ├── utils/                       # Utilities
+│   │   ├── components/              # React components
+│   │   │   ├── Auth/               # Authentication components
+│   │   │   ├── Marketing/          # Marketing components
+│   │   │   └── UI/                 # UI components
+│   │   ├── modules/                 # Feature modules
+│   │   │   ├── auth/               # Authentication module
+│   │   │   ├── dashboard/          # Dashboard module
+│   │   │   └── landing/            # Landing page module
+│   │   ├── routes/                  # Routing
+│   │   ├── services/                # API services
+│   │   ├── utils/                   # Utilities
+│   │   ├── hooks/                   # React hooks
+│   │   ├── App.tsx                  # Main app component
+│   │   ├── main.tsx                 # Entry point
+│   │   └── index.css                # Global styles
 │   ├── package.json                 # Dependencies
-│   └── vite.config.ts              # Build configuration
+│   ├── vite.config.ts              # Build configuration
+│   ├── tailwind.config.js          # Tailwind CSS config
+│   └── tsconfig.app.json           # TypeScript config
 ├── 📁 backend/                      # Backend application
-│   ├── src/                         # Source code
 │   ├── routes/                      # API routes
+│   │   ├── auth.js                  # Authentication routes
+│   │   ├── billing.js               # Billing routes
+│   │   ├── coffeeChain.js           # Coffee chain routes
+│   │   ├── dashboard.js             # Dashboard routes
+│   │   └── user.js                  # User routes
 │   ├── services/                    # Business logic
+│   │   ├── aiRecommendationService.js
+│   │   ├── authService.js
+│   │   ├── coffeeChainService.js
+│   │   ├── dataPlatformBridge.js
+│   │   ├── enhancedAIService.js
+│   │   ├── enhancedBIService.js
+│   │   ├── llmService.js
+│   │   ├── stripeService.js
+│   │   └── supabaseClient.js
 │   ├── utils/                       # Utilities
+│   │   ├── authMiddleware.js
+│   │   └── logger.js
+│   ├── ai-service.js                # AI service entry point
+│   ├── analytics.js                 # Analytics service
+│   ├── chatgpt.js                   # ChatGPT integration
+│   ├── gemini.js                    # Gemini integration
+│   ├── recommendations.js           # Recommendation engine
 │   ├── package.json                 # Dependencies
 │   └── index.js                     # Entry point
 ├── 📁 data-platform/                # Data platform
@@ -100,172 +145,117 @@ wastewise-30/
 ├── tsconfig.json                   # TypeScript config
 ├── tsconfig.app.json               # App TypeScript config
 ├── tsconfig.node.json              # Node TypeScript config
-├── eslint.config.js                # ESLint configuration
-├── .gitignore                      # Git ignore rules
+├── docker-compose.yml              # Main Docker Compose
+├── Dockerfile.frontend             # Frontend Dockerfile
+├── Dockerfile.backend              # Backend Dockerfile
+├── Jenkinsfile                     # CI/CD pipeline
 ├── env.example                     # Environment template
-├── integration-config.json         # Integration config
-├── integration-error-report.json   # Error reports
+├── setup-env.sh                    # Environment setup
+├── manual-deploy.sh                # Manual deployment
+├── troubleshoot-deployment.sh      # Deployment troubleshooting
+├── restart-containers.sh           # Container restart
+├── test-coffee-chain-features.js   # Coffee chain tests
+├── test-llm-integration.js         # LLM integration tests
+├── test-llm-with-mock.js           # Mock LLM tests
+├── test-frontend-backend-ai-integration.js # Integration tests
+├── gemini-test.js                  # Gemini tests
+├── Coffee Chain Operational Intelligence System.md # System overview
+├── README.md                       # Main project README
 └── PROJECT_STRUCTURE.md            # This file
 ```
 
-## 📋 **Documentation Categories**
+## 📋 **Key Directories Explained**
 
-### **📁 docs/deployment/**
-- **DEPLOYMENT.md** - Main deployment guide
-- **QUICK_DEPLOYMENT.md** - Quick deployment instructions
-- **DEPLOYMENT_WITH_NGINX.md** - Nginx integration guide
+### **📁 docs/** - Documentation Hub
+- **deployment/**: Complete deployment guides and procedures
+- **cicd/**: Continuous Integration/Deployment documentation
+- **troubleshooting/**: Common issues and solutions
+- **architecture/**: System design and architecture patterns
+- **security/**: Security and secrets management
+- **ai/**: AI and machine learning features
+- **testing/**: Testing strategies and results
+- **maintenance/**: System maintenance and optimization
 
-### **📁 docs/cicd/**
-- **CICD_INITIALIZATION_SUMMARY.md** - CI/CD setup summary
-- **test-cicd.md** - CI/CD testing guide
+### **📁 scripts/** - Automation & Utilities
+- **deployment/**: Automated deployment scripts
+- **monitoring/**: System monitoring and health checks
+- **troubleshooting/**: Diagnostic and fix scripts
+- **build-and-push-images.sh/.ps1**: Docker image management
+- **verify-secrets.js**: Secret verification tool
 
-### **📁 docs/troubleshooting/**
-- **JENKINS_WEBHOOK_TROUBLESHOOTING.md** - Webhook issues
-- **JENKINS_NODEJS_FIX_SUMMARY.md** - Node.js fixes
-- **JENKINS_NPM_CACHE_FIX.md** - NPM cache issues
-- **WEBHOOK_ISSUE_SUMMARY.md** - Webhook problems
-- **WEBHOOK_QUICK_FIX.md** - Quick webhook fixes
-- **CONFIGURATION_SUMMARY.md** - Configuration issues
+### **📁 config/** - Configuration Management
+- **docker/**: Container configurations
+- **nginx/**: Web server configurations
+- **jenkins/**: CI/CD pipeline configurations
 
-### **📁 docs/architecture/**
-- **DOCKER_DEPLOYMENT_GUIDE.md** - Docker deployment
-- **DOCKER_FOCUSED_ARCHITECTURE_SUMMARY.md** - Docker architecture
-- **DOCKERFILE_IMPROVEMENTS.md** - Dockerfile optimizations
-- **MULTI_CONTAINER_DEPLOYMENT.md** - Multi-container setup
+### **📁 frontend/** - React Application
+- **src/components/**: Reusable UI components
+- **src/modules/**: Feature-based modules
+- **src/services/**: API integration services
+- **src/utils/**: Utility functions and helpers
 
-## 🔧 **Script Categories**
+### **📁 backend/** - Node.js API
+- **routes/**: API endpoint definitions
+- **services/**: Business logic and external integrations
+- **utils/**: Backend utilities and middleware
+- **ai-service.js**: AI service orchestration
+- **recommendations.js**: Recommendation engine
 
-### **📁 scripts/deployment/**
-- **deploy-all.sh** - Complete deployment script
-- **deploy-multi-container.sh** - Multi-container deployment
-- **deploy-integrated.sh** - Integrated deployment
+## 🔧 **Configuration Files**
 
-### **📁 scripts/monitoring/**
-- **monitor-cicd.js** - CI/CD monitoring
-- **trigger-cicd.js** - Manual CI/CD triggers
+### **Root Level:**
+- `docker-compose.yml`: Main container orchestration
+- `Jenkinsfile`: CI/CD pipeline definition
+- `env.example`: Environment variables template
+- `package.json`: Root dependencies and scripts
 
-### **📁 scripts/troubleshooting/**
-- **diagnose-webhook.js** - Webhook diagnostics
-- **fix-jenkins-nodejs.js** - Jenkins Node.js fixes
+### **Frontend:**
+- `vite.config.ts`: Build tool configuration
+- `tailwind.config.js`: CSS framework configuration
+- `tsconfig.app.json`: TypeScript configuration
 
-## ⚙️ **Configuration Categories**
+### **Backend:**
+- `index.js`: Application entry point
+- `ai-service.js`: AI service integration
+- `recommendations.js`: Recommendation system
 
-### **📁 config/docker/**
-- **Dockerfile** - Original single container
-- **Dockerfile.frontend** - Frontend container
-- **Dockerfile.backend** - Backend container
-- **docker-compose.yml** - Multi-container setup
-- **docker-compose.integrated.yml** - Integrated setup
+## 🚀 **Quick Navigation**
 
-### **📁 config/nginx/**
-- **nginx.conf** - Main reverse proxy
-- **nginx-frontend.conf** - Frontend server
-- **nginx.integrated.conf** - Integrated setup
-
-### **📁 config/jenkins/**
-- **Jenkinsfile** - CI/CD pipeline configuration
-
-## 🚀 **Key Features**
-
-### **✅ Organized Structure:**
-- **Clear Separation**: Documentation, scripts, and configs separated
-- **Logical Grouping**: Related files grouped by function
-- **Easy Navigation**: Intuitive directory structure
-- **Maintainable**: Easy to find and update files
-
-### **✅ Documentation Coverage:**
-- **Deployment Guides**: Complete deployment instructions
-- **Troubleshooting**: Common issues and solutions
-- **Architecture**: System design and patterns
-- **CI/CD**: Pipeline configuration and monitoring
-
-### **✅ Script Organization:**
-- **Deployment Scripts**: Automated deployment tools
-- **Monitoring Scripts**: Health and status monitoring
-- **Troubleshooting Scripts**: Diagnostic and fix tools
-
-### **✅ Configuration Management:**
-- **Docker Configs**: Container definitions
-- **Nginx Configs**: Web server configurations
-- **Jenkins Configs**: CI/CD pipeline setup
-
-## 📊 **File Statistics**
-
-### **📁 Documentation (docs/):**
-- **Deployment**: 3 files
-- **CI/CD**: 2 files
-- **Troubleshooting**: 6 files
-- **Architecture**: 4 files
-- **General**: 8 files
-- **Total**: 23 documentation files
-
-### **📁 Scripts (scripts/):**
-- **Deployment**: 3 shell scripts
-- **Monitoring**: 2 JavaScript files
-- **Troubleshooting**: 2 JavaScript files
-- **General**: 12 JavaScript files
-- **Total**: 19 script files
-
-### **📁 Configuration (config/):**
-- **Docker**: 5 files
-- **Nginx**: 3 files
-- **Jenkins**: 1 file
-- **Total**: 9 configuration files
-
-## 🎯 **Usage Guidelines**
-
-### **📖 For Documentation:**
-1. **Deployment Issues**: Check `docs/deployment/`
-2. **CI/CD Problems**: Check `docs/cicd/`
-3. **Troubleshooting**: Check `docs/troubleshooting/`
-4. **Architecture Questions**: Check `docs/architecture/`
-
-### **🔧 For Scripts:**
-1. **Deployment**: Use scripts in `scripts/deployment/`
-2. **Monitoring**: Use scripts in `scripts/monitoring/`
-3. **Troubleshooting**: Use scripts in `scripts/troubleshooting/`
-
-### **⚙️ For Configuration:**
-1. **Docker Setup**: Use files in `config/docker/`
-2. **Nginx Setup**: Use files in `config/nginx/`
-3. **Jenkins Setup**: Use files in `config/jenkins/`
-
-## 🔗 **Quick Reference**
-
-### **🚀 Quick Start:**
+### **Start Development:**
 ```bash
-# Read quick start guide
-cat docs/QUICK_START.md
+# Frontend
+cd frontend && npm run dev
 
-# Run deployment
-./scripts/deployment/deploy-multi-container.sh
+# Backend
+cd backend && npm run dev
 
-# Monitor system
-node scripts/monitoring/monitor-cicd.js
+# Full stack with Docker
+docker-compose up -d
 ```
 
-### **🔍 Troubleshooting:**
+### **Run Tests:**
 ```bash
-# Diagnose webhook issues
-node scripts/troubleshooting/diagnose-webhook.js
+# Comprehensive tests
+node test-coffee-chain-features.js
 
-# Fix Jenkins issues
-node scripts/troubleshooting/fix-jenkins-nodejs.js
+# AI integration tests
+node test-llm-integration.js
 
-# Check system status
-node scripts/check-system-status.js
+# Integration tests
+node test-frontend-backend-ai-integration.js
 ```
 
-### **📚 Documentation:**
+### **Deploy:**
 ```bash
-# View deployment guide
-cat docs/deployment/DEPLOYMENT.md
+# Build and push images
+./scripts/build-and-push-images.ps1
 
-# View architecture guide
-cat docs/architecture/MULTI_CONTAINER_DEPLOYMENT.md
-
-# View troubleshooting guide
-cat docs/troubleshooting/JENKINS_WEBHOOK_TROUBLESHOOTING.md
+# Deploy with Docker Compose
+docker-compose up -d --build
 ```
 
-**🎉 The project is now well-organized with clear separation of concerns, making it easy to navigate, maintain, and extend!** 
+---
+
+**Last Updated**: $(date)
+**Version**: 2.0
+**Status**: ✅ Organized and Maintained 

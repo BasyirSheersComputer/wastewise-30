@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getSectionRecommendations } from '../../services/llmService';
 import { Lightbulb, Clock, AlertTriangle, CheckCircle, Database, Zap, RefreshCw } from 'lucide-react';
+import EnhancedParsedText from '../../utils/enhancedAiTextParser';
 
 interface LLMRecommendationsProps {
   section?: string;
@@ -187,12 +188,12 @@ const LLMRecommendations: React.FC<LLMRecommendationsProps> = ({ section = 'dash
         
         {!loading && !error && recommendations && (
           <div className="space-y-4">
-            {formatRecommendations(recommendations).map((recommendation, index) => (
-              <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                {getRecommendationIcon(recommendation)}
-                <p className="text-sm text-gray-700 flex-1">{recommendation}</p>
-              </div>
-            ))}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <EnhancedParsedText 
+                text={recommendations} 
+                className="text-sm text-gray-700"
+              />
+            </div>
           </div>
         )}
         

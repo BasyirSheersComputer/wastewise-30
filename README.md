@@ -1,11 +1,11 @@
-# 🚀 WasteWise-30 - Restaurant Waste Management Platform
+# 🚀 WasteWise-30 - Coffee Chain Operational Intelligence System
 
 ## 📋 **Project Overview**
 
-WasteWise-30 is a comprehensive restaurant waste management platform that helps restaurants reduce food waste, optimize inventory, and increase profitability through AI-powered insights and real-time monitoring.
+WasteWise-30 is a comprehensive coffee chain operational intelligence platform that helps coffee shops reduce waste, optimize inventory, and increase profitability through AI-powered insights and real-time monitoring.
 
 ### **🎯 Key Features:**
-- **AI-Powered Waste Analysis**: Machine learning algorithms for waste prediction
+- **AI-Powered Recommendations**: Machine learning algorithms for waste prediction and optimization
 - **Real-time Inventory Management**: Track ingredients and expiration dates
 - **Smart Menu Optimization**: Suggest menu items based on available ingredients
 - **Analytics Dashboard**: Comprehensive waste and cost analytics
@@ -18,7 +18,7 @@ WasteWise-30 is a comprehensive restaurant waste management platform that helps 
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Backend       │    │   Nginx Proxy   │
 │   (React/Vite)  │    │   (Node.js/Exp) │    │   (Load Balancer)│
-│   Port 3000     │    │   Port 3001     │    │   Port 8899     │
+│   Port 8899     │    │   Port 3000     │    │   Port 80/443   │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          └───────────────────────┼───────────────────────┘
@@ -47,24 +47,23 @@ cd wastewise-30
 # Copy environment template
 cp env.example .env
 
-# Edit environment variables
+# Edit environment variables (see env.example for required keys)
 nano .env
 ```
 
 ### **3. Deploy with Docker Compose:**
 ```bash
-# Deploy multi-container setup
-./scripts/deployment/deploy-multi-container.sh
+# Deploy the application
+docker-compose up -d --build
 
-# Or manually
-docker-compose -f config/docker/docker-compose.yml up -d --build
+# Check status
+docker-compose ps
 ```
 
 ### **4. Access the Application:**
-- **Main Application**: http://localhost:8899/
-- **Frontend Direct**: http://localhost:3000/
-- **Backend API**: http://localhost:3001/
-- **Health Check**: http://localhost:8899/health
+- **Frontend**: http://localhost:8899/
+- **Backend API**: http://localhost:3000/
+- **Health Check**: http://localhost:3000/health
 
 ## 📁 **Project Structure**
 
@@ -74,7 +73,11 @@ wastewise-30/
 │   ├── 📁 deployment/          # Deployment guides
 │   ├── 📁 cicd/               # CI/CD documentation
 │   ├── 📁 troubleshooting/    # Troubleshooting guides
-│   └── 📁 architecture/       # Architecture documentation
+│   ├── 📁 architecture/       # Architecture documentation
+│   ├── 📁 security/           # Security and secrets management
+│   ├── 📁 ai/                 # AI and ML documentation
+│   ├── 📁 testing/            # Testing documentation
+│   └── 📁 maintenance/        # Maintenance guides
 ├── 📁 scripts/                 # Scripts and utilities
 │   ├── 📁 deployment/         # Deployment scripts
 │   ├── 📁 monitoring/         # Monitoring scripts
@@ -104,227 +107,112 @@ npm install
 npm run dev
 ```
 
-### **Testing:**
+### **Running Tests:**
 ```bash
 # Run comprehensive tests
-node scripts/comprehensive-test.js
+node test-coffee-chain-features.js
 
-# Test entire system
-node scripts/test-entire-system.js
+# Run AI integration tests
+node test-llm-integration.js
 
-# Check system status
-node scripts/check-system-status.js
+# Run frontend-backend integration tests
+node test-frontend-backend-ai-integration.js
 ```
 
-## 🐳 **Deployment Options**
+## 🚀 **Deployment**
 
-### **1. Multi-Container Deployment (Recommended):**
+### **Local Development:**
 ```bash
-# Deploy with separate frontend and backend containers
-./scripts/deployment/deploy-multi-container.sh
-```
-
-### **2. Single Container Deployment:**
-```bash
-# Deploy with original Dockerfile
-docker build -f config/docker/Dockerfile -t wastewise-30 .
-docker run -p 8899:8899 wastewise-30
-```
-
-### **3. Production Deployment:**
-```bash
-# Deploy with all services
-./scripts/deployment/deploy-all.sh
-```
-
-## 📊 **Monitoring & Health Checks**
-
-### **Health Check Endpoints:**
-```bash
-# Overall health
-curl http://localhost:8899/health
-
-# Frontend health
-curl http://localhost:8899/health/frontend
-
-# Backend health
-curl http://localhost:8899/health/backend
-```
-
-### **Monitoring Scripts:**
-```bash
-# Monitor CI/CD pipeline
-node scripts/monitoring/monitor-cicd.js
-
-# Trigger CI/CD manually
-node scripts/monitoring/trigger-cicd.js
-```
-
-## 🔍 **Troubleshooting**
-
-### **Common Issues:**
-
-#### **1. Webhook Not Triggering Jenkins:**
-```bash
-# Diagnose webhook issues
-node scripts/troubleshooting/diagnose-webhook.js
-
-# Fix webhook configuration
-cat docs/troubleshooting/WEBHOOK_QUICK_FIX.md
-```
-
-#### **2. Jenkins Build Failures:**
-```bash
-# Fix Node.js issues
-node scripts/troubleshooting/fix-jenkins-nodejs.js
-
-# Check NPM cache issues
-cat docs/troubleshooting/JENKINS_NPM_CACHE_FIX.md
-```
-
-#### **3. Docker Deployment Issues:**
-```bash
-# Check container status
-docker-compose ps
+# Start all services
+docker-compose up -d
 
 # View logs
 docker-compose logs -f
 
-# Restart services
-docker-compose restart
+# Stop services
+docker-compose down
 ```
 
-### **Debugging Commands:**
+### **Production Deployment:**
 ```bash
-# Check system status
-node scripts/check-system-status.js
+# Build and push images
+./scripts/build-and-push-images.ps1
 
-# Test services
-node scripts/test-services.js
-
-# Verify deployment
-node scripts/verify-deployment.js
+# Deploy with Jenkins
+# (See docs/cicd/ for CI/CD setup)
 ```
 
 ## 📚 **Documentation**
 
-### **📖 Quick References:**
-- **[Project Structure](PROJECT_STRUCTURE.md)** - Complete file organization
-- **[Quick Start](docs/QUICK_START.md)** - Get started quickly
-- **[Deployment Guide](docs/deployment/DEPLOYMENT.md)** - Complete deployment instructions
-- **[Architecture Guide](docs/architecture/MULTI_CONTAINER_DEPLOYMENT.md)** - System architecture
+Comprehensive documentation is available in the `docs/` directory:
 
-### **🔧 Troubleshooting Guides:**
-- **[Jenkins Issues](docs/troubleshooting/JENKINS_WEBHOOK_TROUBLESHOOTING.md)** - CI/CD problems
-- **[Docker Issues](docs/architecture/DOCKER_DEPLOYMENT_GUIDE.md)** - Container problems
-- **[Webhook Issues](docs/troubleshooting/WEBHOOK_ISSUE_SUMMARY.md)** - GitHub integration
+- **[📖 Documentation Index](docs/README.md)** - Complete documentation overview
+- **[🚀 Quick Start](docs/QUICK_START.md)** - Get up and running quickly
+- **[🏗️ Architecture](docs/architecture/)** - System architecture and design
+- **[🔧 Deployment](docs/deployment/)** - Deployment guides and procedures
+- **[🔐 Security](docs/security/)** - Security and secrets management
+- **[🤖 AI Features](docs/ai/)** - AI and machine learning features
+- **[🐛 Troubleshooting](docs/troubleshooting/)** - Common issues and solutions
 
-### **🏗️ Architecture Guides:**
-- **[Multi-Container Setup](docs/architecture/MULTI_CONTAINER_DEPLOYMENT.md)** - Scalable deployment
-- **[Docker Architecture](docs/architecture/DOCKER_FOCUSED_ARCHITECTURE_SUMMARY.md)** - Container design
-- **[CI/CD Pipeline](docs/cicd/CICD_INITIALIZATION_SUMMARY.md)** - Pipeline configuration
+## 🔐 **Environment Variables**
 
-## 🎯 **Key URLs**
+Required environment variables (see `env.example`):
 
-### **Development:**
-- **Frontend**: http://localhost:5173/ (Vite dev server)
-- **Backend**: http://localhost:3001/ (Express server)
-
-### **Production:**
-- **Main Application**: http://localhost:8899/
-- **Frontend Direct**: http://localhost:3000/
-- **Backend API**: http://localhost:3001/
-
-### **CI/CD:**
-- **Jenkins**: http://192.168.20.215:8080/job/wastewise-30/
-- **GitHub**: https://github.com/BasyirSheersComputer/wastewise-30
-
-## 📈 **Performance Metrics**
-
-### **✅ Current Status:**
-- **Frontend**: ✅ Running (React/Vite)
-- **Backend**: ✅ Running (Node.js/Express)
-- **Database**: ✅ Connected (Supabase)
-- **CI/CD**: ✅ Configured (Jenkins)
-- **Docker**: ✅ Multi-container setup
-- **Monitoring**: ✅ Health checks active
-
-### **📊 System Health:**
-- **Response Time**: < 200ms average
-- **Uptime**: 99.9% target
-- **Error Rate**: < 0.1%
-- **Resource Usage**: Optimized
-
-## 🔗 **Quick Commands**
-
-### **🚀 Start Development:**
 ```bash
-# Start frontend
-cd frontend && npm run dev
+# Supabase Configuration
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-# Start backend
-cd backend && npm run dev
+# AI Service Configuration
+GEMINI_API_KEY=your_gemini_api_key
+OPENAI_API_KEY=your_openai_api_key
 
-# Start with Docker
-docker-compose -f config/docker/docker-compose.yml up -d
+# JWT Configuration
+JWT_SECRET=your_jwt_secret
+
+# Application Configuration
+NODE_ENV=production
+PORT=3000
+CORS_ORIGIN=https://your-domain.com
 ```
 
-### **🔍 Monitor System:**
+## 🧪 **Testing**
+
+The project includes comprehensive testing:
+
+- **Unit Tests**: Individual component testing
+- **Integration Tests**: Service integration testing
+- **End-to-End Tests**: Complete workflow testing
+- **AI Integration Tests**: LLM service testing
+
+Run tests with:
 ```bash
-# Check health
-curl http://localhost:8899/health
-
-# View logs
-docker-compose logs -f
-
-# Monitor CI/CD
-node scripts/monitoring/monitor-cicd.js
-```
-
-### **🔧 Troubleshoot Issues:**
-```bash
-# Diagnose webhook
-node scripts/troubleshooting/diagnose-webhook.js
-
-# Fix Jenkins
-node scripts/troubleshooting/fix-jenkins-nodejs.js
-
-# Check status
-node scripts/check-system-status.js
+node test-coffee-chain-features.js
 ```
 
 ## 🤝 **Contributing**
 
-### **Development Workflow:**
-1. **Fork** the repository
-2. **Create** a feature branch
-3. **Make** your changes
-4. **Test** thoroughly
-5. **Submit** a pull request
-
-### **Testing Guidelines:**
-- Run comprehensive tests: `node scripts/comprehensive-test.js`
-- Test system integration: `node scripts/test-entire-system.js`
-- Verify deployment: `node scripts/verify-deployment.js`
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
 
 ## 📄 **License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is proprietary software. All rights reserved.
 
 ## 🆘 **Support**
 
-### **📞 Getting Help:**
-- **Documentation**: Check the `docs/` directory
-- **Troubleshooting**: Use scripts in `scripts/troubleshooting/`
-- **Issues**: Create GitHub issues for bugs
-- **Discussions**: Use GitHub discussions for questions
+For support and troubleshooting:
 
-### **🔗 Useful Links:**
-- **[Project Structure](PROJECT_STRUCTURE.md)** - Complete file organization
-- **[Deployment Guide](docs/deployment/DEPLOYMENT.md)** - Deployment instructions
-- **[Troubleshooting](docs/troubleshooting/)** - Common issues and solutions
-- **[Architecture](docs/architecture/)** - System design and patterns
+1. Check the [troubleshooting guides](docs/troubleshooting/)
+2. Review [deployment documentation](docs/deployment/)
+3. Check [security documentation](docs/security/) for configuration issues
+4. Run the verification script: `node scripts/verify-secrets.js`
 
 ---
 
-**🎉 Welcome to WasteWise-30! A comprehensive restaurant waste management platform with AI-powered insights and scalable microservices architecture.** 
+**Last Updated**: $(date)
+**Version**: 2.0
+**Status**: ✅ Production Ready 
