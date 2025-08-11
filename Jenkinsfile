@@ -81,34 +81,106 @@ pipeline {
                                     set -e
                                     cd ${REMOTE_PATH}
                                     
+                                    # Create logs directory if it doesn\'t exist
+                                    mkdir -p logs
+                                    
                                     # Create or update the .env file with secrets
                                     cat > .env <<EOL
+                                    # Supabase Configuration
                                     VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
                                     VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+                                    
+                                    # AI Service Configuration
+                                    GEMINI_API_KEY=${GEMINI_API_KEY}
+                                    OPENAI_API_KEY=${OPENAI_API_KEY}
+                                    
+                                    # JWT Configuration
+                                    JWT_SECRET=${JWT_SECRET}
+                                    
+                                    # Stripe Configuration
                                     STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
                                     STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
                                     STRIPE_PRICE_BASIC=${STRIPE_PRICE_BASIC}
                                     STRIPE_PRICE_PRO=${STRIPE_PRICE_PRO}
                                     STRIPE_PRICE_ENTERPRISE=${STRIPE_PRICE_ENTERPRISE}
-                                    GEMINI_API_KEY=${GEMINI_API_KEY}
-                                    OPENAI_API_KEY=${OPENAI_API_KEY}
-                                    JWT_SECRET=${JWT_SECRET}
+                                    
+                                    # Email Configuration
                                     SMTP_USER=${SMTP_USER}
                                     SMTP_PASS=${SMTP_PASS}
+                                    
+                                    # SMS Configuration
                                     TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
                                     TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
                                     TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+                                    
+                                    # Database Configuration
                                     DATABASE_URL=${DATABASE_URL}
+                                    
+                                    # Application Configuration
+                                    NODE_ENV=production
+                                    PORT=3000
                                     CORS_ORIGIN=https://sheerstechnologies.com
+                                    
+                                    # Feature Flags
+                                    AI_RECOMMENDATIONS_ENABLED=true
+                                    PAYMENT_PROCESSING_ENABLED=false
+                                    EMAIL_NOTIFICATIONS_ENABLED=true
+                                    SMS_NOTIFICATIONS_ENABLED=false
                                     EOL
                                     
-                                    # Stop and remove old containers, then restart with the new .env file
-                                    docker-compose down
+                                    # Set proper permissions for .env file
+                                    chmod 600 .env
+                                    
+                                    # Stop and remove old containers
+                                    docker-compose down --remove-orphans || true
+                                    
+                                    # Pull latest images
                                     docker-compose pull
+                                    
+                                    # Start containers with new configuration
                                     docker-compose up -d --build --force-recreate
+                                    
+                                    # Wait for services to be healthy
+                                    echo "Waiting for services to be healthy..."
+                                    timeout 120 bash -c "until docker-compose ps | grep -q healthy; do sleep 5; done" || echo "Warning: Some services may not be healthy yet"
+                                    
+                                    # Verify secrets are properly loaded
+                                    echo "Verifying secrets are loaded..."
+                                    docker-compose exec -T wastewise-backend env | grep -E "(GEMINI_API_KEY|OPENAI_API_KEY|VITE_SUPABASE_URL)" | wc -l || echo "Warning: Could not verify secrets in backend"
+                                    
+                                    # Show container status
+                                    docker-compose ps
                                 '
                             """
                         }
+                    }
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                script {
+                    sshagent([SSH_CRED_ID]) {
+                        sh """
+                            # Wait a bit for services to fully start
+                            sleep 30
+                            
+                            # Test backend health
+                            curl -f http://${REMOTE_HOST}:3000/health || echo "Backend health check failed"
+                            
+                            # Test frontend accessibility
+                            curl -f http://${REMOTE_HOST}:8899 || echo "Frontend accessibility check failed"
+                            
+                            # Check container logs for any errors
+                            ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                                cd ${REMOTE_PATH}
+                                echo "=== Backend Logs ==="
+                                docker-compose logs --tail=20 wastewise-backend
+                                echo "=== Frontend Logs ==="
+                                docker-compose logs --tail=20 wastewise-frontend
+                            '
+                        """
                     }
                 }
             }
@@ -118,9 +190,25 @@ pipeline {
     post {
         success {
             echo "✅ WasteWise-30 frontend & backend deployed successfully!"
+            echo "🌐 Frontend: http://${REMOTE_HOST}:8899"
+            echo "🔧 Backend: http://${REMOTE_HOST}:3000"
+            echo "🏥 Health Check: http://${REMOTE_HOST}:3000/health"
         }
         failure {
             echo "❌ Deployment failed. Check logs."
+            script {
+                sshagent([SSH_CRED_ID]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
+                            cd ${REMOTE_PATH}
+                            echo "=== Container Status ==="
+                            docker-compose ps
+                            echo "=== Recent Logs ==="
+                            docker-compose logs --tail=50
+                        '
+                    """
+                }
+            }
         }
     }
 }

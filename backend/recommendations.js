@@ -133,28 +133,60 @@ const dataFetchers = {
 
 const prompts = {
   dashboard: analytics => `
-Role: You are a seasoned F&B cost-control analyst.
-Context: We operate 12 outlets and aim to cut food waste by ≥30%.
-Data: ${JSON.stringify(analytics, null, 2)}
-Task:
-1. Rank the top 5 SKUs or dishes that deserve more focus (high margin & high demand).
-2. Rank the top 5 SKUs or processes to eliminate or down-weight (low margin, high spoilage, staff bottlenecks).
-3. Explain the one most important cross-cutting trend you notice (≤150 words).
-4. Suggest one quick win action we can take this week.
-Output: Return a Markdown table with columns: Rank | Item | Why Focus/Eliminate | 7-Day Impact Estimate (RM)
-Tone/Depth: Concise and numeric.
+Role: You are a seasoned F&B cost-control analyst specializing in coffee chain operations.
+Context: We operate 12 coffee outlets and aim to cut food waste by ≥30% while maintaining quality and customer satisfaction.
+
+Current Data Analysis:
+${JSON.stringify(analytics, null, 2)}
+
+Task: Analyze the provided data and provide actionable recommendations for:
+1. Top 5 items to focus on (high margin, high demand, low waste)
+2. Top 5 items to optimize or eliminate (low margin, high waste, poor performance)
+3. One critical trend affecting operations
+4. One immediate action item for this week
+
+Requirements:
+- Use specific data from the analytics provided
+- Provide concrete, actionable recommendations
+- Include estimated cost savings or revenue impact
+- Focus on coffee chain specific challenges (inventory management, staff training, waste reduction)
+
+Output Format: Return a detailed analysis with:
+1. A summary table: Rank | Item | Action | Impact (RM) | Timeline
+2. Key insights from the data
+3. Specific recommendations with rationale
+4. Expected outcomes and metrics to track
+
+Be specific, data-driven, and actionable. Reference actual items and quantities from the provided data.
 `,
   waste: analytics => `
-Role: You are a seasoned F&B cost-control analyst specializing in waste reduction.
-Context: We operate 12 outlets and aim to cut food waste by ≥30%.
-Data: ${JSON.stringify(analytics, null, 2)}
-Task:
-1. List the top 5 sources of waste (by item or process).
-2. Suggest one action to reduce waste this week.
-3. Identify any patterns in waste reasons or categories.
-4. Recommend inventory adjustments based on waste data.
-Output: Return a Markdown table with columns: Rank | Source | Why Focus | 7-Day Impact Estimate (RM)
-Tone/Depth: Concise and numeric.
+Role: You are a seasoned F&B cost-control analyst specializing in waste reduction for coffee chains.
+Context: We operate 12 coffee outlets and aim to cut food waste by ≥30% while maintaining product quality.
+
+Current Waste Data Analysis:
+${JSON.stringify(analytics, null, 2)}
+
+Task: Analyze the waste data and provide specific recommendations for:
+1. Top 5 waste sources requiring immediate attention
+2. Root cause analysis of waste patterns
+3. Specific actions to reduce waste this week
+4. Inventory management adjustments based on waste trends
+
+Requirements:
+- Reference specific items and quantities from the waste data
+- Identify patterns in waste reasons and categories
+- Provide cost-benefit analysis for recommendations
+- Suggest staff training needs based on waste reasons
+- Consider seasonal factors affecting waste
+
+Output Format: Return a comprehensive waste analysis with:
+1. Summary table: Rank | Waste Source | Cost | Root Cause | Action | Impact (RM)
+2. Pattern analysis of waste reasons
+3. Specific reduction strategies
+4. Staff training recommendations
+5. Expected waste reduction targets
+
+Be specific about the actual waste items, quantities, and costs from the provided data.
 `,
   supplier: analytics => `
 Role: You are a seasoned F&B cost-control analyst specializing in supplier management.

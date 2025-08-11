@@ -9,8 +9,23 @@ services:
       - "127.0.0.1:8899:8899"
     env_file:
       - .env
+    environment:
+      - REACT_APP_API_URL=http://wastewise-backend:3000
+      - REACT_APP_BACKEND_URL=http://wastewise-backend:3000
+      - NODE_ENV=production
     depends_on:
-      - wastewise-backend
+      wastewise-backend:
+        condition: service_healthy
+    networks:
+      - wastewise-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8899"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - ./logs:/app/logs
 
   wastewise-backend:
     image: basyir/wastewise-30-backend:latest
@@ -20,3 +35,23 @@ services:
       - "127.0.0.1:3000:3000"
     env_file:
       - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - CORS_ORIGIN=https://sheerstechnologies.com
+    networks:
+      - wastewise-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env:ro
+
+networks:
+  wastewise-network:
+    driver: bridge
+    name: wastewise-network

@@ -107,28 +107,44 @@ class AIRecommendationService {
       let quotaExceeded = false;
       
       try {
+        // Always try to get real AI recommendations first
         result = await getRecommendations(section, provider);
         
-        // Check if the response indicates quota exceeded
+        // Check if the response indicates quota exceeded or error
         if (result.error && (
           result.error.includes('quota') || 
           result.error.includes('rate limit') || 
           result.error.includes('billing') ||
-          result.error.includes('quota exceeded')
+          result.error.includes('quota exceeded') ||
+          result.error.includes('API_KEY') ||
+          result.error.includes('not set')
         )) {
           quotaExceeded = true;
-          logger.warn(`Quota exceeded for ${provider}, attempting fallback`);
+          logger.warn(`Quota exceeded or API key issue for ${provider}, attempting fallback`);
         }
+        
+        // Check if recommendations are actually AI-generated (not default)
+        if (result.recommendations && (
+          result.recommendations.includes('Unable to generate') ||
+          result.recommendations.includes('temporarily unavailable') ||
+          result.recommendations.includes('default')
+        )) {
+          quotaExceeded = true;
+          logger.warn(`Default recommendations returned for ${provider}, attempting fallback`);
+        }
+        
       } catch (error) {
-        // Check if error is quota-related
+        // Check if error is quota-related or API key related
         if (error.message && (
           error.message.includes('quota') || 
           error.message.includes('rate limit') || 
           error.message.includes('billing') ||
-          error.message.includes('quota exceeded')
+          error.message.includes('quota exceeded') ||
+          error.message.includes('API_KEY') ||
+          error.message.includes('not set')
         )) {
           quotaExceeded = true;
-          logger.warn(`Quota exceeded for ${provider}, attempting fallback`);
+          logger.warn(`Quota exceeded or API key issue for ${provider}, attempting fallback`);
         } else {
           throw error;
         }
@@ -136,7 +152,7 @@ class AIRecommendationService {
       
       // If quota exceeded and fallback is enabled, try alternative provider
       if (quotaExceeded && enableFallback) {
-        const fallbackProvider = provider === 'gemini' ? 'openai' : 'gemini';
+        const fallbackProvider = provider === 'gemini' ? 'chatgpt' : 'gemini';
         logger.info(`Attempting fallback to ${fallbackProvider}`);
         
         try {
