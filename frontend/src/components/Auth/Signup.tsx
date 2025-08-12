@@ -139,6 +139,28 @@ export default function Signup() {
 
       if (error) throw error;
 
+      // Create user profile in database via backend API
+      if (data.user) {
+        try {
+          const response = await fetch('/api/auth/create-profile', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user: data.user })
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.warn('Profile creation warning:', errorData);
+            // Continue to onboarding even if profile creation fails
+          }
+        } catch (profileError) {
+          console.warn('Profile creation error:', profileError);
+          // Continue to onboarding even if profile creation fails
+        }
+      }
+
       // Navigate to onboarding to complete the setup
       navigate('/onboarding');
     } catch (error: any) {

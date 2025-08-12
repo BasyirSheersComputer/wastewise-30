@@ -38,29 +38,23 @@ class AuthService {
         throw new Error('Missing required fields');
       }
 
-      // Check if user already exists
-      const { data: existingUser } = await this.supabase
-        .from('users')
-        .select('id')
-        .eq('email', email)
-        .single();
-
-      if (existingUser) {
+      // Check if user already exists in auth
+      const { data: existingAuthUser } = await this.supabase.auth.admin.listUsers();
+      const userExists = existingAuthUser.users.some(user => user.email === email);
+      
+      if (userExists) {
         throw new Error('User already exists');
       }
-
-      // Hash password
-      const hashedPassword = await bcrypt.hash(password, 12);
 
       // Set trial period
       const now = DateTime.now();
       const trialStart = now.toISO();
       const trialEnd = now.plus({ days: 30 }).toISO();
 
-      // Create user in Supabase Auth
+      // Create user in Supabase Auth (Supabase handles password hashing)
       const { data: authData, error: authError } = await this.supabase.auth.signUp({
         email,
-        password: hashedPassword,
+        password, // Don't hash - Supabase handles this
         options: {
           data: {
             first_name,
@@ -99,7 +93,12 @@ class AuthService {
         updated_at: new Date().toISOString()
       }]);
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        logger.error('Profile creation error', profileError);
+        // If profile creation fails, we should clean up the auth user
+        // But for now, let's log the error and continue
+        throw new Error(`Profile creation failed: ${profileError.message}`);
+      }
 
       // Create welcome email and onboarding sequence
       await this.sendWelcomeEmail(email, first_name, company_name);
@@ -118,6 +117,77 @@ class AuthService {
       };
     } catch (error) {
       logger.error('Error registering user', error);
+      throw error;
+    }
+  }
+
+  // Create user profile after auth signup (for frontend flow)
+  async createUserProfile(userId, userData) {
+    try {
+      const {
+        email,
+        first_name,
+        last_name,
+        company_name,
+        company_size,
+        primary_pain,
+        phone_number,
+        business_type = 'restaurant',
+        locations = 1,
+        annual_revenue = 'under_100k',
+        primary_goals = [],
+        data_sources = [],
+        team_size = '1-10',
+        timezone = 'Asia/Kuala_Lumpur'
+      } = userData;
+
+      // Set trial period
+      const now = DateTime.now();
+      const trialStart = now.toISO();
+      const trialEnd = now.plus({ days: 30 }).toISO();
+
+      // Create user profile in database
+      const { error: profileError } = await this.supabase.from('users').insert([{
+        id: userId,
+        email,
+        first_name,
+        last_name,
+        company_name,
+        company_size,
+        primary_pain,
+        phone_number,
+        business_type,
+        locations,
+        annual_revenue,
+        primary_goals,
+        data_sources,
+        team_size,
+        timezone,
+        trial_start: trialStart,
+        trial_end: trialEnd,
+        subscription_status: 'trial',
+        subscription_plan: 'free',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }]);
+
+      if (profileError) {
+        logger.error('Profile creation error', profileError);
+        throw new Error(`Profile creation failed: ${profileError.message}`);
+      }
+
+      logger.info('User profile created successfully', { 
+        user_id: userId, 
+        email 
+      });
+
+      return {
+        success: true,
+        trialEnd,
+        daysLeft: 30
+      };
+    } catch (error) {
+      logger.error('Error creating user profile', error);
       throw error;
     }
   }

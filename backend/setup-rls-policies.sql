@@ -417,3 +417,69 @@ SELECT
 FROM pg_policies 
 WHERE schemaname = 'public'
 ORDER BY tablename, policyname; 
+
+-- Fix RLS Policies for User Profile Creation
+-- This script ensures that users can create their own profiles
+
+-- Drop existing policies that might be too restrictive
+DROP POLICY IF EXISTS "Users can insert own profile" ON users;
+
+-- Create a more permissive insert policy for user profiles
+CREATE POLICY "Users can insert own profile" ON users 
+FOR INSERT 
+WITH CHECK (
+  auth.uid() = id OR 
+  (auth.uid() IS NOT NULL AND email = auth.jwt() ->> 'email')
+);
+
+-- Also allow users to insert profiles during signup process
+CREATE POLICY "Allow profile creation during signup" ON users 
+FOR INSERT 
+WITH CHECK (
+  auth.uid() IS NOT NULL OR 
+  email IS NOT NULL
+);
+
+-- Ensure users can view their own profile
+DROP POLICY IF EXISTS "Users can view own profile" ON users;
+CREATE POLICY "Users can view own profile" ON users 
+FOR SELECT 
+USING (
+  auth.uid() = id OR 
+  (auth.uid() IS NOT NULL AND email = auth.jwt() ->> 'email')
+);
+
+-- Ensure users can update their own profile
+DROP POLICY IF EXISTS "Users can update own profile" ON users;
+CREATE POLICY "Users can update own profile" ON users 
+FOR UPDATE 
+USING (
+  auth.uid() = id OR 
+  (auth.uid() IS NOT NULL AND email = auth.jwt() ->> 'email')
+);
+
+-- Grant necessary permissions to authenticated users
+GRANT USAGE ON SCHEMA public TO authenticated;
+GRANT ALL ON users TO authenticated;
+GRANT ALL ON user_settings TO authenticated;
+
+-- Enable RLS on users table if not already enabled
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
+-- Create a function to handle user profile creation
+CREATE OR REPLACE FUNCTION handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- This function can be used to automatically create user profiles
+  -- when new users are created in auth.users
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create trigger for new user creation (optional)
+-- DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+-- CREATE TRIGGER on_auth_user_created
+--   AFTER INSERT ON auth.users
+--   FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+
+COMMIT; 

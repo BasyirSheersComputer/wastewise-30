@@ -119,7 +119,7 @@ export default function OnboardingForm() {
     try {
       setLoading(true);
 
-      // Create user profile in database
+      // Create or update user profile in database
       const { error: profileError } = await supabase.from('users').upsert({
         id: user.id,
         email: user.email,
@@ -142,9 +142,16 @@ export default function OnboardingForm() {
         subscription_plan: 'free',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'id' // Handle case where profile already exists
       });
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        console.error('Profile update error:', profileError);
+        // Log the error but continue to dashboard
+      } else {
+        console.log('Profile updated successfully');
+      }
 
       // Navigate to dashboard
       navigate('/dashboard');

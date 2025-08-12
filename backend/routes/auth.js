@@ -63,6 +63,46 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// Create user profile after frontend signup
+router.post('/create-profile', async (req, res) => {
+  try {
+    const { user } = req.body;
+    
+    if (!user || !user.id || !user.email) {
+      return res.status(400).json({ error: 'Invalid user data' });
+    }
+
+    // Extract user data from auth user metadata
+    const userData = {
+      email: user.email,
+      first_name: user.user_metadata?.first_name || '',
+      last_name: user.user_metadata?.last_name || '',
+      company_name: user.user_metadata?.company_name || '',
+      company_size: user.user_metadata?.company_size || '',
+      primary_pain: user.user_metadata?.primary_pain || '',
+      phone_number: user.user_metadata?.phone_number || '',
+      business_type: 'restaurant',
+      locations: 1,
+      annual_revenue: 'under_100k',
+      primary_goals: [],
+      data_sources: [],
+      team_size: '1-10',
+      timezone: 'Asia/Kuala_Lumpur'
+    };
+
+    const result = await authService.createUserProfile(user.id, userData);
+
+    res.status(201).json({
+      message: 'User profile created successfully',
+      trialEnd: result.trialEnd,
+      daysLeft: result.daysLeft
+    });
+  } catch (error) {
+    logger.error('Profile creation error', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Google OAuth sign in
 router.post('/google', async (req, res) => {
   try {
