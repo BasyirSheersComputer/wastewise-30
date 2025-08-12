@@ -12,7 +12,12 @@
     "test:saas": "node test-saas-features.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "health": "curl http://localhost:3000/health"
+    "health": "curl http://localhost:3000/health",
+    "db:get-users": "node get-user-id.js",
+    "db:populate": "node populate-database.js",
+    "db:populate-simple": "node populate-database-simple.js",
+    "db:populate-admin": "node populate-database-admin.js",
+    "db:setup": "npm run db:get-users && npm run db:populate"
   },
   "keywords": [
     "restaurant",
@@ -48,7 +53,8 @@
     "openai": "^5.10.1",
     "redis": "^4.6.10",
     "stripe": "^18.4.0",
-    "twilio": "^4.19.0"
+    "twilio": "^4.19.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
