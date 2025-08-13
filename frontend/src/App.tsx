@@ -40,6 +40,8 @@ import EmailConfirmation from "./components/Auth/EmailConfirmation";
 import LandingPage from "./components/Marketing/LandingPage";
 import GrandSlamOffer from "./components/Marketing/GrandSlamOffer";
 import PricingPage from "./components/Marketing/PricingPage";
+import CheckoutPage from "./components/Checkout/CheckoutPage";
+import CheckoutSuccess from "./components/Checkout/CheckoutSuccess";
 import Signup from "./components/Auth/Signup";
 import OnboardingForm from "./components/Auth/OnboardingForm";
 import TrialEnded from "./components/Auth/TrialEnded";
@@ -255,6 +257,8 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/offer" element={<GrandSlamOffer />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/checkout/success" element={<CheckoutSuccess />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />

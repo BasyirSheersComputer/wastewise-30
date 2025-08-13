@@ -12,10 +12,39 @@ export default function PricingPage() {
     script.async = true;
     document.head.appendChild(script);
 
+    // Add custom CSS for desktop layout
+    const style = document.createElement('style');
+    style.textContent = `
+      @media (min-width: 1024px) {
+        stripe-pricing-table {
+          display: block !important;
+        }
+        stripe-pricing-table::part(table) {
+          display: flex !important;
+          flex-direction: row !important;
+          justify-content: center !important;
+          gap: 1rem !important;
+        }
+        stripe-pricing-table::part(row) {
+          display: flex !important;
+          flex-direction: row !important;
+          width: 100% !important;
+        }
+        stripe-pricing-table::part(cell) {
+          flex: 1 !important;
+          max-width: none !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
     return () => {
-      // Cleanup script when component unmounts
+      // Cleanup script and style when component unmounts
       if (document.head.contains(script)) {
         document.head.removeChild(script);
+      }
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
       }
     };
   }, []);
@@ -110,13 +139,17 @@ export default function PricingPage() {
             Choose the perfect plan for your business. All plans include a 14-day free trial with full access to all features.
           </p>
           
-          {/* Stripe Pricing Table */}
-          <div className="mb-16">
-            <stripe-pricing-table 
-              pricing-table-id="prctbl_1RvZaY1awWwGP4dIvzJKE0Mw"
-              publishable-key="pk_live_51Rqms71awWwGP4dIrms0QUcKCCvsUU3m6KaWcjrHi6FkeoJD41tW8EM7m7fvvxyMds0M7HAgHz8Rn5q9az7s7SVp00EKbZehYr">
-            </stripe-pricing-table>
-          </div>
+                     {/* Stripe Pricing Table */}
+           <div className="mb-16">
+             <div className="max-w-6xl mx-auto">
+               <stripe-pricing-table 
+                 pricing-table-id="prctbl_1RvZaY1awWwGP4dIvzJKE0Mw"
+                 publishable-key="pk_live_51Rqms71awWwGP4dIrms0QUcKCCvsUU3m6KaWcjrHi6FkeoJD41tW8EM7m7fvvxyMds0M7HAgHz8Rn5q9az7s7SVp00EKbZehYr"
+                 customer-email=""
+                 client-reference-id="">
+               </stripe-pricing-table>
+             </div>
+           </div>
         </div>
       </div>
 
