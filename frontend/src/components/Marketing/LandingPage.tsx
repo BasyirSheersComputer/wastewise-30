@@ -12,6 +12,12 @@ export default function LandingPage() {
         <div className="text-2xl font-bold text-blue-800">WasteWise</div>
         <div className="space-x-4">
           <button
+            onClick={() => navigate('/pricing')}
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            Pricing
+          </button>
+          <button
             onClick={() => navigate('/login')}
             className="text-blue-600 hover:text-blue-800 font-medium"
           >

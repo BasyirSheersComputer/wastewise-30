@@ -39,6 +39,7 @@ import EmailConfirmation from "./components/Auth/EmailConfirmation";
 
 import LandingPage from "./components/Marketing/LandingPage";
 import GrandSlamOffer from "./components/Marketing/GrandSlamOffer";
+import PricingPage from "./components/Marketing/PricingPage";
 import Signup from "./components/Auth/Signup";
 import OnboardingForm from "./components/Auth/OnboardingForm";
 import TrialEnded from "./components/Auth/TrialEnded";
@@ -253,6 +254,7 @@ function App() {
         {/* Public Routes - No Sidebar */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/offer" element={<GrandSlamOffer />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />
