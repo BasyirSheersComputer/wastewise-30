@@ -157,9 +157,9 @@ export default function CheckoutSuccess() {
             <div className="text-2xl font-bold text-gray-900 mb-2">
               ${plan.price}/month
             </div>
-            <p className="text-gray-600 text-sm">
-              Your first payment has been processed. Next billing date: {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-            </p>
+                         <p className="text-gray-600 text-sm">
+               Your 30-day free trial has started. First billing date: {new Date(Date.now() + (import.meta.env.VITE_TRIAL_PERIOD_DAYS || 30) * 24 * 60 * 60 * 1000).toLocaleDateString()}
+             </p>
           </div>
         </div>
 
@@ -241,10 +241,10 @@ export default function CheckoutSuccess() {
             <div>
               <h4 className="font-medium text-gray-900 mb-3">Account Benefits:</h4>
               <ul className="space-y-2">
-                <li className="flex items-center text-sm text-gray-600">
-                  <Clock className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" />
-                  14-day free trial (no charges during trial)
-                </li>
+                                 <li className="flex items-center text-sm text-gray-600">
+                   <Clock className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" />
+                   30-day free trial (no charges during trial)
+                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <Shield className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" />
                   Cancel anytime with no penalties

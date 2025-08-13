@@ -221,43 +221,48 @@ describe('User Checkout Journey', () => {
 
 ## 🚀 Deployment Checklist
 
-### 1. Environment Variables
-```bash
-# Stripe Configuration
-STRIPE_PUBLISHABLE_KEY=pk_live_...
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+ ### 1. Environment Variables
+ ```bash
+ # Stripe Configuration
+ STRIPE_PUBLISHABLE_KEY=pk_live_...
+ STRIPE_SECRET_KEY=sk_live_...
+ STRIPE_WEBHOOK_SECRET=whsec_...
+ 
+ # Plan Price IDs
+ STRIPE_PRICE_BASIC=price_...
+ STRIPE_PRICE_PRO=price_...
+ STRIPE_PRICE_ENTERPRISE=price_...
+ 
+ # Trial Configuration
+ TRIAL_PERIOD_DAYS=30
+ ```
 
-# Plan Price IDs
-STRIPE_PRICE_BASIC=price_...
-STRIPE_PRICE_PRO=price_...
-STRIPE_PRICE_ENTERPRISE=price_...
-```
+ ### 2. Database Schema
+ ```sql
+ -- Subscriptions table
+ CREATE TABLE subscriptions (
+   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   user_id UUID REFERENCES users(id),
+   plan_id VARCHAR(50) NOT NULL,
+   status VARCHAR(20) DEFAULT 'pending',
+   stripe_payment_intent_id VARCHAR(255),
+   stripe_subscription_id VARCHAR(255),
+   stripe_customer_id VARCHAR(255),
+   amount INTEGER NOT NULL,
+   currency VARCHAR(3) DEFAULT 'usd',
+   trial_start TIMESTAMP,
+   trial_end TIMESTAMP,
+   current_period_start TIMESTAMP,
+   current_period_end TIMESTAMP,
+   created_at TIMESTAMP DEFAULT NOW(),
+   updated_at TIMESTAMP DEFAULT NOW()
+ );
+ ```
 
-### 2. Database Schema
-```sql
--- Subscriptions table
-CREATE TABLE subscriptions (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id),
-  plan_id VARCHAR(50) NOT NULL,
-  status VARCHAR(20) DEFAULT 'pending',
-  stripe_payment_intent_id VARCHAR(255),
-  stripe_subscription_id VARCHAR(255),
-  stripe_customer_id VARCHAR(255),
-  amount INTEGER NOT NULL,
-  currency VARCHAR(3) DEFAULT 'usd',
-  current_period_start TIMESTAMP,
-  current_period_end TIMESTAMP,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-```
-
-### 3. Webhook Configuration
-- **Stripe Dashboard**: Configure webhook endpoint
-- **Endpoint URL**: `https://yourdomain.com/api/billing/webhook`
-- **Events**: `payment_intent.succeeded`, `payment_intent.payment_failed`, `customer.subscription.*`
+ ### 3. Webhook Configuration
+ - **Stripe Dashboard**: Configure webhook endpoint
+ - **Endpoint URL**: `https://yourdomain.com/api/billing/webhook`
+ - **Events**: `payment_intent.succeeded`, `payment_intent.payment_failed`, `customer.subscription.*`, `customer.subscription.trial_will_end`
 
 ## 📈 Performance Optimization
 

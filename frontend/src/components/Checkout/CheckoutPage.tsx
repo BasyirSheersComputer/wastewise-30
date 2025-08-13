@@ -404,21 +404,21 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Trust Indicators */}
-              <div className="space-y-4">
-                <div className="flex items-center text-sm text-gray-600">
-                  <Clock className="w-4 h-4 mr-2" />
-                  <span>14-day free trial included</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                  <Shield className="w-4 h-4 mr-2" />
-                  <span>Cancel anytime</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                  <Users className="w-4 h-4 mr-2" />
-                  <span>Join 500+ coffee chains</span>
-                </div>
-              </div>
+                             {/* Trust Indicators */}
+               <div className="space-y-4">
+                 <div className="flex items-center text-sm text-gray-600">
+                   <Clock className="w-4 h-4 mr-2" />
+                   <span>30-day free trial included</span>
+                 </div>
+                 <div className="flex items-center text-sm text-gray-600">
+                   <Shield className="w-4 h-4 mr-2" />
+                   <span>Cancel anytime</span>
+                 </div>
+                 <div className="flex items-center text-sm text-gray-600">
+                   <Users className="w-4 h-4 mr-2" />
+                   <span>Join 500+ coffee chains</span>
+                 </div>
+               </div>
 
               {/* Customer Reviews */}
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">

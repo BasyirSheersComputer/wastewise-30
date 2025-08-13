@@ -376,35 +376,39 @@ router.post('/create-payment-intent', async (req, res) => {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    // Create payment intent
-    const paymentIntent = await stripeService.stripe.paymentIntents.create({
-      amount: amount,
-      currency: currency,
-      automatic_payment_methods: {
-        enabled: true,
-      },
-      metadata: {
-        planId: planId,
-        userId: user.id,
-        userEmail: user.email,
-      },
-      receipt_email: user.email,
-    });
+         // Create payment intent for trial setup
+     const paymentIntent = await stripeService.stripe.paymentIntents.create({
+       amount: amount,
+       currency: currency,
+       automatic_payment_methods: {
+         enabled: true,
+       },
+       metadata: {
+         planId: planId,
+         userId: user.id,
+         userEmail: user.email,
+         trialPeriod: '30',
+       },
+       receipt_email: user.email,
+       description: `Setup payment for ${planId} plan - 30-day free trial`,
+     });
 
-    // Create or update subscription record
-    const subscription = await supabase
-      .from('subscriptions')
-      .upsert({
-        user_id: user.id,
-        plan_id: planId,
-        status: 'pending',
-        stripe_payment_intent_id: paymentIntent.id,
-        amount: amount,
-        currency: currency,
-        created_at: new Date().toISOString(),
-      })
-      .select()
-      .single();
+         // Create or update subscription record
+     const subscription = await supabase
+       .from('subscriptions')
+       .upsert({
+         user_id: user.id,
+         plan_id: planId,
+         status: 'trialing',
+         stripe_payment_intent_id: paymentIntent.id,
+         amount: amount,
+         currency: currency,
+         trial_start: new Date().toISOString(),
+         trial_end: new Date(Date.now() + (process.env.TRIAL_PERIOD_DAYS || 30) * 24 * 60 * 60 * 1000).toISOString(),
+         created_at: new Date().toISOString(),
+       })
+       .select()
+       .single();
 
     res.json({
       clientSecret: paymentIntent.client_secret,
@@ -453,36 +457,41 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Handle the event
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      const paymentIntent = event.data.object;
-      await handlePaymentSuccess(paymentIntent);
-      break;
-    
-    case 'payment_intent.payment_failed':
-      const failedPayment = event.data.object;
-      await handlePaymentFailure(failedPayment);
-      break;
-    
-    case 'customer.subscription.created':
-      const subscription = event.data.object;
-      await handleSubscriptionCreated(subscription);
-      break;
-    
-    case 'customer.subscription.updated':
-      const updatedSubscription = event.data.object;
-      await handleSubscriptionUpdated(updatedSubscription);
-      break;
-    
-    case 'customer.subscription.deleted':
-      const deletedSubscription = event.data.object;
-      await handleSubscriptionDeleted(deletedSubscription);
-      break;
-    
-    default:
-      logger.info(`Unhandled event type: ${event.type}`);
-  }
+     // Handle the event
+   switch (event.type) {
+     case 'payment_intent.succeeded':
+       const paymentIntent = event.data.object;
+       await handlePaymentSuccess(paymentIntent);
+       break;
+     
+     case 'payment_intent.payment_failed':
+       const failedPayment = event.data.object;
+       await handlePaymentFailure(failedPayment);
+       break;
+     
+     case 'customer.subscription.created':
+       const subscription = event.data.object;
+       await handleSubscriptionCreated(subscription);
+       break;
+     
+     case 'customer.subscription.updated':
+       const updatedSubscription = event.data.object;
+       await handleSubscriptionUpdated(updatedSubscription);
+       break;
+     
+     case 'customer.subscription.deleted':
+       const deletedSubscription = event.data.object;
+       await handleSubscriptionDeleted(deletedSubscription);
+       break;
+     
+     case 'customer.subscription.trial_will_end':
+       const trialEndingSubscription = event.data.object;
+       await handleTrialEnding(trialEndingSubscription);
+       break;
+     
+     default:
+       logger.info(`Unhandled event type: ${event.type}`);
+   }
 
   res.json({ received: true });
 });
@@ -492,15 +501,17 @@ async function handlePaymentSuccess(paymentIntent) {
   try {
     const { planId, userId, userEmail } = paymentIntent.metadata;
 
-    // Update subscription status
-    const { error } = await supabase
-      .from('subscriptions')
-      .update({
-        status: 'active',
-        stripe_payment_intent_id: paymentIntent.id,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('stripe_payment_intent_id', paymentIntent.id);
+         // Update subscription status for trial
+     const { error } = await supabase
+       .from('subscriptions')
+       .update({
+         status: 'trialing',
+         stripe_payment_intent_id: paymentIntent.id,
+         trial_start: new Date().toISOString(),
+         trial_end: new Date(Date.now() + (process.env.TRIAL_PERIOD_DAYS || 30) * 24 * 60 * 60 * 1000).toISOString(),
+         updated_at: new Date().toISOString(),
+       })
+       .eq('stripe_payment_intent_id', paymentIntent.id);
 
     if (error) {
       logger.error('Error updating subscription:', error);
@@ -523,18 +534,21 @@ async function handlePaymentSuccess(paymentIntent) {
       customer = customer.data[0];
     }
 
-    // Create subscription in Stripe
-    const subscription = await stripeService.stripe.subscriptions.create({
-      customer: customer.id,
-      items: [{ price: getStripePriceId(planId) }],
-      payment_behavior: 'default_incomplete',
-      payment_settings: { save_default_payment_method: 'on_subscription' },
-      expand: ['latest_invoice.payment_intent'],
-      metadata: {
-        userId: userId,
-        planId: planId,
-      },
-    });
+         // Create subscription in Stripe with trial period
+     const trialPeriodDays = process.env.TRIAL_PERIOD_DAYS || 30;
+     const subscription = await stripeService.stripe.subscriptions.create({
+       customer: customer.id,
+       items: [{ price: getStripePriceId(planId) }],
+       trial_period_days: parseInt(trialPeriodDays),
+       payment_behavior: 'default_incomplete',
+       payment_settings: { save_default_payment_method: 'on_subscription' },
+       expand: ['latest_invoice.payment_intent'],
+       metadata: {
+         userId: userId,
+         planId: planId,
+         trialPeriodDays: trialPeriodDays,
+       },
+     });
 
     // Update subscription with Stripe subscription ID
     await supabase
@@ -637,15 +651,40 @@ async function handleSubscriptionDeleted(subscription) {
   }
 }
 
-// Helper function to get Stripe price ID
-function getStripePriceId(planId) {
-  const priceIds = {
-    basic: process.env.STRIPE_PRICE_BASIC,
-    pro: process.env.STRIPE_PRICE_PRO,
-    enterprise: process.env.STRIPE_PRICE_ENTERPRISE,
-  };
-  return priceIds[planId];
-}
+ // Handle trial ending
+ async function handleTrialEnding(subscription) {
+   try {
+     const { userId, planId } = subscription.metadata;
+
+     // Update subscription status
+     await supabase
+       .from('subscriptions')
+       .update({
+         status: 'active',
+         trial_end: new Date(subscription.trial_end * 1000).toISOString(),
+         current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+         current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+         updated_at: new Date().toISOString(),
+       })
+       .eq('stripe_subscription_id', subscription.id);
+
+     // Send trial ending notification email
+     // TODO: Implement email notification
+     logger.info(`Trial ending for user ${userId}, plan ${planId}`);
+   } catch (error) {
+     logger.error('Error handling trial ending:', error);
+   }
+ }
+
+ // Helper function to get Stripe price ID
+ function getStripePriceId(planId) {
+   const priceIds = {
+     basic: process.env.STRIPE_PRICE_BASIC,
+     pro: process.env.STRIPE_PRICE_PRO,
+     enterprise: process.env.STRIPE_PRICE_ENTERPRISE,
+   };
+   return priceIds[planId];
+ }
 
 // Get customer portal URL
 router.post('/customer-portal', async (req, res) => {

@@ -135,9 +135,9 @@ export default function PricingPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Simple, Transparent Pricing
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Choose the perfect plan for your business. All plans include a 14-day free trial with full access to all features.
-          </p>
+                     <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+             Choose the perfect plan for your business. All plans include a 30-day free trial with full access to all features.
+           </p>
           
                      {/* Stripe Pricing Table */}
            <div className="mb-16">
@@ -260,14 +260,14 @@ export default function PricingPage() {
               </p>
             </div>
 
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What's included in the free trial?
-              </h3>
-              <p className="text-gray-600">
-                The 14-day free trial includes access to all features and unlimited locations. No credit card required to start.
-              </p>
-            </div>
+                         <div className="border-b border-gray-200 pb-6">
+               <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                 What's included in the free trial?
+               </h3>
+               <p className="text-gray-600">
+                 The 30-day free trial includes access to all features and unlimited locations. No credit card required to start.
+               </p>
+             </div>
 
             <div className="border-b border-gray-200 pb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
