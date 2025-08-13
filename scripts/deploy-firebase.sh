@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Firebase Deployment Script for WasteWise
-# This script automates the deployment process to Firebase Hosting and Functions
+# 🚀 Firebase Deployment Script for WasteWise
+# This script handles the complete deployment process for Firebase hosting and functions
 
 set -e  # Exit on any error
 
@@ -13,200 +13,317 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_ID="wastewise-30"
+PROJECT_NAME="wastewise-30"
 FRONTEND_DIR="frontend"
 BACKEND_DIR="backend"
-DEPLOYMENT_ENV=${1:-production}
+BUILD_DIR="dist"
 
-echo -e "${BLUE}🚀 Starting Firebase Deployment for WasteWise${NC}"
-echo -e "${BLUE}Environment: ${DEPLOYMENT_ENV}${NC}"
-echo -e "${BLUE}Project ID: ${PROJECT_ID}${NC}"
+# Logging function
+log() {
+    echo -e "${BLUE}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $1"
+}
 
-# Function to print colored output
-print_status() {
+success() {
     echo -e "${GREEN}✅ $1${NC}"
 }
 
-print_warning() {
+warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
-print_error() {
+error() {
     echo -e "${RED}❌ $1${NC}"
 }
 
-# Function to check if command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
+# Check if Firebase CLI is installed
+check_firebase_cli() {
+    log "Checking Firebase CLI installation..."
+    if ! command -v firebase &> /dev/null; then
+        error "Firebase CLI is not installed. Please install it first:"
+        echo "npm install -g firebase-tools"
+        exit 1
+    fi
+    success "Firebase CLI is installed"
 }
 
-# Check prerequisites
-echo -e "${BLUE}🔍 Checking prerequisites...${NC}"
-
-if ! command_exists firebase; then
-    print_error "Firebase CLI is not installed. Please install it first:"
-    echo "npm install -g firebase-tools"
-    exit 1
-fi
-
-if ! command_exists node; then
-    print_error "Node.js is not installed. Please install Node.js first."
-    exit 1
-fi
-
-if ! command_exists npm; then
-    print_error "npm is not installed. Please install npm first."
-    exit 1
-fi
-
-print_status "All prerequisites are satisfied"
-
 # Check if user is logged in to Firebase
-echo -e "${BLUE}🔐 Checking Firebase authentication...${NC}"
-if ! firebase projects:list >/dev/null 2>&1; then
-    print_warning "Not logged in to Firebase. Please login first:"
-    echo "firebase login"
-    exit 1
-fi
+check_firebase_auth() {
+    log "Checking Firebase authentication..."
+    if ! firebase projects:list &> /dev/null; then
+        error "Not authenticated with Firebase. Please login first:"
+        echo "firebase login"
+        exit 1
+    fi
+    success "Firebase authentication verified"
+}
 
-print_status "Firebase authentication verified"
-
-# Set the project
-echo -e "${BLUE}📋 Setting Firebase project...${NC}"
-firebase use $PROJECT_ID
-print_status "Firebase project set to $PROJECT_ID"
+# Check if project exists and user has access
+check_project_access() {
+    log "Checking project access..."
+    if ! firebase use $PROJECT_NAME &> /dev/null; then
+        error "Cannot access project '$PROJECT_NAME'. Please check your permissions."
+        exit 1
+    fi
+    success "Project access verified"
+}
 
 # Install dependencies
-echo -e "${BLUE}📦 Installing dependencies...${NC}"
+install_dependencies() {
+    log "Installing dependencies..."
+    
+    # Frontend dependencies
+    log "Installing frontend dependencies..."
+    cd $FRONTEND_DIR
+    npm ci --silent
+    success "Frontend dependencies installed"
+    
+    # Backend dependencies
+    log "Installing backend dependencies..."
+    cd ../$BACKEND_DIR
+    npm ci --silent
+    success "Backend dependencies installed"
+    
+    cd ..
+}
 
-echo -e "${BLUE}Installing frontend dependencies...${NC}"
-cd $FRONTEND_DIR
-npm ci --silent
-print_status "Frontend dependencies installed"
-
-echo -e "${BLUE}Installing backend dependencies...${NC}"
-cd ../$BACKEND_DIR
-npm ci --silent
-print_status "Backend dependencies installed"
-
-cd ..
+# Run tests
+run_tests() {
+    log "Running tests..."
+    
+    # Frontend tests
+    log "Running frontend tests..."
+    cd $FRONTEND_DIR
+    if npm test --silent; then
+        success "Frontend tests passed"
+    else
+        warning "Frontend tests failed, but continuing deployment..."
+    fi
+    
+    # Backend tests
+    log "Running backend tests..."
+    cd ../$BACKEND_DIR
+    if npm test --silent; then
+        success "Backend tests passed"
+    else
+        warning "Backend tests failed, but continuing deployment..."
+    fi
+    
+    cd ..
+}
 
 # Build frontend
-echo -e "${BLUE}🏗️  Building frontend...${NC}"
-cd $FRONTEND_DIR
-npm run build
-if [ $? -eq 0 ]; then
-    print_status "Frontend build completed successfully"
-else
-    print_error "Frontend build failed"
-    exit 1
-fi
-cd ..
+build_frontend() {
+    log "Building frontend..."
+    cd $FRONTEND_DIR
+    
+    # Clean previous build
+    rm -rf $BUILD_DIR
+    
+    # Build for production
+    if npm run build; then
+        success "Frontend built successfully"
+        
+        # Check if build files exist
+        if [ ! -d "$BUILD_DIR" ]; then
+            error "Build directory not found. Build may have failed."
+            exit 1
+        fi
+        
+        # Check build size
+        BUILD_SIZE=$(du -sh $BUILD_DIR | cut -f1)
+        log "Build size: $BUILD_SIZE"
+        
+    else
+        error "Frontend build failed"
+        exit 1
+    fi
+    
+    cd ..
+}
 
-# Run tests (if available)
-echo -e "${BLUE}🧪 Running tests...${NC}"
-cd $FRONTEND_DIR
-if npm run test >/dev/null 2>&1; then
-    print_status "Frontend tests passed"
-else
-    print_warning "Frontend tests failed or not configured"
-fi
-cd ..
+# Validate environment configuration
+validate_environment() {
+    log "Validating environment configuration..."
+    
+    # Check if .env files exist
+    if [ ! -f "$FRONTEND_DIR/.env.production" ]; then
+        warning "Production environment file not found: $FRONTEND_DIR/.env.production"
+        warning "Using development environment variables"
+    fi
+    
+    # Check Firebase configuration
+    if ! firebase functions:config:get &> /dev/null; then
+        warning "Firebase Functions configuration not found"
+        warning "Please set up your environment variables:"
+        echo "firebase functions:config:set supabase.url=\"your-supabase-url\""
+        echo "firebase functions:config:set supabase.anon_key=\"your-anon-key\""
+        echo "firebase functions:config:set auth.jwt_secret=\"your-jwt-secret\""
+    else
+        success "Firebase configuration found"
+    fi
+}
 
-cd $BACKEND_DIR
-if npm run test >/dev/null 2>&1; then
-    print_status "Backend tests passed"
-else
-    print_warning "Backend tests failed or not configured"
-fi
-cd ..
+# Deploy backend functions
+deploy_functions() {
+    log "Deploying backend functions..."
+    
+    if firebase deploy --only functions --non-interactive; then
+        success "Backend functions deployed successfully"
+        
+        # Get function URL
+        FUNCTION_URL=$(firebase functions:config:get | grep -o 'https://[^"]*')
+        if [ ! -z "$FUNCTION_URL" ]; then
+            log "Function URL: $FUNCTION_URL"
+        fi
+        
+    else
+        error "Backend functions deployment failed"
+        exit 1
+    fi
+}
 
-# Deploy to Firebase
-echo -e "${BLUE}🚀 Deploying to Firebase...${NC}"
-
-# Deploy functions first
-echo -e "${BLUE}Deploying Cloud Functions...${NC}"
-firebase deploy --only functions --project $PROJECT_ID
-if [ $? -eq 0 ]; then
-    print_status "Cloud Functions deployed successfully"
-else
-    print_error "Cloud Functions deployment failed"
-    exit 1
-fi
-
-# Deploy hosting
-echo -e "${BLUE}Deploying to Firebase Hosting...${NC}"
-firebase deploy --only hosting --project $PROJECT_ID
-if [ $? -eq 0 ]; then
-    print_status "Firebase Hosting deployed successfully"
-else
-    print_error "Firebase Hosting deployment failed"
-    exit 1
-fi
+# Deploy frontend hosting
+deploy_hosting() {
+    log "Deploying frontend hosting..."
+    
+    if firebase deploy --only hosting --non-interactive; then
+        success "Frontend hosting deployed successfully"
+        
+        # Get hosting URL
+        HOSTING_URL=$(firebase hosting:channel:list | grep -o 'https://[^"]*' | head -1)
+        if [ ! -z "$HOSTING_URL" ]; then
+            log "Hosting URL: $HOSTING_URL"
+        fi
+        
+    else
+        error "Frontend hosting deployment failed"
+        exit 1
+    fi
+}
 
 # Deploy Firestore rules and indexes
-echo -e "${BLUE}Deploying Firestore configuration...${NC}"
-firebase deploy --only firestore:rules,firestore:indexes --project $PROJECT_ID
-if [ $? -eq 0 ]; then
-    print_status "Firestore configuration deployed successfully"
-else
-    print_warning "Firestore configuration deployment failed or not configured"
-fi
+deploy_firestore() {
+    log "Deploying Firestore rules and indexes..."
+    
+    if firebase deploy --only firestore --non-interactive; then
+        success "Firestore rules and indexes deployed successfully"
+    else
+        warning "Firestore deployment failed, but continuing..."
+    fi
+}
 
 # Deploy Storage rules
-echo -e "${BLUE}Deploying Storage rules...${NC}"
-firebase deploy --only storage --project $PROJECT_ID
-if [ $? -eq 0 ]; then
-    print_status "Storage rules deployed successfully"
-else
-    print_warning "Storage rules deployment failed or not configured"
-fi
-
-# Get deployment URLs
-echo -e "${BLUE}📋 Getting deployment information...${NC}"
-HOSTING_URL=$(firebase hosting:channel:list --project $PROJECT_ID --json | grep -o '"url":"[^"]*"' | head -1 | cut -d'"' -f4)
-FUNCTIONS_URL="https://us-central1-$PROJECT_ID.cloudfunctions.net"
-
-if [ -n "$HOSTING_URL" ]; then
-    print_status "Hosting URL: $HOSTING_URL"
-else
-    print_status "Hosting URL: https://$PROJECT_ID.web.app"
-fi
-
-print_status "Functions URL: $FUNCTIONS_URL"
-
-# Health check
-echo -e "${BLUE}🏥 Running health checks...${NC}"
-sleep 10  # Wait for deployment to propagate
-
-# Test health endpoint
-if command_exists curl; then
-    HEALTH_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$FUNCTIONS_URL/api/health" || echo "000")
-    if [ "$HEALTH_RESPONSE" = "200" ]; then
-        print_status "Health check passed"
+deploy_storage() {
+    log "Deploying Storage rules..."
+    
+    if firebase deploy --only storage --non-interactive; then
+        success "Storage rules deployed successfully"
     else
-        print_warning "Health check failed (HTTP $HEALTH_RESPONSE)"
+        warning "Storage deployment failed, but continuing..."
     fi
-else
-    print_warning "curl not available, skipping health check"
-fi
+}
 
-# Final status
-echo -e "${BLUE}🎉 Deployment Summary${NC}"
-echo -e "${GREEN}✅ Frontend: Built and deployed${NC}"
-echo -e "${GREEN}✅ Backend: Functions deployed${NC}"
-echo -e "${GREEN}✅ Database: Rules and indexes deployed${NC}"
-echo -e "${GREEN}✅ Storage: Rules deployed${NC}"
+# Run health checks
+health_check() {
+    log "Running health checks..."
+    
+    # Wait for deployment to propagate
+    sleep 10
+    
+    # Check function health
+    FUNCTION_URL="https://us-central1-$PROJECT_NAME.cloudfunctions.net/api"
+    if curl -f -s "$FUNCTION_URL/health" > /dev/null; then
+        success "Backend health check passed"
+    else
+        warning "Backend health check failed"
+    fi
+    
+    # Check hosting
+    HOSTING_URL="https://$PROJECT_NAME.web.app"
+    if curl -f -s "$HOSTING_URL" > /dev/null; then
+        success "Frontend health check passed"
+    else
+        warning "Frontend health check failed"
+    fi
+}
 
-echo -e "${BLUE}📊 Next Steps:${NC}"
-echo "1. Verify the application is working correctly"
-echo "2. Monitor Firebase Console for any issues"
-echo "3. Set up monitoring and alerting"
-echo "4. Update DNS if using custom domain"
+# Show deployment summary
+show_summary() {
+    echo ""
+    echo "🎉 Deployment Summary"
+    echo "===================="
+    echo "Project: $PROJECT_NAME"
+    echo "Frontend URL: https://$PROJECT_NAME.web.app"
+    echo "Backend URL: https://us-central1-$PROJECT_NAME.cloudfunctions.net/api"
+    echo ""
+    echo "📋 Next Steps:"
+    echo "1. Test the application at: https://$PROJECT_NAME.web.app"
+    echo "2. Check Firebase Console for monitoring"
+    echo "3. Set up custom domain if needed"
+    echo "4. Configure analytics and monitoring"
+    echo ""
+}
 
-echo -e "${BLUE}🔗 Useful Links:${NC}"
-echo "Firebase Console: https://console.firebase.google.com/project/$PROJECT_ID"
-echo "Hosting URL: https://$PROJECT_ID.web.app"
-echo "Functions URL: $FUNCTIONS_URL"
+# Main deployment function
+main() {
+    echo "🚀 Starting Firebase deployment for WasteWise"
+    echo "=============================================="
+    
+    # Pre-deployment checks
+    check_firebase_cli
+    check_firebase_auth
+    check_project_access
+    
+    # Setup
+    install_dependencies
+    validate_environment
+    
+    # Testing (optional)
+    if [ "$1" != "--skip-tests" ]; then
+        run_tests
+    else
+        warning "Skipping tests as requested"
+    fi
+    
+    # Build
+    build_frontend
+    
+    # Deploy
+    deploy_functions
+    deploy_hosting
+    deploy_firestore
+    deploy_storage
+    
+    # Post-deployment
+    health_check
+    show_summary
+    
+    success "Deployment completed successfully! 🎉"
+}
 
-print_status "Deployment completed successfully!"
+# Handle command line arguments
+case "${1:-}" in
+    --help|-h)
+        echo "Usage: $0 [OPTIONS]"
+        echo ""
+        echo "Options:"
+        echo "  --skip-tests    Skip running tests before deployment"
+        echo "  --help, -h      Show this help message"
+        echo ""
+        echo "Examples:"
+        echo "  $0              Deploy with tests"
+        echo "  $0 --skip-tests Deploy without tests"
+        exit 0
+        ;;
+    --skip-tests)
+        main --skip-tests
+        ;;
+    "")
+        main
+        ;;
+    *)
+        error "Unknown option: $1"
+        echo "Use --help for usage information"
+        exit 1
+        ;;
+esac

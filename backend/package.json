@@ -3,7 +3,7 @@
   "name": "wastewise-backend",
   "version": "1.0.0",
   "description": "Backend API for WasteWise - AI-powered restaurant waste management SaaS platform",
-  "main": "index.js",
+  "main": "functions/index.js",
   "engines": {
     "node": "18"
   },

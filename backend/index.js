@@ -355,6 +355,93 @@ app.post('/api/user/onboard', async (req, res) => {
   }
 });
 
+// Debug endpoint for monitoring user activities
+app.get('/api/debug/users', async (req, res) => {
+  try {
+    // Get recent auth users
+    const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+    
+    // Get recent user profiles
+    const { data: profiles, error: profileError } = await supabase
+      .from('users')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    // Get recent auth activities
+    const { data: authLogs, error: logError } = await supabase
+      .from('auth.users')
+      .select('id, email, created_at, email_confirmed_at, last_sign_in_at')
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    res.json({
+      timestamp: new Date().toISOString(),
+      auth_users_count: authUsers?.users?.length || 0,
+      profiles_count: profiles?.length || 0,
+      recent_auth_users: authUsers?.users?.slice(0, 5) || [],
+      recent_profiles: profiles || [],
+      recent_auth_logs: authLogs || [],
+      errors: {
+        auth: authError?.message || null,
+        profiles: profileError?.message || null,
+        logs: logError?.message || null
+      }
+    });
+  } catch (error) {
+    logger.apiError('GET', '/api/debug/users', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Test profile creation endpoint
+app.post('/api/debug/create-profile', async (req, res) => {
+  try {
+    const { userId, userData } = req.body;
+    
+    if (!userId || !userData) {
+      return res.status(400).json({ error: 'User ID and user data required' });
+    }
+
+    logger.info('Debug: Creating test profile', { userId, userData });
+
+    const { error } = await supabase.from('users').insert([{
+      id: userId,
+      email: userData.email,
+      first_name: userData.first_name || '',
+      last_name: userData.last_name || '',
+      company_name: userData.company_name || 'Test Company',
+      company_size: userData.company_size || 'small',
+      primary_pain: userData.primary_pain || 'waste_reduction',
+      phone_number: userData.phone_number || '',
+      business_type: 'restaurant',
+      locations: 1,
+      annual_revenue: 'under_100k',
+      primary_goals: [],
+      data_sources: [],
+      team_size: '1-10',
+      timezone: 'Asia/Kuala_Lumpur',
+      trial_start: new Date().toISOString(),
+      trial_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+      subscription_status: 'trial',
+      subscription_plan: 'free',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }]);
+
+    if (error) {
+      logger.error('Debug: Profile creation failed', error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    logger.info('Debug: Profile created successfully', { userId });
+    res.json({ success: true, message: 'Test profile created' });
+  } catch (error) {
+    logger.apiError('POST', '/api/debug/create-profile', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Error handling middleware
 app.use((error, req, res, next) => {
   logger.apiError(req.method, req.path, error);

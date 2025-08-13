@@ -74,6 +74,24 @@ export default function Login() {
 
       if (error) throw error;
 
+      // Check if this is a newly confirmed user with pending signup
+      if (data.user && data.user.email_confirmed_at) {
+        const pendingSignup = localStorage.getItem('pendingSignup');
+        if (pendingSignup) {
+          try {
+            const { user: pendingUser } = JSON.parse(pendingSignup);
+            if (pendingUser.id === data.user.id) {
+              console.log('User confirmed email and logged in, redirecting to onboarding');
+              navigate('/onboarding');
+              return;
+            }
+          } catch (error) {
+            console.error('Error processing pending signup during login:', error);
+            localStorage.removeItem('pendingSignup');
+          }
+        }
+      }
+
       // Navigate to dashboard on successful login
       navigate('/dashboard');
     } catch (error: any) {

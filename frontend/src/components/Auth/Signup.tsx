@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
+import { apiService } from '../../services/api';
 import { Eye, EyeOff, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface SignupFormData {
@@ -133,30 +134,36 @@ export default function Signup() {
             company_size: formData.companySize,
             primary_pain: formData.primaryPain,
             phone_number: formData.phoneNumber
-          }
+          },
+          emailRedirectTo: `${window.location.origin}/onboarding`
         }
       });
 
       if (error) throw error;
 
-      // Create user profile in database via backend API
+      // Check if email confirmation is required
+      if (data.user && !data.user.email_confirmed_at) {
+        // Store signup data in localStorage for later use
+        localStorage.setItem('pendingSignup', JSON.stringify({
+          user: data.user,
+          formData: formData
+        }));
+        
+        // Redirect to email confirmation page
+        navigate('/email-confirmation');
+        return;
+      }
+
+      // If email is already confirmed (e.g., in development), proceed immediately
       if (data.user) {
         try {
-          const response = await fetch('/api/auth/create-profile', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user: data.user })
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            console.warn('Profile creation warning:', errorData);
-            // Continue to onboarding even if profile creation fails
-          }
+          console.log('Creating user profile via backend API...', { userId: data.user.id, email: data.user.email });
+          
+          const profileResult = await apiService.createUserProfile(data.user);
+          
+          console.log('Profile creation successful:', profileResult);
         } catch (profileError) {
-          console.warn('Profile creation error:', profileError);
+          console.error('Profile creation error:', profileError);
           // Continue to onboarding even if profile creation fails
         }
       }

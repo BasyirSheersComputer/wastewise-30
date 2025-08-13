@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
+import { apiService } from '../../services/api';
 import { CheckCircle, ArrowRight, Clock, Calendar, Users, Building } from 'lucide-react';
 
 interface OnboardingData {
@@ -65,12 +66,59 @@ export default function OnboardingForm() {
   });
 
   useEffect(() => {
-    // Get current user
+    // Get current user and handle email confirmation flow
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (user) {
         setUser(user);
+        
+        // Check if this is a newly confirmed user (email confirmation)
+        if (user.email_confirmed_at) {
+          // Check for pending signup data
+          const pendingSignup = localStorage.getItem('pendingSignup');
+          if (pendingSignup) {
+            try {
+              const { user: pendingUser, formData: pendingFormData } = JSON.parse(pendingSignup);
+              
+              // If this is the same user, create their profile
+              if (pendingUser.id === user.id) {
+                console.log('Processing email confirmation for user:', user.email);
+                
+                try {
+                  const profileResult = await apiService.createUserProfile(user);
+                  console.log('Profile created after email confirmation:', profileResult);
+                  
+                  // Clear pending signup data
+                  localStorage.removeItem('pendingSignup');
+                } catch (profileError) {
+                  console.error('Profile creation error after email confirmation:', profileError);
+                }
+              }
+            } catch (error) {
+              console.error('Error processing pending signup:', error);
+              localStorage.removeItem('pendingSignup');
+            }
+          }
+        }
       } else {
+        // Check if there's a pending signup (user clicked email link but not signed in)
+        const pendingSignup = localStorage.getItem('pendingSignup');
+        if (pendingSignup) {
+          try {
+            const { user: pendingUser } = JSON.parse(pendingSignup);
+            console.log('Found pending signup, redirecting to login');
+            
+            // Show message to user
+            alert('Please sign in with your email and password to complete your account setup.');
+            navigate('/login');
+            return;
+          } catch (error) {
+            console.error('Error processing pending signup:', error);
+            localStorage.removeItem('pendingSignup');
+          }
+        }
+        
         navigate('/login');
       }
     };
@@ -119,38 +167,41 @@ export default function OnboardingForm() {
     try {
       setLoading(true);
 
-      // Create or update user profile in database
-      const { error: profileError } = await supabase.from('users').upsert({
-        id: user.id,
-        email: user.email,
-        first_name: user.user_metadata?.first_name || '',
-        last_name: user.user_metadata?.last_name || '',
-        company_name: user.user_metadata?.company_name || '',
-        company_size: user.user_metadata?.company_size || '',
-        primary_pain: user.user_metadata?.primary_pain || '',
-        phone_number: user.user_metadata?.phone_number || '',
-        business_type: formData.businessType,
-        locations: formData.locations,
-        annual_revenue: formData.annualRevenue,
-        primary_goals: formData.primaryGoals,
-        data_sources: formData.dataSources,
-        team_size: formData.teamSize,
-        timezone: formData.timezone,
-        trial_start: new Date().toISOString(),
-        trial_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-        subscription_status: 'trial',
-        subscription_plan: 'free',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'id' // Handle case where profile already exists
-      });
+      // Create or update user profile in database via backend API
+      try {
+        console.log('Updating user profile via backend API...', { userId: user.id, email: user.email });
+        
+        const profileData = {
+          id: user.id,
+          email: user.email,
+          first_name: user.user_metadata?.first_name || '',
+          last_name: user.user_metadata?.last_name || '',
+          company_name: user.user_metadata?.company_name || '',
+          company_size: user.user_metadata?.company_size || '',
+          primary_pain: user.user_metadata?.primary_pain || '',
+          phone_number: user.user_metadata?.phone_number || '',
+          business_type: formData.businessType,
+          locations: formData.locations,
+          annual_revenue: formData.annualRevenue,
+          primary_goals: formData.primaryGoals,
+          data_sources: formData.dataSources,
+          team_size: formData.teamSize,
+          timezone: formData.timezone,
+          trial_start: new Date().toISOString(),
+          trial_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          subscription_status: 'trial',
+          subscription_plan: 'free',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
 
-      if (profileError) {
-        console.error('Profile update error:', profileError);
+        // Use the debug endpoint to create/update profile
+        const profileResult = await apiService.createDebugProfile(user.id, profileData);
+        
+        console.log('Profile updated successfully via backend:', profileResult);
+      } catch (profileError) {
+        console.error('Profile update error via backend:', profileError);
         // Log the error but continue to dashboard
-      } else {
-        console.log('Profile updated successfully');
       }
 
       // Navigate to dashboard

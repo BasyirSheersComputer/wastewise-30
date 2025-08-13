@@ -1,212 +1,402 @@
-# Firebase Deployment Script for WasteWise (PowerShell)
-# This script automates the deployment process to Firebase Hosting and Functions
+# 🚀 Firebase Deployment Script for WasteWise (PowerShell)
+# This script handles the complete deployment process for Firebase hosting and functions
 
 param(
-    [string]$DeploymentEnv = "production"
+    [switch]$SkipTests,
+    [switch]$Help
 )
 
 # Configuration
-$PROJECT_ID = "wastewise-30"
+$PROJECT_NAME = "wastewise-30"
 $FRONTEND_DIR = "frontend"
 $BACKEND_DIR = "backend"
+$BUILD_DIR = "dist"
 
-Write-Host "🚀 Starting Firebase Deployment for WasteWise" -ForegroundColor Blue
-Write-Host "Environment: $DeploymentEnv" -ForegroundColor Blue
-Write-Host "Project ID: $PROJECT_ID" -ForegroundColor Blue
+# Colors for output (PowerShell compatible)
+$Red = "Red"
+$Green = "Green"
+$Yellow = "Yellow"
+$Blue = "Blue"
+$White = "White"
 
-# Function to print colored output
-function Write-Status {
+# Logging function
+function Write-Log {
     param([string]$Message)
-    Write-Host "✅ $Message" -ForegroundColor Green
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    Write-Host "[$timestamp] $Message" -ForegroundColor $Blue
+}
+
+function Write-Success {
+    param([string]$Message)
+    Write-Host "✅ $Message" -ForegroundColor $Green
 }
 
 function Write-Warning {
     param([string]$Message)
-    Write-Host "⚠️  $Message" -ForegroundColor Yellow
+    Write-Host "⚠️  $Message" -ForegroundColor $Yellow
 }
 
 function Write-Error {
     param([string]$Message)
-    Write-Host "❌ $Message" -ForegroundColor Red
+    Write-Host "❌ $Message" -ForegroundColor $Red
 }
-
-# Check prerequisites
-Write-Host "🔍 Checking prerequisites..." -ForegroundColor Blue
 
 # Check if Firebase CLI is installed
-try {
-    $null = Get-Command firebase -ErrorAction Stop
-    Write-Status "Firebase CLI is installed"
-} catch {
-    Write-Error "Firebase CLI is not installed. Please install it first:"
-    Write-Host "npm install -g firebase-tools"
-    exit 1
+function Test-FirebaseCLI {
+    Write-Log "Checking Firebase CLI installation..."
+    try {
+        $null = Get-Command firebase -ErrorAction Stop
+        Write-Success "Firebase CLI is installed"
+        return $true
+    }
+    catch {
+        Write-Error "Firebase CLI is not installed. Please install it first:"
+        Write-Host "npm install -g firebase-tools" -ForegroundColor $White
+        return $false
+    }
 }
-
-# Check if Node.js is installed
-try {
-    $null = Get-Command node -ErrorAction Stop
-    Write-Status "Node.js is installed"
-} catch {
-    Write-Error "Node.js is not installed. Please install Node.js first."
-    exit 1
-}
-
-# Check if npm is installed
-try {
-    $null = Get-Command npm -ErrorAction Stop
-    Write-Status "npm is installed"
-} catch {
-    Write-Error "npm is not installed. Please install npm first."
-    exit 1
-}
-
-Write-Status "All prerequisites are satisfied"
 
 # Check if user is logged in to Firebase
-Write-Host "🔐 Checking Firebase authentication..." -ForegroundColor Blue
-try {
-    $null = firebase projects:list 2>$null
-    Write-Status "Firebase authentication verified"
-} catch {
-    Write-Warning "Not logged in to Firebase. Please login first:"
-    Write-Host "firebase login"
-    exit 1
+function Test-FirebaseAuth {
+    Write-Log "Checking Firebase authentication..."
+    try {
+        $null = firebase projects:list 2>$null
+        Write-Success "Firebase authentication verified"
+        return $true
+    }
+    catch {
+        Write-Error "Not authenticated with Firebase. Please login first:"
+        Write-Host "firebase login" -ForegroundColor $White
+        return $false
+    }
 }
 
-# Set the project
-Write-Host "📋 Setting Firebase project..." -ForegroundColor Blue
-firebase use $PROJECT_ID
-Write-Status "Firebase project set to $PROJECT_ID"
+# Check if project exists and user has access
+function Test-ProjectAccess {
+    Write-Log "Checking project access..."
+    try {
+        $null = firebase use $PROJECT_NAME 2>$null
+        Write-Success "Project access verified"
+        return $true
+    }
+    catch {
+        Write-Error "Cannot access project '$PROJECT_NAME'. Please check your permissions."
+        return $false
+    }
+}
 
 # Install dependencies
-Write-Host "📦 Installing dependencies..." -ForegroundColor Blue
+function Install-Dependencies {
+    Write-Log "Installing dependencies..."
+    
+    # Frontend dependencies
+    Write-Log "Installing frontend dependencies..."
+    Push-Location $FRONTEND_DIR
+    try {
+        npm ci --silent
+        Write-Success "Frontend dependencies installed"
+    }
+    catch {
+        Write-Error "Failed to install frontend dependencies"
+        return $false
+    }
+    finally {
+        Pop-Location
+    }
+    
+    # Backend dependencies
+    Write-Log "Installing backend dependencies..."
+    Push-Location $BACKEND_DIR
+    try {
+        npm ci --silent
+        Write-Success "Backend dependencies installed"
+    }
+    catch {
+        Write-Error "Failed to install backend dependencies"
+        return $false
+    }
+    finally {
+        Pop-Location
+    }
+    
+    return $true
+}
 
-Write-Host "Installing frontend dependencies..." -ForegroundColor Blue
-Set-Location $FRONTEND_DIR
-npm ci --silent
-Write-Status "Frontend dependencies installed"
-
-Write-Host "Installing backend dependencies..." -ForegroundColor Blue
-Set-Location "../$BACKEND_DIR"
-npm ci --silent
-Write-Status "Backend dependencies installed"
-
-Set-Location ..
+# Run tests
+function Invoke-Tests {
+    Write-Log "Running tests..."
+    
+    # Frontend tests
+    Write-Log "Running frontend tests..."
+    Push-Location $FRONTEND_DIR
+    try {
+        npm test --silent
+        Write-Success "Frontend tests passed"
+    }
+    catch {
+        Write-Warning "Frontend tests failed, but continuing deployment..."
+    }
+    finally {
+        Pop-Location
+    }
+    
+    # Backend tests
+    Write-Log "Running backend tests..."
+    Push-Location $BACKEND_DIR
+    try {
+        npm test --silent
+        Write-Success "Backend tests passed"
+    }
+    catch {
+        Write-Warning "Backend tests failed, but continuing deployment..."
+    }
+    finally {
+        Pop-Location
+    }
+}
 
 # Build frontend
-Write-Host "🏗️  Building frontend..." -ForegroundColor Blue
-Set-Location $FRONTEND_DIR
-npm run build
-if ($LASTEXITCODE -eq 0) {
-    Write-Status "Frontend build completed successfully"
-} else {
-    Write-Error "Frontend build failed"
-    exit 1
-}
-Set-Location ..
-
-# Run tests (if available)
-Write-Host "🧪 Running tests..." -ForegroundColor Blue
-Set-Location $FRONTEND_DIR
-try {
-    npm run test 2>$null
-    Write-Status "Frontend tests passed"
-} catch {
-    Write-Warning "Frontend tests failed or not configured"
-}
-Set-Location ..
-
-Set-Location $BACKEND_DIR
-try {
-    npm run test 2>$null
-    Write-Status "Backend tests passed"
-} catch {
-    Write-Warning "Backend tests failed or not configured"
-}
-Set-Location ..
-
-# Deploy to Firebase
-Write-Host "🚀 Deploying to Firebase..." -ForegroundColor Blue
-
-# Deploy functions first
-Write-Host "Deploying Cloud Functions..." -ForegroundColor Blue
-firebase deploy --only functions --project $PROJECT_ID
-if ($LASTEXITCODE -eq 0) {
-    Write-Status "Cloud Functions deployed successfully"
-} else {
-    Write-Error "Cloud Functions deployment failed"
-    exit 1
+function Build-Frontend {
+    Write-Log "Building frontend..."
+    Push-Location $FRONTEND_DIR
+    
+    try {
+        # Clean previous build
+        if (Test-Path $BUILD_DIR) {
+            Remove-Item $BUILD_DIR -Recurse -Force
+        }
+        
+        # Build for production
+        npm run build
+        Write-Success "Frontend built successfully"
+        
+        # Check if build files exist
+        if (-not (Test-Path $BUILD_DIR)) {
+            Write-Error "Build directory not found. Build may have failed."
+            return $false
+        }
+        
+        # Check build size
+        $buildSize = (Get-ChildItem $BUILD_DIR -Recurse | Measure-Object -Property Length -Sum).Sum
+        $buildSizeMB = [math]::Round($buildSize / 1MB, 2)
+        Write-Log "Build size: $buildSizeMB MB"
+        
+        return $true
+    }
+    catch {
+        Write-Error "Frontend build failed"
+        return $false
+    }
+    finally {
+        Pop-Location
+    }
 }
 
-# Deploy hosting
-Write-Host "Deploying to Firebase Hosting..." -ForegroundColor Blue
-firebase deploy --only hosting --project $PROJECT_ID
-if ($LASTEXITCODE -eq 0) {
-    Write-Status "Firebase Hosting deployed successfully"
-} else {
-    Write-Error "Firebase Hosting deployment failed"
-    exit 1
+# Validate environment configuration
+function Test-Environment {
+    Write-Log "Validating environment configuration..."
+    
+    # Check if .env files exist
+    if (-not (Test-Path "$FRONTEND_DIR\.env.production")) {
+        Write-Warning "Production environment file not found: $FRONTEND_DIR\.env.production"
+        Write-Warning "Using development environment variables"
+    }
+    
+    # Check Firebase configuration
+    try {
+        $null = firebase functions:config:get 2>$null
+        Write-Success "Firebase configuration found"
+    }
+    catch {
+        Write-Warning "Firebase Functions configuration not found"
+        Write-Warning "Please set up your environment variables:"
+        Write-Host "firebase functions:config:set supabase.url=`"your-supabase-url`"" -ForegroundColor $White
+        Write-Host "firebase functions:config:set supabase.anon_key=`"your-anon-key`"" -ForegroundColor $White
+        Write-Host "firebase functions:config:set auth.jwt_secret=`"your-jwt-secret`"" -ForegroundColor $White
+    }
+}
+
+# Deploy backend functions
+function Deploy-Functions {
+    Write-Log "Deploying backend functions..."
+    
+    try {
+        firebase deploy --only functions --non-interactive
+        Write-Success "Backend functions deployed successfully"
+        
+        # Get function URL
+        $functionUrl = "https://us-central1-$PROJECT_NAME.cloudfunctions.net/api"
+        Write-Log "Function URL: $functionUrl"
+        
+        return $true
+    }
+    catch {
+        Write-Error "Backend functions deployment failed"
+        return $false
+    }
+}
+
+# Deploy frontend hosting
+function Deploy-Hosting {
+    Write-Log "Deploying frontend hosting..."
+    
+    try {
+        firebase deploy --only hosting --non-interactive
+        Write-Success "Frontend hosting deployed successfully"
+        
+        # Get hosting URL
+        $hostingUrl = "https://$PROJECT_NAME.web.app"
+        Write-Log "Hosting URL: $hostingUrl"
+        
+        return $true
+    }
+    catch {
+        Write-Error "Frontend hosting deployment failed"
+        return $false
+    }
 }
 
 # Deploy Firestore rules and indexes
-Write-Host "Deploying Firestore configuration..." -ForegroundColor Blue
-firebase deploy --only firestore:rules,firestore:indexes --project $PROJECT_ID
-if ($LASTEXITCODE -eq 0) {
-    Write-Status "Firestore configuration deployed successfully"
-} else {
-    Write-Warning "Firestore configuration deployment failed or not configured"
+function Deploy-Firestore {
+    Write-Log "Deploying Firestore rules and indexes..."
+    
+    try {
+        firebase deploy --only firestore --non-interactive
+        Write-Success "Firestore rules and indexes deployed successfully"
+        return $true
+    }
+    catch {
+        Write-Warning "Firestore deployment failed, but continuing..."
+        return $false
+    }
 }
 
 # Deploy Storage rules
-Write-Host "Deploying Storage rules..." -ForegroundColor Blue
-firebase deploy --only storage --project $PROJECT_ID
-if ($LASTEXITCODE -eq 0) {
-    Write-Status "Storage rules deployed successfully"
-} else {
-    Write-Warning "Storage rules deployment failed or not configured"
-}
-
-# Get deployment URLs
-Write-Host "📋 Getting deployment information..." -ForegroundColor Blue
-$FUNCTIONS_URL = "https://us-central1-$PROJECT_ID.cloudfunctions.net"
-
-Write-Status "Hosting URL: https://$PROJECT_ID.web.app"
-Write-Status "Functions URL: $FUNCTIONS_URL"
-
-# Health check
-Write-Host "🏥 Running health checks..." -ForegroundColor Blue
-Start-Sleep -Seconds 10  # Wait for deployment to propagate
-
-# Test health endpoint
-try {
-    $null = Get-Command Invoke-WebRequest -ErrorAction Stop
-    $response = Invoke-WebRequest -Uri "$FUNCTIONS_URL/api/health" -UseBasicParsing -TimeoutSec 10
-    if ($response.StatusCode -eq 200) {
-        Write-Status "Health check passed"
-    } else {
-        Write-Warning "Health check failed (HTTP $($response.StatusCode))"
+function Deploy-Storage {
+    Write-Log "Deploying Storage rules..."
+    
+    try {
+        firebase deploy --only storage --non-interactive
+        Write-Success "Storage rules deployed successfully"
+        return $true
     }
-} catch {
-    Write-Warning "Health check failed or Invoke-WebRequest not available"
+    catch {
+        Write-Warning "Storage deployment failed, but continuing..."
+        return $false
+    }
 }
 
-# Final status
-Write-Host "🎉 Deployment Summary" -ForegroundColor Blue
-Write-Host "✅ Frontend: Built and deployed" -ForegroundColor Green
-Write-Host "✅ Backend: Functions deployed" -ForegroundColor Green
-Write-Host "✅ Database: Rules and indexes deployed" -ForegroundColor Green
-Write-Host "✅ Storage: Rules deployed" -ForegroundColor Green
+# Run health checks
+function Test-Health {
+    Write-Log "Running health checks..."
+    
+    # Wait for deployment to propagate
+    Start-Sleep -Seconds 10
+    
+    # Check function health
+    $functionUrl = "https://us-central1-$PROJECT_NAME.cloudfunctions.net/api/health"
+    try {
+        $response = Invoke-WebRequest -Uri $functionUrl -UseBasicParsing -TimeoutSec 30
+        if ($response.StatusCode -eq 200) {
+            Write-Success "Backend health check passed"
+        }
+        else {
+            Write-Warning "Backend health check failed (HTTP $($response.StatusCode))"
+        }
+    }
+    catch {
+        Write-Warning "Backend health check failed"
+    }
+    
+    # Check hosting
+    $hostingUrl = "https://$PROJECT_NAME.web.app"
+    try {
+        $response = Invoke-WebRequest -Uri $hostingUrl -UseBasicParsing -TimeoutSec 30
+        if ($response.StatusCode -eq 200) {
+            Write-Success "Frontend health check passed"
+        }
+        else {
+            Write-Warning "Frontend health check failed (HTTP $($response.StatusCode))"
+        }
+    }
+    catch {
+        Write-Warning "Frontend health check failed"
+    }
+}
 
-Write-Host "📊 Next Steps:" -ForegroundColor Blue
-Write-Host "1. Verify the application is working correctly"
-Write-Host "2. Monitor Firebase Console for any issues"
-Write-Host "3. Set up monitoring and alerting"
-Write-Host "4. Update DNS if using custom domain"
+# Show deployment summary
+function Show-Summary {
+    Write-Host ""
+    Write-Host "🎉 Deployment Summary" -ForegroundColor $Green
+    Write-Host "====================" -ForegroundColor $Green
+    Write-Host "Project: $PROJECT_NAME" -ForegroundColor $White
+    Write-Host "Frontend URL: https://$PROJECT_NAME.web.app" -ForegroundColor $White
+    Write-Host "Backend URL: https://us-central1-$PROJECT_NAME.cloudfunctions.net/api" -ForegroundColor $White
+    Write-Host ""
+    Write-Host "📋 Next Steps:" -ForegroundColor $Blue
+    Write-Host "1. Test the application at: https://$PROJECT_NAME.web.app" -ForegroundColor $White
+    Write-Host "2. Check Firebase Console for monitoring" -ForegroundColor $White
+    Write-Host "3. Set up custom domain if needed" -ForegroundColor $White
+    Write-Host "4. Configure analytics and monitoring" -ForegroundColor $White
+    Write-Host ""
+}
 
-Write-Host "🔗 Useful Links:" -ForegroundColor Blue
-Write-Host "Firebase Console: https://console.firebase.google.com/project/$PROJECT_ID"
-Write-Host "Hosting URL: https://$PROJECT_ID.web.app"
-Write-Host "Functions URL: $FUNCTIONS_URL"
+# Show help
+function Show-Help {
+    Write-Host "Usage: .\deploy-firebase.ps1 [OPTIONS]" -ForegroundColor $White
+    Write-Host ""
+    Write-Host "Options:" -ForegroundColor $Blue
+    Write-Host "  -SkipTests    Skip running tests before deployment" -ForegroundColor $White
+    Write-Host "  -Help         Show this help message" -ForegroundColor $White
+    Write-Host ""
+    Write-Host "Examples:" -ForegroundColor $Blue
+    Write-Host "  .\deploy-firebase.ps1              Deploy with tests" -ForegroundColor $White
+    Write-Host "  .\deploy-firebase.ps1 -SkipTests   Deploy without tests" -ForegroundColor $White
+}
 
-Write-Status "Deployment completed successfully!"
+# Main deployment function
+function Start-Deployment {
+    Write-Host "🚀 Starting Firebase deployment for WasteWise" -ForegroundColor $Green
+    Write-Host "==============================================" -ForegroundColor $Green
+    
+    # Pre-deployment checks
+    if (-not (Test-FirebaseCLI)) { exit 1 }
+    if (-not (Test-FirebaseAuth)) { exit 1 }
+    if (-not (Test-ProjectAccess)) { exit 1 }
+    
+    # Setup
+    if (-not (Install-Dependencies)) { exit 1 }
+    Test-Environment
+    
+    # Testing (optional)
+    if (-not $SkipTests) {
+        Invoke-Tests
+    }
+    else {
+        Write-Warning "Skipping tests as requested"
+    }
+    
+    # Build
+    if (-not (Build-Frontend)) { exit 1 }
+    
+    # Deploy
+    if (-not (Deploy-Functions)) { exit 1 }
+    if (-not (Deploy-Hosting)) { exit 1 }
+    Deploy-Firestore
+    Deploy-Storage
+    
+    # Post-deployment
+    Test-Health
+    Show-Summary
+    
+    Write-Success "Deployment completed successfully! 🎉"
+}
+
+# Handle command line arguments
+if ($Help) {
+    Show-Help
+    exit 0
+}
+
+# Start deployment
+Start-Deployment

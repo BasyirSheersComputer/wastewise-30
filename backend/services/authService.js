@@ -195,10 +195,17 @@ class AuthService {
   // Google OAuth sign in
   async signInWithGoogle(accessToken, idToken) {
     try {
+      logger.info('Processing Google OAuth sign in');
+      
       // Verify Google token (in production, verify with Google's API)
       const googleUser = await this.verifyGoogleToken(idToken);
       
-      // Check if user exists
+      logger.info('Google user verified', { email: googleUser.email });
+      
+      // Check if user exists in auth
+      const { data: { user: existingAuthUser }, error: authError } = await this.supabase.auth.getUser();
+      
+      // Check if user exists in users table
       const { data: existingUser, error: userError } = await this.supabase
         .from('users')
         .select('*')
@@ -206,31 +213,79 @@ class AuthService {
         .single();
 
       if (existingUser) {
-        // User exists, return session
-        const { data: sessionData, error: sessionError } = await this.supabase.auth.signInWithPassword({
-          email: existingUser.email,
-          password: 'google-oauth-user' // This won't work, need to handle differently
-        });
+        logger.info('Existing Google user found', { email: googleUser.email });
+        
+        // User exists, try to sign in
+        try {
+          const { data: sessionData, error: sessionError } = await this.supabase.auth.signInWithPassword({
+            email: existingUser.email,
+            password: 'google-oauth-user' // This won't work for OAuth users
+          });
 
-        if (sessionError) {
-          // Create a custom session for Google users
+          if (sessionError) {
+            // For OAuth users, we need to handle this differently
+            // Create a custom session or use Supabase's OAuth flow
+            logger.warn('Could not sign in existing OAuth user with password, creating custom session');
+            const session = this.createCustomSession(existingUser);
+            return { 
+              user: existingUser, 
+              session,
+              isNewUser: false
+            };
+          }
+
+          return { 
+            user: existingUser, 
+            session: sessionData.session,
+            isNewUser: false
+          };
+        } catch (signInError) {
+          logger.error('Error signing in existing OAuth user', signInError);
+          // Create custom session as fallback
           const session = this.createCustomSession(existingUser);
-          return { user: existingUser, session };
+          return { 
+            user: existingUser, 
+            session,
+            isNewUser: false
+          };
         }
-
-        return sessionData;
       } else {
-        // New Google user, create account
-        const userData = {
-          email: googleUser.email,
-          first_name: googleUser.given_name,
-          last_name: googleUser.family_name,
-          company_name: 'New Company', // Will be updated in onboarding
-          company_size: '1-5',
-          primary_pain: 'waste_reduction'
-        };
+        logger.info('New Google user, creating account', { email: googleUser.email });
+        
+        // New Google user, create account using Supabase OAuth
+        try {
+          // Use Supabase's OAuth sign up
+          const { data: authData, error: authError } = await this.supabase.auth.signUp({
+            email: googleUser.email,
+            password: null, // OAuth users don't need password
+            options: {
+              data: {
+                first_name: googleUser.given_name,
+                last_name: googleUser.family_name,
+                full_name: `${googleUser.given_name} ${googleUser.family_name}`,
+                organization: '',
+                provider: 'google'
+              }
+            }
+          });
 
-        return await this.registerUser(userData);
+          if (authError) {
+            logger.error('Error creating OAuth user in auth', authError);
+            throw authError;
+          }
+
+          logger.info('OAuth user created in auth', { user_id: authData.user?.id });
+
+          // Return the user data for profile creation
+          return { 
+            user: authData.user, 
+            session: authData.session,
+            isNewUser: true
+          };
+        } catch (signUpError) {
+          logger.error('Error creating OAuth user', signUpError);
+          throw signUpError;
+        }
       }
     } catch (error) {
       logger.error('Error with Google OAuth', error);

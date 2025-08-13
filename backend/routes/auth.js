@@ -66,20 +66,26 @@ router.post('/register', async (req, res) => {
 // Create user profile after frontend signup
 router.post('/create-profile', async (req, res) => {
   try {
-    const { user } = req.body;
+    const { user, isGoogleOAuth = false } = req.body;
     
     if (!user || !user.id || !user.email) {
       return res.status(400).json({ error: 'Invalid user data' });
     }
 
+    logger.info('Creating user profile', { 
+      user_id: user.id, 
+      email: user.email, 
+      isGoogleOAuth 
+    });
+
     // Extract user data from auth user metadata
     const userData = {
       email: user.email,
-      first_name: user.user_metadata?.first_name || '',
-      last_name: user.user_metadata?.last_name || '',
-      company_name: user.user_metadata?.company_name || '',
-      company_size: user.user_metadata?.company_size || '',
-      primary_pain: user.user_metadata?.primary_pain || '',
+      first_name: user.user_metadata?.first_name || user.user_metadata?.full_name?.split(' ')[0] || '',
+      last_name: user.user_metadata?.last_name || user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || '',
+      company_name: user.user_metadata?.company_name || user.user_metadata?.organization || '',
+      company_size: user.user_metadata?.company_size || 'small',
+      primary_pain: user.user_metadata?.primary_pain || 'waste_reduction',
       phone_number: user.user_metadata?.phone_number || '',
       business_type: 'restaurant',
       locations: 1,
@@ -92,6 +98,11 @@ router.post('/create-profile', async (req, res) => {
 
     const result = await authService.createUserProfile(user.id, userData);
 
+    logger.info('User profile created successfully', { 
+      user_id: user.id, 
+      email: user.email 
+    });
+
     res.status(201).json({
       message: 'User profile created successfully',
       trialEnd: result.trialEnd,
@@ -103,7 +114,7 @@ router.post('/create-profile', async (req, res) => {
   }
 });
 
-// Google OAuth sign in
+// Google OAuth sign in with profile creation
 router.post('/google', async (req, res) => {
   try {
     const { access_token, id_token } = req.body;
@@ -112,15 +123,124 @@ router.post('/google', async (req, res) => {
       return res.status(400).json({ error: 'Missing Google tokens' });
     }
 
+    logger.info('Processing Google OAuth sign in');
+
     const result = await authService.signInWithGoogle(access_token, id_token);
+
+    // If this is a new Google user, create their profile
+    if (result.isNewUser && result.user) {
+      try {
+        logger.info('Creating profile for new Google OAuth user', { 
+          user_id: result.user.id, 
+          email: result.user.email 
+        });
+
+        const profileResult = await authService.createUserProfile(result.user.id, {
+          email: result.user.email,
+          first_name: result.user.user_metadata?.first_name || result.user.user_metadata?.full_name?.split(' ')[0] || '',
+          last_name: result.user.user_metadata?.last_name || result.user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || '',
+          company_name: result.user.user_metadata?.organization || '',
+          company_size: 'small',
+          primary_pain: 'waste_reduction',
+          phone_number: '',
+          business_type: 'restaurant',
+          locations: 1,
+          annual_revenue: 'under_100k',
+          primary_goals: [],
+          data_sources: [],
+          team_size: '1-10',
+          timezone: 'Asia/Kuala_Lumpur'
+        });
+
+        result.trialEnd = profileResult.trialEnd;
+        result.daysLeft = profileResult.daysLeft;
+      } catch (profileError) {
+        logger.error('Failed to create profile for Google OAuth user', profileError);
+        // Continue with sign in even if profile creation fails
+      }
+    }
 
     res.json({
       message: 'Google sign in successful',
       user: result.user,
-      session: result.session
+      session: result.session,
+      isNewUser: result.isNewUser,
+      trialEnd: result.trialEnd,
+      daysLeft: result.daysLeft
     });
   } catch (error) {
     logger.error('Google OAuth error', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Google OAuth callback handler
+router.post('/google/callback', async (req, res) => {
+  try {
+    const { user, isNewUser = false } = req.body;
+    
+    if (!user || !user.id || !user.email) {
+      return res.status(400).json({ error: 'Invalid user data from OAuth callback' });
+    }
+
+    logger.info('Processing Google OAuth callback', { 
+      user_id: user.id, 
+      email: user.email, 
+      isNewUser 
+    });
+
+    // If this is a new user, create their profile
+    if (isNewUser) {
+      try {
+        const profileResult = await authService.createUserProfile(user.id, {
+          email: user.email,
+          first_name: user.user_metadata?.first_name || user.user_metadata?.full_name?.split(' ')[0] || '',
+          last_name: user.user_metadata?.last_name || user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || '',
+          company_name: user.user_metadata?.organization || '',
+          company_size: 'small',
+          primary_pain: 'waste_reduction',
+          phone_number: '',
+          business_type: 'restaurant',
+          locations: 1,
+          annual_revenue: 'under_100k',
+          primary_goals: [],
+          data_sources: [],
+          team_size: '1-10',
+          timezone: 'Asia/Kuala_Lumpur'
+        });
+
+        logger.info('Profile created for OAuth user', { 
+          user_id: user.id, 
+          email: user.email 
+        });
+
+        res.json({
+          message: 'OAuth callback processed successfully',
+          user,
+          isNewUser: true,
+          trialEnd: profileResult.trialEnd,
+          daysLeft: profileResult.daysLeft
+        });
+      } catch (profileError) {
+        logger.error('Failed to create profile for OAuth user', profileError);
+        // Return success but indicate profile creation failed
+        res.json({
+          message: 'OAuth callback processed, but profile creation failed',
+          user,
+          isNewUser: true,
+          profileError: profileError.message
+        });
+      }
+    } else {
+      // Existing user, just return success
+      res.json({
+        message: 'OAuth callback processed successfully',
+        user,
+        isNewUser: false
+      });
+    }
+  } catch (error) {
+    logger.error('OAuth callback error', error);
     res.status(400).json({ error: error.message });
   }
 });
@@ -304,6 +424,36 @@ router.post('/validate', async (req, res) => {
   } catch (error) {
     logger.error('Token validation error', error);
     res.status(401).json({ error: 'Token validation failed' });
+  }
+});
+
+// Check if user profile exists
+router.get('/profile/check/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID required' });
+    }
+
+    const { data: profile, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
+      logger.error('Error checking user profile', error);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    res.json({
+      hasProfile: !!profile,
+      profile: profile || null
+    });
+  } catch (error) {
+    logger.error('Profile check error', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

@@ -35,6 +35,7 @@ import StaffTraining from "./components/UI/StaffTraining";
 import ReportsCompliance from "./components/UI/ReportsCompliance";
 import SubscriptionManager from "./components/UI/SubscriptionManager";
 import Login from "./components/Auth/Login";
+import EmailConfirmation from "./components/Auth/EmailConfirmation";
 
 import LandingPage from "./components/Marketing/LandingPage";
 import GrandSlamOffer from "./components/Marketing/GrandSlamOffer";
@@ -254,6 +255,7 @@ function App() {
         <Route path="/offer" element={<GrandSlamOffer />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/email-confirmation" element={<EmailConfirmation />} />
 
         {/* Onboarding/Trial - With Sidebar */}
         <Route
