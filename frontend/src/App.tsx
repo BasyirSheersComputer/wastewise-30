@@ -51,6 +51,7 @@ import { useEffect } from "react";
 import UserSettings from "./components/UI/UserSettings";
 import IdleWarning from "./components/UI/IdleWarning";
 import useIdleLogout from "./hooks/useIdleLogout";
+import IssueReporting from "./components/UI/IssueReporting";
 
 const navigationItems = [
   { id: "dashboard", label: "Operational Intelligence", icon: BarChart3 },
@@ -61,6 +62,7 @@ const navigationItems = [
   { id: "menu", label: "Menu Optimization", icon: Menu },
   { id: "staff", label: "Staff Training", icon: Users },
   { id: "reports", label: "Reports & Compliance", icon: FileText },
+  { id: "issues", label: "Issue Reporting", icon: AlertTriangle },
   { id: "subscription", label: "My Subscription", icon: CreditCard },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -362,6 +364,16 @@ function App() {
             <RequireAuth>
               <AuthenticatedLayout>
                 <ReportsCompliance />
+              </AuthenticatedLayout>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/issues"
+          element={
+            <RequireAuth>
+              <AuthenticatedLayout>
+                <IssueReporting />
               </AuthenticatedLayout>
             </RequireAuth>
           }

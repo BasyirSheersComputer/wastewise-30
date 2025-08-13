@@ -78,6 +78,36 @@ class ApiService {
       method: 'GET'
     });
   }
+
+  // Issue reporting endpoints
+  async get(endpoint: string, options: any = {}): Promise<any> {
+    const queryParams = options.params ? 
+      '?' + new URLSearchParams(options.params).toString() : '';
+    return this.request(`${endpoint}${queryParams}`, {
+      method: 'GET',
+      ...options
+    });
+  }
+
+  async post(endpoint: string, data: any = {}): Promise<any> {
+    return this.request(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  async put(endpoint: string, data: any = {}): Promise<any> {
+    return this.request(endpoint, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    });
+  }
+
+  async delete(endpoint: string): Promise<any> {
+    return this.request(endpoint, {
+      method: 'DELETE'
+    });
+  }
 }
 
 export const apiService = new ApiService();
