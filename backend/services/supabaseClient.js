@@ -1,24 +1,23 @@
 // supabaseClient.js
 const { createClient } = require('@supabase/supabase-js');
-const { config } = require('../config/firebase-config');
 
 /**
  * Supabase Client Configuration
- * Uses Firebase config for environment variables
+ * Uses environment variables directly
  */
 
 // Validate Supabase configuration
-if (!config.supabase.url || !config.supabase.anonKey) {
+if (!process.env.VITE_SUPABASE_URL || !process.env.VITE_SUPABASE_ANON_KEY) {
   console.error('❌ Missing Supabase configuration:');
-  console.error('   URL:', config.supabase.url ? '✅ Set' : '❌ Missing');
-  console.error('   Anon Key:', config.supabase.anonKey ? '✅ Set' : '❌ Missing');
+  console.error('   URL:', process.env.VITE_SUPABASE_URL ? '✅ Set' : '❌ Missing');
+  console.error('   Anon Key:', process.env.VITE_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing');
   throw new Error('Supabase configuration is incomplete. Please check your environment variables.');
 }
 
 // Create Supabase client
 const supabase = createClient(
-  config.supabase.url,
-  config.supabase.anonKey,
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_ANON_KEY,
   {
     auth: {
       autoRefreshToken: true,
@@ -41,14 +40,14 @@ const supabase = createClient(
  * Use this for server-side operations that require elevated privileges
  */
 const createServiceRoleClient = () => {
-  if (!config.supabase.serviceRoleKey) {
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     console.error('❌ Missing Supabase service role key');
     throw new Error('Service role key is required for admin operations');
   }
 
   return createClient(
-    config.supabase.url,
-    config.supabase.serviceRoleKey,
+    process.env.VITE_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
     {
       auth: {
         autoRefreshToken: true,
@@ -94,10 +93,10 @@ async function testConnection() {
  */
 function getConfigInfo() {
   return {
-    url: config.supabase.url,
-    hasAnonKey: !!config.supabase.anonKey,
-    hasServiceRoleKey: !!config.supabase.serviceRoleKey,
-    environment: config.app.nodeEnv
+    url: process.env.VITE_SUPABASE_URL,
+    hasAnonKey: !!process.env.VITE_SUPABASE_ANON_KEY,
+    hasServiceRoleKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+    environment: process.env.NODE_ENV
   };
 }
 

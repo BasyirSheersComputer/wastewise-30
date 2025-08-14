@@ -24,8 +24,20 @@ const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SU
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// CORS configuration for Cloud Run
+const corsOptions = {
+  origin: [
+    process.env.CORS_ORIGIN || 'http://localhost:5173',
+    'https://wastewise-frontend-*.run.app',
+    'https://*.run.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

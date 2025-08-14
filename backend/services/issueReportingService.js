@@ -1,8 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-import config from '../config/firebase-config.js';
 import logger from '../utils/logger.js';
 
-const supabase = createClient(config.supabase.url, config.supabase.anonKey);
+const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
 
 class IssueReportingService {
   constructor() {
