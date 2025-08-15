@@ -1,0 +1,11 @@
+date,waste_type,quantity_wasted,unit_cost,total_cost,reason_code,staff_member,location,notes
+2024-01-15,Food Waste - Prepared,2.5,4.50,11.25,Overproduction,John Smith,Kitchen,Excess latte milk
+2024-01-15,Food Waste - Raw,0.5,12.50,6.25,Expired,Mike Wilson,Storage,Expired coffee beans
+2024-01-15,Packaging Waste,15,0.15,2.25,Empty,Sarah Johnson,Kitchen,Used coffee filters
+2024-01-15,Beverage Waste,1.0,3.20,3.20,Spilled,John Smith,Service Area,Spilled milk during service
+2024-01-15,Other Operational,0.0,0.00,0.00,None,All Staff,Kitchen,No other waste
+2024-01-16,Food Waste - Prepared,3.0,4.50,13.50,Overproduction,Sarah Johnson,Kitchen,Excess cappuccino foam
+2024-01-16,Food Waste - Raw,0.3,12.50,3.75,Quality Issue,Mike Wilson,Storage,Low quality beans
+2024-01-16,Packaging Waste,12,0.15,1.80,Empty,John Smith,Kitchen,Used coffee filters
+2024-01-16,Beverage Waste,0.8,3.20,2.56,Spilled,Sarah Johnson,Service Area,Spilled coffee
+2024-01-16,Other Operational,0.0,0.00,0.00,None,All Staff,Kitchen,No other waste

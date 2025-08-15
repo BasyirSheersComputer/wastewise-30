@@ -1,0 +1,11 @@
+date,item_name,quantity_sold,unit_price,total_revenue,location,staff_member,customer_type,payment_method
+2024-01-15,Latte,45,4.50,202.50,Main Store,John Smith,Regular,Credit Card
+2024-01-15,Cappuccino,32,4.00,128.00,Main Store,Sarah Johnson,Regular,Cash
+2024-01-15,Espresso,28,2.50,70.00,Main Store,Mike Wilson,Regular,Debit Card
+2024-01-15,Americano,38,3.50,133.00,Main Store,John Smith,Regular,Credit Card
+2024-01-15,Mocha,22,5.00,110.00,Main Store,Sarah Johnson,Premium,Credit Card
+2024-01-16,Latte,52,4.50,234.00,Main Store,John Smith,Regular,Credit Card
+2024-01-16,Cappuccino,35,4.00,140.00,Main Store,Sarah Johnson,Regular,Cash
+2024-01-16,Espresso,30,2.50,75.00,Main Store,Mike Wilson,Regular,Debit Card
+2024-01-16,Americano,42,3.50,147.00,Main Store,John Smith,Regular,Credit Card
+2024-01-16,Mocha,25,5.00,125.00,Main Store,Sarah Johnson,Premium,Credit Card

@@ -1,0 +1,6 @@
+item_name,category,current_stock,unit_cost,supplier_name,expiry_date,reorder_point,description,sku,unit_measure,location
+Coffee Beans,Ingredients,50.5,12.50,ABC Coffee Supply,2024-12-31,20.0,Premium Arabica coffee beans,CB-001,kg,Main Storage
+Milk,Ingredients,25.0,3.20,Dairy Fresh Co,2024-01-15,10.0,Whole milk 3.25% fat,MILK-001,L,Refrigerator
+Sugar,Ingredients,15.0,2.10,Sweet Supply Inc,2025-06-30,5.0,Granulated white sugar,SUGAR-001,kg,Pantry
+Espresso Cups,Equipment,200,1.50,Restaurant Supply,2026-12-31,50,White ceramic espresso cups,EC-001,pieces,Storage Room
+Coffee Filters,Supplies,500,0.15,ABC Coffee Supply,2025-12-31,100,Paper coffee filters size 4,CF-001,pieces,Pantry
