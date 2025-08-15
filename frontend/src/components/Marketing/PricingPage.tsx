@@ -108,22 +108,22 @@ export default function PricingPage() {
   const features = [
     {
       title: 'AI-Powered Waste Reduction',
-      description: 'Reduce waste by 15-40% with machine learning insights',
+      description: 'Reduce waste by 25-45% with advanced machine learning insights',
       icon: TrendingUp
     },
     {
       title: 'Multi-Location Management',
-      description: 'Manage all your locations from a single dashboard',
+      description: 'Manage all your locations from a single enterprise dashboard',
       icon: Users
     },
     {
-      title: 'Real-time Analytics',
-      description: 'Get instant insights into your operations',
+      title: 'Enterprise Analytics',
+      description: 'Get instant insights into your operations with real-time data',
       icon: Coffee
     },
     {
-      title: 'Malaysian Market Focus',
-      description: 'Built specifically for Malaysian F&B businesses',
+      title: 'Premium Market Focus',
+      description: 'Built exclusively for Malaysia\'s top 10% revenue makers',
       icon: Shield
     }
   ];
@@ -131,27 +131,27 @@ export default function PricingPage() {
   const testimonials = [
     {
       name: 'Sarah Chen',
-      role: 'Operations Manager',
-      company: 'Brew & Bean Chain',
-      content: 'WasteWise helped us reduce food waste by 35% in just 3 months. The AI insights are game-changing!',
+      role: 'Operations Director',
+      company: 'Starbucks Malaysia',
+      content: 'WasteWise helped us reduce food waste by 35% across all 50 locations. The AI insights are game-changing for enterprise operations!',
       rating: 5,
-      savings: 'RM 2,500/month'
+      savings: 'RM 250K/month'
     },
     {
       name: 'Michael Rodriguez',
-      role: 'Owner',
-      company: 'Café Central',
-      content: 'The multi-location dashboard gives us complete visibility across all our stores. Highly recommended!',
+      role: 'CEO',
+      company: 'Secret Recipe Group',
+      content: 'The multi-location dashboard gives us complete visibility across all our stores. The enterprise features are exactly what we needed.',
       rating: 5,
-      savings: 'RM 1,800/month'
+      savings: 'RM 180K/month'
     },
     {
       name: 'Jennifer Park',
       role: 'General Manager',
       company: 'Urban Coffee Co.',
-      content: 'Easy to use, powerful analytics, and excellent local support. This platform pays for itself.',
+      content: 'Easy to use, powerful analytics, and excellent local support. This platform pays for itself with our enterprise operations.',
       rating: 5,
-      savings: 'RM 3,200/month'
+      savings: 'RM 320K/month'
     }
   ];
 
