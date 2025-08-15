@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Star, ArrowRight, Coffee, TrendingUp, Users, Shield, Zap, Award, Clock, Globe } from 'lucide-react';
+import { Check, Star, ArrowRight, Coffee, TrendingUp, Users, Shield, Zap, Award, Clock, Globe, ShieldCheck, Target, Zap as ZapIcon } from 'lucide-react';
 
 interface Plan {
   id: string;
@@ -14,6 +14,13 @@ interface Plan {
   targetMarket?: string;
   annualRevenue?: string;
   valueProposition?: string;
+  riskReversal?: {
+    guarantee: string;
+    description: string;
+    terms: string[];
+    coverage: string;
+    confidence: string;
+  };
   features?: {
     core: string[];
     modules: Record<string, string>;
@@ -157,37 +164,37 @@ export default function PricingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="text-2xl font-bold text-blue-600">WasteWise</div>
+              <div className="text-2xl font-bold text-purple-600">WasteWise</div>
             </div>
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate('/')}
-                className="text-gray-600 hover:text-blue-600 transition-colors"
+                className="text-gray-600 hover:text-purple-600 transition-colors"
               >
                 Home
               </button>
               <button
                 onClick={() => navigate('/login')}
-                className="text-gray-600 hover:text-blue-600 transition-colors"
+                className="text-gray-600 hover:text-purple-600 transition-colors"
               >
                 Login
               </button>
               <button
                 onClick={() => navigate('/signup')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
               >
                 Start Free Trial
               </button>
@@ -200,15 +207,15 @@ export default function PricingPage() {
       <div className="text-center px-6 py-16">
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium mb-6">
-            <Award className="w-4 h-4" />
-            Premium Market Focus - Top 10% Revenue Makers
+            <ShieldCheck className="w-4 h-4" />
+            Risk-Free Guaranteed Results
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Enterprise-Grade AI Platform
+            Enterprise-Grade AI Platform with Guaranteed ROI
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Premium AI-powered waste reduction platform designed exclusively for Malaysia's top F&B revenue generators. 
-            Target only the top 10% of revenue makers with proven ROI.
+            Premium AI-powered waste reduction platform with comprehensive risk reversal guarantees. 
+            Target only the top 10% of revenue makers with proven ROI and guaranteed results.
           </p>
           
           {/* Billing Cycle Toggle */}
@@ -234,7 +241,7 @@ export default function PricingPage() {
               >
                 Annual
                 <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                  Save 10%
+                  Save 15%
                 </span>
               </button>
             </div>
@@ -279,6 +286,23 @@ export default function PricingPage() {
                   <p className="text-sm text-gray-500">{plan.annualRevenue}</p>
                 </div>
 
+                {/* Risk Reversal Guarantee */}
+                {plan.riskReversal && (
+                  <div className="mb-6">
+                    <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
+                      <div className="flex items-center mb-2">
+                        <ShieldCheck className="w-5 h-5 text-green-600 mr-2" />
+                        <h4 className="font-semibold text-green-800">{plan.riskReversal.guarantee}</h4>
+                      </div>
+                      <p className="text-sm text-green-700 mb-3">{plan.riskReversal.description}</p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-green-600 font-medium">Coverage: {plan.riskReversal.coverage}</span>
+                        <span className="text-blue-600 font-medium">{plan.riskReversal.confidence}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="mb-6">
                   <div className="bg-purple-50 rounded-lg p-4 mb-4">
                     <p className="text-sm font-medium text-purple-900">{plan.valueProposition}</p>
@@ -313,8 +337,99 @@ export default function PricingPage() {
         </div>
       </div>
 
-      {/* Module Comparison */}
+      {/* Risk Reversal Guarantees Section */}
       <div className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Comprehensive Risk Reversal Guarantees
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              We're so confident in our results that we offer industry-leading guarantees on every plan
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+              <div className="flex items-center mb-4">
+                <div className="bg-green-100 p-2 rounded-lg mr-3">
+                  <Target className="w-6 h-6 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-green-800">Professional</h3>
+              </div>
+              <h4 className="text-lg font-semibold text-green-700 mb-2">30-Day Money-Back Guarantee</h4>
+              <p className="text-green-600 mb-4">15% waste reduction target or full refund</p>
+              <ul className="space-y-2 text-sm text-green-700">
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  Full refund within 30 days
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  No questions asked policy
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  Keep all data and insights
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+              <div className="flex items-center mb-4">
+                <div className="bg-blue-100 p-2 rounded-lg mr-3">
+                  <ZapIcon className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-blue-800">Enterprise</h3>
+              </div>
+              <h4 className="text-lg font-semibold text-blue-700 mb-2">60-Day Performance Guarantee</h4>
+              <p className="text-blue-600 mb-4">25% waste reduction or 3 months free + refund</p>
+              <ul className="space-y-2 text-sm text-blue-700">
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  3 months free if target not met
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  Implementation cost refund
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  Dedicated success manager
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+              <div className="flex items-center mb-4">
+                <div className="bg-purple-100 p-2 rounded-lg mr-3">
+                  <Award className="w-6 h-6 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-purple-800">Elite</h3>
+              </div>
+              <h4 className="text-lg font-semibold text-purple-700 mb-2">90-Day ROI Guarantee</h4>
+              <p className="text-purple-600 mb-4">3x ROI or full refund + penalty payment</p>
+              <ul className="space-y-2 text-sm text-purple-700">
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  Full refund + 50% penalty
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  Dedicated engineering team
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2" />
+                  Custom AI development
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Module Comparison */}
+      <div className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -365,7 +480,7 @@ export default function PricingPage() {
       </div>
 
       {/* Features Section */}
-      <div className="py-16 bg-gray-50">
+      <div className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -395,7 +510,7 @@ export default function PricingPage() {
       </div>
 
       {/* Testimonials Section */}
-      <div className="py-16 bg-white">
+      <div className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -408,7 +523,7 @@ export default function PricingPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-6">
+              <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
@@ -435,18 +550,18 @@ export default function PricingPage() {
       <div className="py-16 bg-purple-600">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Enterprise Solutions for Premium Markets
+            Enterprise Solutions with Guaranteed Results
           </h2>
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div className="bg-white/10 rounded-lg p-6">
-              <Award className="w-8 h-8 text-yellow-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">Multi-Year Contracts</h3>
-              <p className="text-purple-100">15-25% discount for multi-year commitments with custom enterprise agreements</p>
+              <ShieldCheck className="w-8 h-8 text-yellow-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">Risk-Free Guarantees</h3>
+              <p className="text-purple-100">Comprehensive risk reversal guarantees on all plans with 95-99% success rates</p>
             </div>
             <div className="bg-white/10 rounded-lg p-6">
               <TrendingUp className="w-8 h-8 text-yellow-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">Volume Discounts</h3>
-              <p className="text-purple-100">20-40% discount for multiple locations and enterprise deployments</p>
+              <h3 className="text-xl font-semibold text-white mb-2">Guaranteed ROI</h3>
+              <p className="text-purple-100">Proven results with guaranteed waste reduction and cost savings across all tiers</p>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -479,10 +594,19 @@ export default function PricingPage() {
           <div className="space-y-6">
             <div className="border-b border-gray-200 pb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                How do the risk reversal guarantees work?
+              </h3>
+              <p className="text-gray-600">
+                Each plan comes with a specific guarantee period and target. If we don't meet the target within the guarantee period, you get the specified refund or compensation. The process is simple: submit a claim, provide metrics, and receive your refund within 5 business days.
+              </p>
+            </div>
+
+            <div className="border-b border-gray-200 pb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 What makes WasteWise different for enterprise customers?
               </h3>
               <p className="text-gray-600">
-                WasteWise is designed exclusively for Malaysia's top 10% revenue makers with advanced AI capabilities, custom integrations, and dedicated support teams that understand enterprise-scale operations.
+                WasteWise is designed exclusively for Malaysia's top 10% revenue makers with advanced AI capabilities, custom integrations, dedicated support teams, and comprehensive risk reversal guarantees that understand enterprise-scale operations.
               </p>
             </div>
 
@@ -491,7 +615,7 @@ export default function PricingPage() {
                 What's included in the enterprise trial?
               </h3>
               <p className="text-gray-600">
-                The 30-day enterprise trial includes full access to all features, custom integrations, dedicated account manager, and implementation support to demonstrate ROI within the trial period.
+                The 30-day enterprise trial includes full access to all features, custom integrations, dedicated account manager, implementation support, and the full guarantee period to demonstrate ROI within the trial period.
               </p>
             </div>
 
@@ -500,16 +624,7 @@ export default function PricingPage() {
                 Do you offer custom enterprise agreements?
               </h3>
               <p className="text-gray-600">
-                Yes, we offer custom enterprise agreements with negotiated pricing, multi-year contracts, volume discounts, and strategic partnership opportunities for large deployments.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What kind of support do enterprise customers receive?
-              </h3>
-              <p className="text-gray-600">
-                Enterprise customers receive dedicated account managers, 24/7 support, custom training programs, strategic consulting, and priority feature development based on their specific needs.
+                Yes, we offer custom enterprise agreements with negotiated pricing, multi-year contracts, volume discounts, strategic partnership opportunities, and enhanced guarantee terms for large deployments.
               </p>
             </div>
 
@@ -518,7 +633,7 @@ export default function PricingPage() {
                 Can you integrate with our existing enterprise systems?
               </h3>
               <p className="text-gray-600">
-                Absolutely. Our enterprise platform offers custom integrations with existing ERP, POS, and inventory systems, along with API development and white-label options for seamless integration.
+                Absolutely. Our enterprise platform offers custom integrations with existing ERP, POS, and inventory systems, along with API development and white-label options for seamless integration, all covered by our performance guarantees.
               </p>
             </div>
           </div>
@@ -532,7 +647,7 @@ export default function PricingPage() {
             <div>
               <div className="text-2xl font-bold text-purple-400 mb-4">WasteWise</div>
               <p className="text-gray-400">
-                Premium AI platform for Malaysia's top F&B revenue generators.
+                Premium AI platform for Malaysia's top F&B revenue generators with guaranteed results.
               </p>
             </div>
             <div>
@@ -561,7 +676,7 @@ export default function PricingPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 WasteWise. All rights reserved. Premium platform for top 10% revenue makers.</p>
+            <p>&copy; 2024 WasteWise. All rights reserved. Premium platform with guaranteed results for top 10% revenue makers.</p>
           </div>
         </div>
       </footer>
