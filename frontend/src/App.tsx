@@ -24,6 +24,7 @@ import {
   Calculator,
   Target,
   Settings,
+  Upload,
 } from "lucide-react";
 import Dashboard from "./components/UI/Dashboard";
 import InventoryManager from "./components/UI/InventoryManager";
@@ -34,8 +35,10 @@ import MenuOptimization from "./components/UI/MenuOptimization";
 import StaffTraining from "./components/UI/StaffTraining";
 import ReportsCompliance from "./components/UI/ReportsCompliance";
 import SubscriptionManager from "./components/UI/SubscriptionManager";
+import CSVUpload from "./components/UI/CSVUpload";
 import Login from "./components/Auth/Login";
 import EmailConfirmation from "./components/Auth/EmailConfirmation";
+import WelcomeToTrial from "./components/Auth/WelcomeToTrial";
 
 import LandingPage from "./components/Marketing/LandingPage";
 import GrandSlamOffer from "./components/Marketing/GrandSlamOffer";
@@ -62,6 +65,7 @@ const navigationItems = [
   { id: "menu", label: "Menu Optimization", icon: Menu },
   { id: "staff", label: "Staff Training", icon: Users },
   { id: "reports", label: "Reports & Compliance", icon: FileText },
+  { id: "csv-upload", label: "CSV Upload", icon: Upload },
   { id: "issues", label: "Issue Reporting", icon: AlertTriangle },
   { id: "subscription", label: "My Subscription", icon: CreditCard },
   { id: "settings", label: "Settings", icon: Settings },
@@ -286,6 +290,14 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/welcome-trial"
+          element={
+            <RequireAuth>
+              <WelcomeToTrial />
+            </RequireAuth>
+          }
+        />
 
         {/* Protected Routes - With Sidebar */}
         <Route
@@ -364,6 +376,16 @@ function App() {
             <RequireAuth>
               <AuthenticatedLayout>
                 <ReportsCompliance />
+              </AuthenticatedLayout>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/csv-upload"
+          element={
+            <RequireAuth>
+              <AuthenticatedLayout>
+                <CSVUpload />
               </AuthenticatedLayout>
             </RequireAuth>
           }

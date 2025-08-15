@@ -16,6 +16,7 @@ import dashboardRoutes from './routes/dashboard.js';
 import billingRoutes from './routes/billing.js';
 import coffeeChainRoutes from './routes/coffeeChain.js';
 import issuesRoutes from './routes/issues.js';
+import csvUploadRoutes from './routes/csvUpload.js';
 
 dotenv.config();
 
@@ -149,6 +150,7 @@ app.use('/api/dashboard', authenticateUser, requireSubscription, dashboardRoutes
 app.use('/api/billing', authenticateUser, billingRoutes);
 app.use('/api/coffee-chain', authenticateUser, requireSubscription, coffeeChainRoutes);
 app.use('/api/issues', issuesRoutes);
+app.use('/api/csv', authenticateUser, csvUploadRoutes);
 
 import { aiRecommendationService } from './services/aiRecommendationService.js';
 
