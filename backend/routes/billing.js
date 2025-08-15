@@ -258,58 +258,203 @@ router.get('/plans', async (req, res) => {
   try {
     const plans = [
       {
-        id: 'basic',
-        name: 'Basic',
-        price: 49.99,
-        currency: 'MYR',
-        interval: 'month',
-        features: [
-          'Waste tracking & analytics',
-          'Basic AI recommendations',
-          'Email support',
-          'Up to 3 locations',
-          'Standard reports'
-        ],
-        stripePriceId: process.env.STRIPE_PRICE_BASIC
-      },
-      {
-        id: 'pro',
+        id: 'professional',
         name: 'Professional',
-        price: 99.99,
+        price: 1999,
+        originalPrice: 2499,
         currency: 'MYR',
         interval: 'month',
-        features: [
-          'Everything in Basic',
-          'Advanced AI recommendations',
-          'Priority support',
-          'Up to 10 locations',
-          'Custom integrations',
-          'Advanced analytics',
-          'Staff training modules'
-        ],
-        stripePriceId: process.env.STRIPE_PRICE_PRO
+        popular: true,
+        savings: 20,
+        targetMarket: 'Top 10% revenue makers (RM 2M-10M annually)',
+        annualRevenue: 'RM 2M-10M',
+        valueProposition: 'Reduce waste by 25-30% and save RM 100K-300K/month',
+        features: {
+          core: [
+            'Advanced AI-powered waste analytics',
+            'Multi-location dashboard (up to 25 locations)',
+            'Priority support with dedicated account manager',
+            'Custom integrations with existing systems',
+            'Advanced analytics and reporting',
+            'Multi-user access (up to 10 users)',
+            'Staff training and certification programs',
+            'Supplier management and analytics',
+            'Menu optimization with AI insights',
+            'Demand forecasting and inventory optimization',
+            'API access and custom development',
+            'Compliance reporting and audit trails',
+            'Data export and backup capabilities',
+            'White-label reporting options',
+            'Advanced security and data protection'
+          ],
+          modules: {
+            'Operational Intelligence': 'Advanced AI-powered dashboard with real-time insights',
+            'Recipe & Inventory': 'Advanced inventory with AI predictions and optimization',
+            'Demand Forecasting': 'AI-powered demand forecasting with machine learning',
+            'Waste Tracking': 'Advanced waste analytics with AI insights and optimization',
+            'Suppliers': 'Advanced supplier management and performance analytics',
+            'Menu Optimization': 'AI-powered menu optimization and profitability analysis',
+            'Staff Training': 'Advanced training with progress tracking and certification',
+            'Reports & Compliance': 'Advanced compliance and custom reporting with audit trails',
+            'CSV Upload': 'Advanced data processing with validation and AI analysis',
+            'Issue Reporting': 'Advanced issue tracking and resolution with AI insights'
+          },
+          limitations: [
+            'Limited to 25 locations',
+            'Up to 10 users only',
+            'No custom AI model training',
+            'No white-label platform options',
+            'Standard implementation services'
+          ]
+        },
+        stripePriceId: process.env.STRIPE_PRICE_PROFESSIONAL
       },
       {
         id: 'enterprise',
         name: 'Enterprise',
-        price: 299.99,
+        price: 4999,
+        originalPrice: 6499,
         currency: 'MYR',
         interval: 'month',
-        features: [
-          'Everything in Pro',
-          'Unlimited locations',
-          'Custom AI training',
-          'Dedicated support',
-          'API access',
-          'White-label options',
-          'Custom integrations',
-          'Advanced compliance'
-        ],
+        popular: false,
+        savings: 23,
+        targetMarket: 'Top 1% revenue makers (RM 50M+ annually)',
+        annualRevenue: 'RM 50M+',
+        valueProposition: 'Reduce waste by 30-40% and save RM 500K-1M/month',
+        features: {
+          core: [
+            'Everything in Professional',
+            'Unlimited locations and users',
+            'Custom AI model training and optimization',
+            'Dedicated success manager and support team',
+            '24/7 phone and email support',
+            'Custom integrations and API development',
+            'Advanced compliance and regulatory reporting',
+            'White-label platform options',
+            'Custom branding and UI customization',
+            'Advanced security and data protection',
+            'Multi-region and multi-currency support',
+            'Custom analytics and reporting',
+            'Data migration and implementation services',
+            'Staff training and change management',
+            'Strategic consulting and optimization services'
+          ],
+          modules: {
+            'Operational Intelligence': 'Enterprise dashboard with custom AI models and insights',
+            'Recipe & Inventory': 'Enterprise inventory with custom AI training and optimization',
+            'Demand Forecasting': 'Custom AI models for demand forecasting and optimization',
+            'Waste Tracking': 'Enterprise waste analytics with custom insights and optimization',
+            'Suppliers': 'Enterprise supplier management with custom integrations and analytics',
+            'Menu Optimization': 'Custom AI models for menu optimization and profitability',
+            'Staff Training': 'Enterprise training platform with custom content and certification',
+            'Reports & Compliance': 'Custom compliance reports and white-label options',
+            'CSV Upload': 'Enterprise data processing with custom validation and AI analysis',
+            'Issue Reporting': 'Enterprise issue management with custom workflows and AI insights'
+          },
+          limitations: [
+            'No limitations on features',
+            'Full customization available',
+            'Dedicated support team',
+            'Custom development available',
+            'Strategic partnership included'
+          ]
+        },
         stripePriceId: process.env.STRIPE_PRICE_ENTERPRISE
+      },
+      {
+        id: 'elite',
+        name: 'Elite',
+        price: 9999,
+        originalPrice: 12999,
+        currency: 'MYR',
+        interval: 'month',
+        popular: false,
+        savings: 23,
+        targetMarket: 'Ultra-premium segment (RM 100M+ annually)',
+        annualRevenue: 'RM 100M+',
+        valueProposition: 'Reduce waste by 35-45% and save RM 1M-2M/month',
+        features: {
+          core: [
+            'Everything in Enterprise',
+            'Custom AI development and training',
+            'Dedicated engineering team',
+            'Custom platform development',
+            'Strategic partnership and consulting',
+            'International expansion support',
+            'Custom compliance and regulatory frameworks',
+            'Advanced data analytics and insights',
+            'Custom integrations with enterprise systems',
+            'White-label platform licensing',
+            'Custom training and certification programs',
+            'Strategic business consulting',
+            'Market analysis and competitive intelligence',
+            'Custom reporting and analytics',
+            'Priority feature development'
+          ],
+          modules: {
+            'Operational Intelligence': 'Custom AI development with dedicated engineering team',
+            'Recipe & Inventory': 'Custom platform development with AI optimization',
+            'Demand Forecasting': 'Custom AI models with strategic consulting',
+            'Waste Tracking': 'Custom analytics with international expansion support',
+            'Suppliers': 'Custom integrations with enterprise systems and white-label options',
+            'Menu Optimization': 'Custom AI development with strategic business consulting',
+            'Staff Training': 'Custom training programs with certification and licensing',
+            'Reports & Compliance': 'Custom compliance frameworks with regulatory support',
+            'CSV Upload': 'Custom data processing with advanced analytics and insights',
+            'Issue Reporting': 'Custom workflows with priority feature development'
+          },
+          limitations: [
+            'No limitations on features',
+            'Full customization and development',
+            'Dedicated engineering team',
+            'Strategic partnership and consulting',
+            'Priority feature development'
+          ]
+        },
+        stripePriceId: process.env.STRIPE_PRICE_ELITE
       }
     ];
 
-    res.json({ plans });
+    // Add annual pricing options
+    const annualPlans = plans.map(plan => ({
+      ...plan,
+      id: `${plan.id}_annual`,
+      name: `${plan.name} (Annual)`,
+      price: Math.round(plan.price * 0.9), // 10% discount for annual
+      originalPrice: plan.price * 12,
+      interval: 'year',
+      savings: 10,
+      billingType: 'annual',
+      stripePriceId: process.env[`STRIPE_PRICE_${plan.id.toUpperCase()}_ANNUAL`]
+    }));
+
+    const allPlans = [...plans, ...annualPlans];
+
+    res.json({ 
+      plans: allPlans,
+      pricingInfo: {
+        currency: 'MYR',
+        billingCycles: ['monthly', 'annual'],
+        discounts: {
+          annual: '10% discount for annual billing',
+          multiYear: '15-25% discount for multi-year contracts',
+          volume: '20-40% discount for multiple locations',
+          enterprise: 'Custom pricing for large deployments'
+        },
+        specialOffers: [
+          '30-day free trial with full access',
+          'No setup fees for annual contracts',
+          'Custom enterprise agreements available',
+          'Strategic partnership opportunities'
+        ],
+        marketFocus: {
+          target: 'Top 10% revenue makers in Malaysian F&B',
+          enterprise: 'Top 1% revenue makers',
+          elite: 'Ultra-premium segment (RM 100M+ annually)',
+          positioning: 'Premium AI-powered waste reduction platform'
+        }
+      }
+    });
   } catch (error) {
     logger.error('Error getting plans', error);
     res.status(500).json({ error: 'Internal server error' });
