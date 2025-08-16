@@ -67,28 +67,38 @@ docker-compose ps
 
 ## 📁 **Project Structure**
 
+This project has been organized for better maintainability and developer experience. See [PROJECT_ORGANIZATION.md](./PROJECT_ORGANIZATION.md) for detailed structure information.
+
+### Quick Navigation
+- 📚 **Documentation**: `docs/` - Architecture, user guides, development docs
+- ⚙️ **Configuration**: `config/` - Docker, Nginx, Jenkins, environment configs
+- 🔧 **Scripts**: `scripts/` - Database, deployment, testing, maintenance scripts
+- 🖥️ **Backend**: `backend/` - Node.js API and services
+- 🎨 **Frontend**: `frontend/` - React application
+
 ```
 wastewise-30/
 ├── 📁 docs/                    # Documentation
+│   ├── 📁 architecture/        # Architecture documentation
+│   ├── 📁 user-guides/         # User guides and manuals
+│   ├── 📁 development/         # Development documentation
 │   ├── 📁 deployment/          # Deployment guides
-│   ├── 📁 cicd/               # CI/CD documentation
-│   ├── 📁 troubleshooting/    # Troubleshooting guides
-│   ├── 📁 architecture/       # Architecture documentation
-│   ├── 📁 security/           # Security and secrets management
-│   ├── 📁 ai/                 # AI and ML documentation
-│   ├── 📁 testing/            # Testing documentation
-│   └── 📁 maintenance/        # Maintenance guides
+│   ├── 📁 maintenance/         # Maintenance guides
+│   ├── 📁 testing/             # Testing documentation
+│   └── 📁 security/            # Security documentation
 ├── 📁 scripts/                 # Scripts and utilities
-│   ├── 📁 deployment/         # Deployment scripts
-│   ├── 📁 monitoring/         # Monitoring scripts
-│   └── 📁 troubleshooting/    # Troubleshooting scripts
+│   ├── 📁 database/            # Database scripts
+│   ├── 📁 deployment/          # Deployment scripts
+│   ├── 📁 testing/             # Testing scripts
+│   └── 📁 maintenance/         # Maintenance scripts
 ├── 📁 config/                  # Configuration files
-│   ├── 📁 docker/             # Docker configurations
-│   ├── 📁 nginx/              # Nginx configurations
-│   └── 📁 jenkins/            # Jenkins configurations
+│   ├── 📁 docker/              # Docker configurations
+│   ├── 📁 nginx/               # Nginx configurations
+│   ├── 📁 jenkins/             # Jenkins configurations
+│   └── 📁 environment/         # Environment configurations
 ├── 📁 frontend/                # React frontend application
 ├── 📁 backend/                 # Node.js backend application
-└── 📁 data-platform/           # Data platform services
+└── 📁 templates/               # Template files
 ```
 
 ## 🔧 **Development**
