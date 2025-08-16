@@ -1,0 +1,141 @@
+/* Custom styling for Stripe pricing table to match WasteWise design */
+
+/* Container styling */
+.stripe-pricing-table-container {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e9d5ff;
+  overflow: hidden;
+}
+
+/* Stripe pricing table custom styles */
+stripe-pricing-table {
+  --stripe-pricing-table-primary-color: #7c3aed;
+  --stripe-pricing-table-secondary-color: #8b5cf6;
+  --stripe-pricing-table-success-color: #10b981;
+  --stripe-pricing-table-error-color: #ef4444;
+  --stripe-pricing-table-warning-color: #f59e0b;
+  --stripe-pricing-table-info-color: #3b82f6;
+  --stripe-pricing-table-light-color: #f8fafc;
+  --stripe-pricing-table-dark-color: #1e293b;
+  --stripe-pricing-table-border-color: #e2e8f0;
+  --stripe-pricing-table-border-radius: 0.75rem;
+  --stripe-pricing-table-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --stripe-pricing-table-font-size: 1rem;
+  --stripe-pricing-table-line-height: 1.5;
+  --stripe-pricing-table-spacing: 1rem;
+  --stripe-pricing-table-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --stripe-pricing-table-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom button styling to match WasteWise theme */
+stripe-pricing-table button {
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+stripe-pricing-table button:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+/* Popular plan highlighting */
+stripe-pricing-table [data-testid="pricing-table-plan"]:has([data-testid="popular-badge"]) {
+  border: 2px solid #7c3aed;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15);
+}
+
+/* Price styling */
+stripe-pricing-table [data-testid="pricing-table-price"] {
+  color: #7c3aed;
+  font-weight: 700;
+}
+
+/* Feature list styling */
+stripe-pricing-table [data-testid="pricing-table-feature"] {
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+stripe-pricing-table [data-testid="pricing-table-feature"] svg {
+  color: #10b981;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  stripe-pricing-table {
+    --stripe-pricing-table-spacing: 0.75rem;
+    --stripe-pricing-table-font-size: 0.875rem;
+  }
+}
+
+/* Loading state */
+.stripe-pricing-table-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: white;
+  border-radius: 1rem;
+  border: 2px solid #e9d5ff;
+}
+
+.stripe-pricing-table-loading::after {
+  content: '';
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #e9d5ff;
+  border-top: 3px solid #7c3aed;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.stripe-pricing-table-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: white;
+  border-radius: 1rem;
+  border: 2px solid #fecaca;
+  padding: 2rem;
+  text-align: center;
+}
+
+.stripe-pricing-table-error h3 {
+  color: #dc2626;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.stripe-pricing-table-error p {
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.stripe-pricing-table-error button {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.stripe-pricing-table-error button:hover {
+  background: #6d28d9;
+}

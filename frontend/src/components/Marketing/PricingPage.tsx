@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Star, ArrowRight, Coffee, TrendingUp, Users, Shield, Zap, Award, Clock, Globe, ShieldCheck, Target, Zap as ZapIcon } from 'lucide-react';
+import './PricingPage.css';
+
+// TypeScript declarations for Stripe pricing table
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'stripe-pricing-table': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        'pricing-table-id': string;
+        'publishable-key': string;
+      };
+    }
+  }
+}
 
 interface Plan {
   id: string;
@@ -34,10 +47,43 @@ export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState('monthly');
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showStripeTable, setShowStripeTable] = useState(true);
+  const [stripeTableLoading, setStripeTableLoading] = useState(true);
+  const [stripeTableError, setStripeTableError] = useState(false);
 
   useEffect(() => {
     fetchPlans();
+    loadStripePricingTable();
   }, []);
+
+  const loadStripePricingTable = () => {
+    try {
+      // Load Stripe pricing table script
+      const script = document.createElement('script');
+      script.src = 'https://js.stripe.com/v3/pricing-table.js';
+      script.async = true;
+      script.onload = () => {
+        setStripeTableLoading(false);
+      };
+      script.onerror = () => {
+        setStripeTableError(true);
+        setStripeTableLoading(false);
+      };
+      document.head.appendChild(script);
+
+      return () => {
+        // Cleanup script on unmount
+        const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
+        if (existingScript) {
+          document.head.removeChild(existingScript);
+        }
+      };
+    } catch (error) {
+      console.error('Error loading Stripe pricing table:', error);
+      setStripeTableError(true);
+      setStripeTableLoading(false);
+    }
+  };
 
   const fetchPlans = async () => {
     try {
@@ -246,96 +292,187 @@ export default function PricingPage() {
               </button>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Pricing Cards */}
-      <div className="px-6 py-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            {getFilteredPlans().map((plan) => (
-              <div
-                key={plan.id}
-                className={`bg-white rounded-xl shadow-lg p-8 border-2 ${
-                  plan.popular ? 'border-purple-500 relative' : 'border-gray-200'
+          {/* Pricing Table Toggle */}
+          <div className="flex items-center justify-center mb-4">
+            <div className="bg-white rounded-lg p-1 shadow-sm">
+              <button
+                onClick={() => setShowStripeTable(true)}
+                className={`px-4 py-2 rounded-md font-medium transition-colors text-sm ${
+                  showStripeTable
+                    ? 'bg-purple-600 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                  <div className="mb-4">
-                    <span className="text-4xl font-bold text-purple-600">RM {plan.price.toLocaleString()}</span>
-                    <span className="text-gray-500 ml-2">
-                      /{billingCycle === 'monthly' ? 'month' : 'year'}
-                    </span>
-                  </div>
-                  {plan.originalPrice && (
-                    <div className="flex items-center justify-center">
-                      <span className="text-lg text-gray-400 line-through">RM {plan.originalPrice.toLocaleString()}</span>
-                      <span className="text-green-600 font-semibold ml-2">Save {plan.savings}%</span>
-                    </div>
-                  )}
-                  <p className="text-sm text-gray-600 mt-2">{plan.targetMarket}</p>
-                  <p className="text-sm text-gray-500">{plan.annualRevenue}</p>
-                </div>
-
-                {/* Risk Reversal Guarantee */}
-                {plan.riskReversal && (
-                  <div className="mb-6">
-                    <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
-                      <div className="flex items-center mb-2">
-                        <ShieldCheck className="w-5 h-5 text-green-600 mr-2" />
-                        <h4 className="font-semibold text-green-800">{plan.riskReversal.guarantee}</h4>
-                      </div>
-                      <p className="text-sm text-green-700 mb-3">{plan.riskReversal.description}</p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-green-600 font-medium">Coverage: {plan.riskReversal.coverage}</span>
-                        <span className="text-blue-600 font-medium">{plan.riskReversal.confidence}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div className="mb-6">
-                  <div className="bg-purple-50 rounded-lg p-4 mb-4">
-                    <p className="text-sm font-medium text-purple-900">{plan.valueProposition}</p>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Core Features</h4>
-                  <ul className="space-y-2">
-                    {plan.features?.core.slice(0, 6).map((feature, index) => (
-                      <li key={index} className="flex items-center text-sm text-gray-600">
-                        <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <button
-                  onClick={() => navigate('/signup')}
-                  className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
-                    plan.popular
-                      ? 'bg-purple-600 text-white hover:bg-purple-700'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                  }`}
-                >
-                  Start Free Trial
-                </button>
-              </div>
-            ))}
+                Interactive Pricing
+              </button>
+              <button
+                onClick={() => setShowStripeTable(false)}
+                className={`px-4 py-2 rounded-md font-medium transition-colors text-sm ${
+                  !showStripeTable
+                    ? 'bg-purple-600 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Detailed Plans
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Stripe Pricing Table */}
+      {showStripeTable && (
+        <div className="px-6 py-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-white rounded-xl shadow-lg p-8 border-2 border-purple-200">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                  Choose Your Enterprise Plan
+                </h2>
+                <p className="text-lg text-gray-600">
+                  All plans include our comprehensive risk reversal guarantees
+                </p>
+              </div>
+              
+              {/* Stripe Pricing Table Container */}
+              <div className="flex justify-center">
+                <div className="w-full max-w-4xl">
+                  {stripeTableLoading && (
+                    <div className="stripe-pricing-table-loading">
+                      <div className="text-center">
+                        <p className="text-gray-600 mb-4">Loading pricing plans...</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {stripeTableError && (
+                    <div className="stripe-pricing-table-error">
+                      <h3>Unable to Load Pricing Table</h3>
+                      <p>We're experiencing technical difficulties. Please try again or contact support.</p>
+                      <button onClick={() => {
+                        setStripeTableError(false);
+                        setStripeTableLoading(true);
+                        loadStripePricingTable();
+                      }}>
+                        Retry
+                      </button>
+                    </div>
+                  )}
+                  
+                  {!stripeTableLoading && !stripeTableError && (
+                    <stripe-pricing-table 
+                      pricing-table-id="prctbl_1RwcWE1awWwGP4dI3uDwUQGp"
+                      publishable-key="pk_live_51Rqms71awWwGP4dIrms0QUcKCCvsUU3m6KaWcjrHi6FkeoJD41tW8EM7m7fvvxyMds0M7HAgHz8Rn5q9az7s7SVp00EKbZehYr"
+                    ></stripe-pricing-table>
+                  )}
+                </div>
+              </div>
+              
+              {/* Additional Info */}
+              <div className="mt-8 text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                  <ShieldCheck className="w-4 h-4" />
+                  30-Day Money-Back Guarantee
+                </div>
+                <p className="text-sm text-gray-600 mt-2">
+                  All plans include comprehensive risk reversal guarantees and dedicated support
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Legacy Pricing Cards (Hidden by default) */}
+      {!showStripeTable && (
+        <div className="px-6 py-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8">
+              {getFilteredPlans().map((plan) => (
+                <div
+                  key={plan.id}
+                  className={`bg-white rounded-xl shadow-lg p-8 border-2 ${
+                    plan.popular ? 'border-purple-500 relative' : 'border-gray-200'
+                  }`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <span className="bg-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                    <div className="mb-4">
+                      <span className="text-4xl font-bold text-purple-600">RM {plan.price.toLocaleString()}</span>
+                      <span className="text-gray-500 ml-2">
+                        /{billingCycle === 'monthly' ? 'month' : 'year'}
+                      </span>
+                    </div>
+                    {plan.originalPrice && (
+                      <div className="flex items-center justify-center">
+                        <span className="text-lg text-gray-400 line-through">RM {plan.originalPrice.toLocaleString()}</span>
+                        <span className="text-green-600 font-semibold ml-2">Save {plan.savings}%</span>
+                      </div>
+                    )}
+                    <p className="text-sm text-gray-600 mt-2">{plan.targetMarket}</p>
+                    <p className="text-sm text-gray-500">{plan.annualRevenue}</p>
+                  </div>
+
+                  {/* Risk Reversal Guarantee */}
+                  {plan.riskReversal && (
+                    <div className="mb-6">
+                      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
+                        <div className="flex items-center mb-2">
+                          <ShieldCheck className="w-5 h-5 text-green-600 mr-2" />
+                          <h4 className="font-semibold text-green-800">{plan.riskReversal.guarantee}</h4>
+                        </div>
+                        <p className="text-sm text-green-700 mb-3">{plan.riskReversal.description}</p>
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-green-600 font-medium">Coverage: {plan.riskReversal.coverage}</span>
+                          <span className="text-blue-600 font-medium">{plan.riskReversal.confidence}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mb-6">
+                    <div className="bg-purple-50 rounded-lg p-4 mb-4">
+                      <p className="text-sm font-medium text-purple-900">{plan.valueProposition}</p>
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-gray-900 mb-3">Core Features</h4>
+                    <ul className="space-y-2">
+                      {plan.features?.core.slice(0, 6).map((feature, index) => (
+                        <li key={index} className="flex items-center text-sm text-gray-600">
+                          <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <button
+                    onClick={() => navigate('/signup')}
+                    className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
+                      plan.popular
+                        ? 'bg-purple-600 text-white hover:bg-purple-700'
+                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                    }`}
+                  >
+                    Start Free Trial
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Risk Reversal Guarantees Section */}
       <div className="py-16 bg-white">
