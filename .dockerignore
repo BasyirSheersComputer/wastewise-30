@@ -10,12 +10,16 @@ build/
 .next/
 out/
 
-# Environment files
+# Environment files (exclude most but allow specific ones for build)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+# Allow specific environment files that might be needed for build
+!frontend/.env
+!frontend/.env.production
+!backend/.env
 
 # IDE files
 .vscode/
