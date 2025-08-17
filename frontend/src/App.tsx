@@ -55,6 +55,7 @@ import UserSettings from "./components/UI/UserSettings";
 import IdleWarning from "./components/UI/IdleWarning";
 import useIdleLogout from "./hooks/useIdleLogout";
 import IssueReporting from "./components/UI/IssueReporting";
+import ProductDemo from "./components/UI/ProductDemo";
 
 const navigationItems = [
   { id: "dashboard", label: "Operational Intelligence", icon: BarChart3 },
@@ -268,6 +269,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />
+        <Route path="/demo" element={<ProductDemo />} />
 
         {/* Onboarding/Trial - With Sidebar */}
         <Route

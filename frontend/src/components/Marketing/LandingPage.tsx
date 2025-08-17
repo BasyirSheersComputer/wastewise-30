@@ -142,10 +142,16 @@ export default function LandingPage() {
             Stop the Waste Bleeding - Start Free Trial
           </button>
           <button
-            onClick={() => navigate('/pricing')}
+            onClick={() => navigate('/demo')}
             className="bg-white text-purple-600 px-8 py-4 rounded-xl shadow-lg hover:bg-gray-50 text-lg font-semibold border-2 border-purple-600"
           >
-            See Guaranteed ROI
+            Watch Demo
+          </button>
+          <button
+            onClick={() => navigate('/pricing')}
+            className="bg-gray-100 text-gray-700 px-8 py-4 rounded-xl shadow-lg hover:bg-gray-200 text-lg font-semibold"
+          >
+            See Pricing
           </button>
         </div>
         <div className="flex items-center gap-8 text-sm text-gray-600">
