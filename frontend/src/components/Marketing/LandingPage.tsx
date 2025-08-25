@@ -32,19 +32,25 @@ export default function LandingPage() {
       plan: 'Professional',
       price: 'RM 1,999',
       target: 'Top 10% revenue makers (RM 2M-10M annually)',
-      savings: 'RM 100K-300K/month'
+      savings: 'RM 100K-300K/month',
+      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop&crop=center',
+      description: 'Perfect for growing coffee chains with 5-20 locations'
     },
     {
       plan: 'Enterprise',
       price: 'RM 4,999',
       target: 'Top 1% revenue makers (RM 50M+ annually)',
-      savings: 'RM 500K-1M/month'
+      savings: 'RM 500K-1M/month',
+      image: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400&h=300&fit=crop&crop=center',
+      description: 'Ideal for established chains with 20-100 locations'
     },
     {
       plan: 'Elite',
       price: 'RM 9,999',
       target: 'Ultra-premium segment (RM 100M+ annually)',
-      savings: 'RM 1M-2M/month'
+      savings: 'RM 1M-2M/month',
+      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop&crop=center',
+      description: 'For industry leaders with 100+ locations'
     }
   ];
 
@@ -283,11 +289,24 @@ export default function LandingPage() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {pricingHighlights.map((plan, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm p-6 text-center">
+              <div key={index} className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                {/* Thumbnail Image */}
+                <div className="mb-6">
+                  <img 
+                    src={plan.image} 
+                    alt={`${plan.plan} plan`}
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                </div>
+                
+                {/* Plan Details */}
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{plan.plan}</h3>
                 <div className="text-3xl font-bold text-purple-600 mb-2">{plan.price}</div>
                 <div className="text-sm text-gray-600 mb-4">/month</div>
-                <p className="text-sm text-gray-600 mb-4">{plan.target}</p>
+                <p className="text-sm text-gray-600 mb-4">{plan.description}</p>
+                <p className="text-xs text-gray-500 mb-4">{plan.target}</p>
+                
+                {/* Savings Highlight */}
                 <div className="bg-green-50 rounded-lg p-3">
                   <p className="text-sm font-medium text-green-800">Save up to</p>
                   <p className="text-lg font-bold text-green-600">{plan.savings}</p>

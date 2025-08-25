@@ -7,7 +7,7 @@ import {
   getComplianceStats, 
   getLocalHolidays, 
   getSeasons 
-} from './db.js';
+} from '../database/db.js';
 
 // Database data fetchers for each section
 const dataFetchers = {

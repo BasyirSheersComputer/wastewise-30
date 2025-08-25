@@ -2,8 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { getRecommendations, getMultiSectionRecommendations } from './recommendations.js';
-import { getAnalyticsData } from './analytics.js';
+import { getRecommendations, getMultiSectionRecommendations } from './ai/recommendations.js';
+import { getAnalyticsData } from './ai/analytics.js';
 import { createClient } from '@supabase/supabase-js';
 import { DateTime } from 'luxon';
 import logger from './utils/logger.js';

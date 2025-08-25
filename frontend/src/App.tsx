@@ -20,9 +20,6 @@ import {
   Menu,
   X,
   CreditCard,
-  Coffee,
-  Calculator,
-  Target,
   Settings,
   Upload,
 } from "lucide-react";
@@ -50,7 +47,7 @@ import OnboardingForm from "./components/Auth/OnboardingForm";
 import TrialEnded from "./components/Auth/TrialEnded";
 
 import { supabase } from "./supabaseClient";
-import { useEffect } from "react";
+
 import UserSettings from "./components/UI/UserSettings";
 import IdleWarning from "./components/UI/IdleWarning";
 import useIdleLogout from "./hooks/useIdleLogout";
@@ -90,7 +87,7 @@ function Sidebar({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [session, setSession] = React.useState<any>(null);
+  const [session, setSession] = React.useState<unknown>(null);
   const [loading, setLoading] = React.useState(true);
   const { extendSession } = useIdleLogout();
   
@@ -115,8 +112,7 @@ function Sidebar({
       await supabase.auth.signOut();
       // Redirect to login page after successful logout
       navigate('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
+    } catch {
       // Still redirect to login even if there's an error
       navigate('/login');
     }
@@ -172,7 +168,7 @@ function Sidebar({
 }
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = React.useState<any>(null);
+  const [session, setSession] = React.useState<unknown>(null);
   const [loading, setLoading] = React.useState(true);
   
   React.useEffect(() => {

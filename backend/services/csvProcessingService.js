@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { getRecommendations } from '../recommendations.js';
+import { getRecommendations } from '../ai/recommendations.js';
 
 const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
 

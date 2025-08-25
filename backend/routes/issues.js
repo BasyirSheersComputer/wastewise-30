@@ -1,12 +1,12 @@
 import express from 'express';
 import issueReportingService from '../services/issueReportingService.js';
-import authMiddleware from '../utils/authMiddleware.js';
+import { authenticateUser } from '../utils/authMiddleware.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
 
 // Apply authentication middleware to all routes
-router.use(authMiddleware);
+router.use(authenticateUser);
 
 /**
  * @route POST /api/issues

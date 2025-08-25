@@ -5,23 +5,11 @@ import { apiService } from '../../services/api';
 import { 
   CheckCircle, 
   ArrowRight, 
-  Clock, 
-  Calendar, 
-  Users, 
-  Building, 
   Coffee,
   Target,
   TrendingUp,
   Shield,
   Zap,
-  Award,
-  BarChart3,
-  Package,
-  Trash2,
-  Truck,
-  Menu,
-  FileText,
-  Settings,
   Play
 } from 'lucide-react';
 
@@ -74,8 +62,8 @@ export default function OnboardingForm() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
-  const [user, setUser] = useState<any>(null);
-  const [trialDays, setTrialDays] = useState(30);
+  const [user, setUser] = useState<unknown>(null);
+
   const [formData, setFormData] = useState<OnboardingData>({
     businessType: '',
     locations: 1,
@@ -100,24 +88,23 @@ export default function OnboardingForm() {
           const pendingSignup = localStorage.getItem('pendingSignup');
           if (pendingSignup) {
             try {
-              const { user: pendingUser, formData: pendingFormData } = JSON.parse(pendingSignup);
+              const { user: _pendingUser } = JSON.parse(pendingSignup);
               
               // If this is the same user, create their profile
-              if (pendingUser.id === user.id) {
-                console.log('Processing email confirmation for user:', user.email);
+              if (_pendingUser.id === user.id) {
+
                 
                 try {
-                  const profileResult = await apiService.createUserProfile(user);
-                  console.log('Profile created after email confirmation:', profileResult);
+                  await apiService.createUserProfile(user);
+
                   
                   // Clear pending signup data
                   localStorage.removeItem('pendingSignup');
-                } catch (profileError) {
-                  console.error('Profile creation error after email confirmation:', profileError);
+                } catch {
+                  // Profile creation failed
                 }
               }
-            } catch (error) {
-              console.error('Error processing pending signup:', error);
+            } catch {
               localStorage.removeItem('pendingSignup');
             }
           }
@@ -127,15 +114,14 @@ export default function OnboardingForm() {
         const pendingSignup = localStorage.getItem('pendingSignup');
         if (pendingSignup) {
           try {
-            const { user: pendingUser } = JSON.parse(pendingSignup);
-            console.log('Found pending signup, redirecting to login');
+            const { user: _pendingUser } = JSON.parse(pendingSignup);
+
             
             // Show message to user
             alert('Please sign in with your email and password to complete your account setup.');
             navigate('/login');
             return;
-          } catch (error) {
-            console.error('Error processing pending signup:', error);
+          } catch {
             localStorage.removeItem('pendingSignup');
           }
         }
@@ -146,7 +132,7 @@ export default function OnboardingForm() {
     getUser();
   }, [navigate]);
 
-  const handleInputChange = (field: keyof OnboardingData, value: any) => {
+  const handleInputChange = (field: keyof OnboardingData, value: unknown) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -190,7 +176,7 @@ export default function OnboardingForm() {
 
       // Create or update user profile in database via backend API
       try {
-        console.log('Updating user profile via backend API...', { userId: user.id, email: user.email });
+
         
         const profileData = {
           id: user.id,
@@ -217,18 +203,16 @@ export default function OnboardingForm() {
         };
 
         // Use the debug endpoint to create/update profile
-        const profileResult = await apiService.createDebugProfile(user.id, profileData);
+        await apiService.createDebugProfile(user.id, profileData);
         
-        console.log('Profile updated successfully via backend:', profileResult);
-      } catch (profileError) {
-        console.error('Profile update error via backend:', profileError);
-        // Log the error but continue to dashboard
+
+      } catch {
+        // Profile update failed, continue to dashboard
       }
 
       // Navigate to dashboard
       navigate('/dashboard');
-    } catch (error) {
-      console.error('Onboarding error:', error);
+    } catch {
       // Still navigate to dashboard even if there's an error
       navigate('/dashboard');
     } finally {

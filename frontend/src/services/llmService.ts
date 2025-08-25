@@ -2,7 +2,7 @@
 
 interface AnalyticsData {
   section: string;
-  analytics: any;
+  analytics: unknown;
   recommendations: string;
   timestamp: string;
   provider: string;
@@ -30,7 +30,6 @@ export async function getSectionRecommendations(
     
     return await response.json();
   } catch (error) {
-    console.error('Error fetching recommendations:', error);
     return {
       section,
       analytics: {},
@@ -67,7 +66,6 @@ export async function getMultiSectionRecommendations(
     const data = await response.json();
     return data.results;
   } catch (error) {
-    console.error('Error fetching multi-section recommendations:', error);
     return sections.map(section => ({
       section,
       analytics: {},
