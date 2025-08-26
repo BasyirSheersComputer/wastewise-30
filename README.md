@@ -44,21 +44,30 @@ cd wastewise-30
 
 ### **2. Set Up Environment:**
 ```bash
-# Copy environment template
-cp env.example .env
+# Copy Docker environment template
+cp config/environment/docker.env.example .env
 
-# Edit environment variables (see env.example for required keys)
+# Edit environment variables (see Docker Environment Setup Guide for details)
 nano .env
 ```
 
-### **3. Deploy with Docker Compose:**
+### **3. Build and Deploy:**
 ```bash
+# Build Docker images with proper environment variable handling
+# Linux/macOS:
+./scripts/build-docker.sh
+
+# Windows PowerShell:
+.\scripts\build-docker.ps1
+
 # Deploy the application
-docker-compose up -d --build
+docker-compose up -d
 
 # Check status
 docker-compose ps
 ```
+
+**📖 For detailed environment setup instructions, see [Docker Environment Setup Guide](./docs/deployment/DOCKER_ENVIRONMENT_SETUP.md)**
 
 ### **4. Access the Application:**
 - **Frontend**: http://localhost:8899/

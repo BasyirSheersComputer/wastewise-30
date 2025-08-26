@@ -102,3 +102,4 @@ For issues with Stripe pricing table configuration, refer to:
 - [Stripe Pricing Table Documentation](https://stripe.com/docs/payments/checkout/pricing-table)
 - [Stripe Dashboard Help](https://support.stripe.com/)
 
+

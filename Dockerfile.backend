@@ -14,8 +14,9 @@ RUN npm ci --only=production
 # Remove build dependencies
 RUN apk del python3 make g++
 
-# Copy backend application code
+# Copy backend application code and environment configuration
 COPY backend/ ./
+COPY config/environment/ ./config/environment/
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs

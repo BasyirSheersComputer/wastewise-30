@@ -10,16 +10,16 @@ build/
 .next/
 out/
 
-# Environment files (exclude most but allow specific ones for build)
-.env
+# Environment files - Allow specific ones for build but exclude sensitive ones
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-# Allow specific environment files that might be needed for build
+# Allow environment files that are needed for build
 !frontend/.env
 !frontend/.env.production
 !backend/.env
+!config/environment/
 
 # IDE files
 .vscode/
@@ -44,7 +44,6 @@ docs/
 # Scripts and configs (keep only what's needed for build)
 scripts/
 config/jenkins/
-config/environment/
 
 # Test files
 **/*.test.js
