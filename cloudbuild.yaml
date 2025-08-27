@@ -83,7 +83,7 @@ steps:
       - '--concurrency'
       - '80'
       - '--set-env-vars'
-      - 'NODE_ENV=production,PORT=3000'
+      - 'NODE_ENV=production'
     waitFor: ['push-backend-latest']
 
   # Stage 5: Deploy frontend to Cloud Run
