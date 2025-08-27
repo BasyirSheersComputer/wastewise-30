@@ -156,7 +156,7 @@ steps:
       - '--concurrency'
       - '80'
       - '--set-env-vars'
-      - 'VITE_API_BASE_URL=https://wastewise-backend-${PROJECT_ID}-as.a.run.app'
+      - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
       - '--set-secrets'
       - 'VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=trial-period-days:latest'
     waitFor: ['get-backend-url']
@@ -183,7 +183,7 @@ steps:
       - '3'
       - '--retry-delay'
       - '10'
-      - 'https://wastewise-backend-${PROJECT_ID}-as.a.run.app/health'
+      - 'https://wastewise-backend-$PROJECT_ID-as.a.run.app/health'
     waitFor: ['update-cors']
 
   - name: 'gcr.io/cloud-builders/curl'
@@ -193,7 +193,7 @@ steps:
       - '3'
       - '--retry-delay'
       - '10'
-      - 'https://wastewise-frontend-${PROJECT_ID}-as.a.run.app/'
+      - 'https://wastewise-frontend-$PROJECT_ID-as.a.run.app/'
     waitFor: ['smoke-test-backend']
 
 # Available secrets from Secret Manager
