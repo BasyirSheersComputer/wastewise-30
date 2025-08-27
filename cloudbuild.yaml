@@ -17,9 +17,10 @@ steps:
       - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '.'
 
-  # Stage 2: Build frontend (without secrets for now)
+  # Stage 2: Build frontend with secrets
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-frontend'
+    secretEnv: ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY', 'VITE_STRIPE_PUBLISHABLE_KEY']
     args: 
       - 'build'
       - '-t'
@@ -31,11 +32,11 @@ steps:
       - '--cache-from'
       - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
       - '--build-arg'
-      - 'VITE_SUPABASE_URL=https://placeholder.supabase.co'
+      - 'VITE_SUPABASE_URL=${_VITE_SUPABASE_URL}'
       - '--build-arg'
-      - 'VITE_SUPABASE_ANON_KEY=placeholder'
+      - 'VITE_SUPABASE_ANON_KEY=${_VITE_SUPABASE_ANON_KEY}'
       - '--build-arg'
-      - 'VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder'
+      - 'VITE_STRIPE_PUBLISHABLE_KEY=${_VITE_STRIPE_PUBLISHABLE_KEY}'
       - '--build-arg'
       - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
       - '--build-arg'
@@ -93,7 +94,9 @@ steps:
       - '--concurrency'
       - '80'
       - '--set-env-vars'
-      - 'NODE_ENV=production,VITE_SUPABASE_URL=https://placeholder.supabase.co,VITE_SUPABASE_ANON_KEY=placeholder'
+      - 'NODE_ENV=production'
+      - '--set-secrets'
+      - 'VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest'
     waitFor: ['push-backend-latest']
 
   # Stage 5: Deploy frontend to Cloud Run
@@ -180,6 +183,16 @@ options:
   env:
     - 'DOCKER_BUILDKIT=1'
     - 'COMPOSE_DOCKER_CLI_BUILD=1'
+
+# Available secrets for the build
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/supabase-url/versions/latest
+      env: 'VITE_SUPABASE_URL'
+    - versionName: projects/$PROJECT_ID/secrets/supabase-anon-key/versions/latest
+      env: 'VITE_SUPABASE_ANON_KEY'
+    - versionName: projects/$PROJECT_ID/secrets/stripe-publishable-key/versions/latest
+      env: 'VITE_STRIPE_PUBLISHABLE_KEY'
 
 # Timeout for the entire build
 timeout: '1800s'
