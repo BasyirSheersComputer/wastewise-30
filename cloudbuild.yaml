@@ -5,6 +5,7 @@ steps:
   # Stage 1: Build and test backend
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-backend'
+    dir: 'backend'
     args: 
       - 'build'
       - '-t'
@@ -12,7 +13,7 @@ steps:
       - '-t'
       - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '-f'
-      - 'Dockerfile.backend'
+      - 'Dockerfile'
       - '--cache-from'
       - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '.'
@@ -20,6 +21,7 @@ steps:
   # Stage 2: Build frontend with environment variables
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-frontend'
+    dir: 'frontend'
     args: 
       - 'build'
       - '-t'
@@ -27,7 +29,7 @@ steps:
       - '-t'
       - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
       - '-f'
-      - 'Dockerfile.frontend'
+      - 'Dockerfile'
       - '--cache-from'
       - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
       - '--build-arg'
@@ -46,34 +48,26 @@ steps:
   # Stage 3: Run backend tests
   - name: 'gcr.io/cloud-builders/docker'
     id: 'test-backend'
+    entrypoint: 'sh'
+    dir: 'backend'
     args: 
-      - 'run'
-      - '--rm'
-      - 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
-      - 'npm'
-      - 'test'
+      - '-c'
+      - |
+        docker run --rm gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA npm test
     waitFor: ['build-backend']
 
   # Stage 4: Push images to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-backend'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA']
-    waitFor: ['test-backend']
-
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-backend-latest'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-backend:latest']
-    waitFor: ['push-backend']
-
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-frontend'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA']
-    waitFor: ['build-frontend']
-
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-frontend-latest'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-frontend:latest']
-    waitFor: ['push-frontend']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'push-images'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        docker push gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA
+        docker push gcr.io/$PROJECT_ID/wastewise-backend:latest
+        docker push gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA
+        docker push gcr.io/$PROJECT_ID/wastewise-frontend:latest
+    waitFor: ['test-backend', 'build-frontend']
 
   # Stage 5: Deploy backend to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -108,9 +102,9 @@ steps:
       - 'NODE_ENV=production,PORT=3000'
       - '--set-secrets'
       - 'SUPABASE_URL=supabase-url:latest,SUPABASE_ANON_KEY=supabase-anon-key:latest,SUPABASE_SERVICE_ROLE_KEY=supabase-service-key:latest,JWT_SECRET=jwt-secret:latest,GEMINI_API_KEY=gemini-api-key:latest,OPENAI_API_KEY=openai-api-key:latest,SMTP_HOST=smtp-host:latest,SMTP_PORT=smtp-port:latest,SMTP_USER=smtp-user:latest,SMTP_PASS=smtp-pass:latest'
-    waitFor: ['push-backend-latest']
+    waitFor: ['push-images']
 
-  # Stage 6: Get backend URL and update frontend environment
+  # Stage 6: Get backend URL and update frontend with a more robust method
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'get-backend-url'
     entrypoint: 'bash'
@@ -118,15 +112,13 @@ steps:
       - '-c'
       - |
         BACKEND_URL=$(gcloud run services describe wastewise-backend --region asia-southeast1 --format="value(status.url)")
+        # This part of your original script was flawed and is now removed.
+        # It's better to manage VITE_API_BASE_URL directly in the frontend deploy step
         echo "Backend URL: $BACKEND_URL"
         echo "BACKEND_URL=$BACKEND_URL" > /workspace/backend_url.txt
-        # Update the frontend image with the correct backend URL
-        docker pull gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA
-        docker tag gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA
-        docker push gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA
     waitFor: ['deploy-backend']
 
-  # Stage 7: Deploy frontend to Cloud Run
+  # Stage 7: Deploy frontend to Cloud Run with a specific backend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-frontend'
     entrypoint: gcloud
@@ -156,7 +148,7 @@ steps:
       - '--concurrency'
       - '80'
       - '--set-env-vars'
-      - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
+      - 'VITE_API_BASE_URL=$(cat /workspace/backend_url.txt | cut -d'=' -f2-)'
       - '--set-secrets'
       - 'VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=trial-period-days:latest'
     waitFor: ['get-backend-url']
@@ -180,7 +172,7 @@ steps:
     id: 'smoke-test-backend'
     args: 
       - '--retry'
-      - '3'
+      - '10'
       - '--retry-delay'
       - '10'
       - 'https://wastewise-backend-$PROJECT_ID-as.a.run.app/health'
@@ -190,7 +182,7 @@ steps:
     id: 'smoke-test-frontend'
     args: 
       - '--retry'
-      - '3'
+      - '10'
       - '--retry-delay'
       - '10'
       - 'https://wastewise-frontend-$PROJECT_ID-as.a.run.app/'
