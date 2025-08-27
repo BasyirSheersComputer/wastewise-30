@@ -53,12 +53,12 @@ RUN mkdir -p /var/cache/nginx /var/log/nginx /run && \
 # Switch to non-root user
 USER nginx
 
-# Expose port 8899 (as specified in docker-compose)
-EXPOSE 8899
+# Expose port 8080 (Cloud Run default)
+EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8899/ || exit 1
+  CMD curl -f http://localhost:8080/ || exit 1
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]

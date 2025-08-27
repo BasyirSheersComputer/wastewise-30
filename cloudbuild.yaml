@@ -110,19 +110,7 @@ steps:
       - 'SUPABASE_URL=supabase-url:latest,SUPABASE_ANON_KEY=supabase-anon-key:latest,SUPABASE_SERVICE_ROLE_KEY=supabase-service-key:latest,JWT_SECRET=jwt-secret:latest,GEMINI_API_KEY=gemini-api-key:latest,OPENAI_API_KEY=openai-api-key:latest,SMTP_HOST=smtp-host:latest,SMTP_PORT=smtp-port:latest,SMTP_USER=smtp-user:latest,SMTP_PASS=smtp-pass:latest'
     waitFor: ['push-backend-latest']
 
-  # Stage 6: Get backend URL and update frontend environment
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'get-backend-url'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        BACKEND_URL=$(gcloud run services describe wastewise-backend --region asia-southeast1 --format="value(status.url)")
-        echo "Backend URL: $BACKEND_URL"
-        echo "BACKEND_URL=$BACKEND_URL" > /workspace/backend_url.txt
-    waitFor: ['deploy-backend']
-
-  # Stage 7: Deploy frontend to Cloud Run
+  # Stage 6: Deploy frontend to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-frontend'
     entrypoint: gcloud
@@ -138,7 +126,7 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--port'
-      - '8899'
+      - '8080'
       - '--memory'
       - '256Mi'
       - '--cpu'
@@ -155,9 +143,9 @@ steps:
       - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
       - '--set-secrets'
       - 'VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=trial-period-days:latest'
-    waitFor: ['get-backend-url']
+    waitFor: ['deploy-backend']
 
-  # Stage 8: Update backend CORS with frontend URL
+  # Stage 7: Update backend CORS with frontend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'update-cors'
     entrypoint: 'bash'
@@ -171,7 +159,7 @@ steps:
           --set-env-vars CORS_ORIGIN=$FRONTEND_URL
     waitFor: ['deploy-frontend']
 
-  # Stage 9: Run smoke tests
+  # Stage 8: Run smoke tests
   - name: 'gcr.io/cloud-builders/curl'
     id: 'smoke-test-backend'
     args: 
