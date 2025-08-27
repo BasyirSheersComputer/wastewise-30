@@ -20,14 +20,14 @@ steps:
   # Stage 2: Build frontend with secrets
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-frontend'
-    secretEnv: ['WASTEWISE_SECRET']
+    secretEnv: ['FRONTEND_SECRET']
     entrypoint: 'bash'
     args: 
       - '-c'
       - |
-        # Extract environment variables from the secret
-        echo "$${_WASTEWISE_SECRET}" > /tmp/secrets.env
-        source /tmp/secrets.env
+        # Extract environment variables from the frontend secret
+        echo "$${_FRONTEND_SECRET}" > /tmp/frontend-secrets.env
+        source /tmp/frontend-secrets.env
         
         # Build the frontend with extracted environment variables
         docker build \
@@ -95,7 +95,7 @@ steps:
       - '--set-env-vars'
       - 'NODE_ENV=production'
       - '--set-secrets'
-      - 'WASTEWISE_SECRET=wastewise-30-secret:latest'
+      - 'BACKEND_SECRET=wastewise-30-secret-backend:latest'
     waitFor: ['push-backend-latest']
 
   # Stage 5: Deploy frontend to Cloud Run
@@ -187,7 +187,9 @@ options:
 availableSecrets:
   secretManager:
     - versionName: projects/451983642521/secrets/wastewise-30-secret/versions/latest
-      env: 'WASTEWISE_SECRET'
+      env: 'FRONTEND_SECRET'
+    - versionName: projects/451983642521/secrets/wastewise-30-secret-backend/versions/latest
+      env: 'BACKEND_SECRET'
 
 # Timeout for the entire build
 timeout: '1800s'
