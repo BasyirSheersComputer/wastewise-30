@@ -21,7 +21,12 @@ import accessControlRoutes from './routes/accessControl.js';
 
 dotenv.config();
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+// Initialize Supabase client only if credentials are provided
+let supabase = null;
+if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY && 
+    process.env.VITE_SUPABASE_URL !== 'https://placeholder.supabase.co') {
+  supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -60,7 +65,8 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    supabase: supabase ? 'connected' : 'not configured'
   });
 });
 
