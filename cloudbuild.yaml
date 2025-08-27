@@ -30,6 +30,16 @@ steps:
       - 'Dockerfile.frontend'
       - '--cache-from'
       - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
+      - '--build-arg'
+      - 'VITE_SUPABASE_URL=https://placeholder.supabase.co'
+      - '--build-arg'
+      - 'VITE_SUPABASE_ANON_KEY=placeholder'
+      - '--build-arg'
+      - 'VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder'
+      - '--build-arg'
+      - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
+      - '--build-arg'
+      - 'VITE_TRIAL_PERIOD_DAYS=30'
       - '.'
 
   # Stage 3: Push images to Container Registry
