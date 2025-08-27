@@ -19,11 +19,12 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('For now, using mock authentication for development...')
 }
 
-// Create real client with fallback for development
-const realSupabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseKey || 'placeholder-key'
-)
+// Create real client only if we have valid Supabase credentials
+const realSupabase = (supabaseUrl && supabaseKey && 
+  !supabaseUrl.includes('placeholder') && 
+  !supabaseKey.includes('placeholder')) 
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 // Mock authentication for development
 let mockSession: any = null;
@@ -160,5 +161,5 @@ const mockSupabase = {
   })
 };
 
-// Export mock client if Supabase is not configured, otherwise export real client
-export const supabase = (!supabaseUrl || !supabaseKey) ? mockSupabase : realSupabase;
+// Export mock client if Supabase is not configured or has placeholder values, otherwise export real client
+export const supabase = (!realSupabase) ? mockSupabase : realSupabase;
