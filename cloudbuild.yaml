@@ -73,6 +73,7 @@ steps:
   # Stage 4: Deploy backend to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-backend'
+    secretEnv: ['BACKEND_SECRET']
     entrypoint: gcloud
     args:
       - 'run'
