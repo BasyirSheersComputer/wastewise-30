@@ -8,7 +8,7 @@ steps:
     args: 
       - 'build'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
       - '-t'
       - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '-f'
@@ -23,7 +23,7 @@ steps:
     args: 
       - 'build'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID'
       - '-t'
       - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
       - '-f'
@@ -49,7 +49,7 @@ steps:
     args: 
       - 'run'
       - '--rm'
-      - 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
       - 'npm'
       - 'test'
     waitFor: ['build-backend']
@@ -57,7 +57,7 @@ steps:
   # Stage 4: Push images to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push-backend'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID']
     waitFor: ['test-backend']
 
   - name: 'gcr.io/cloud-builders/docker'
@@ -67,7 +67,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push-frontend'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID']
     waitFor: ['build-frontend']
 
   - name: 'gcr.io/cloud-builders/docker'
@@ -84,7 +84,7 @@ steps:
       - 'deploy'
       - 'wastewise-backend'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
       - '--region'
       - 'asia-southeast1'
       - '--platform'
@@ -119,7 +119,7 @@ steps:
       - 'deploy'
       - 'wastewise-frontend'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID'
       - '--region'
       - 'asia-southeast1'
       - '--platform'
@@ -197,9 +197,9 @@ availableSecrets:
 
 # Images to be pushed to Container Registry
 images:
-  - 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
   - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
-  - 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID'
   - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
 
 # Build options
