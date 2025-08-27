@@ -4,19 +4,11 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string
 
 // Check if environment variables are set
-if (!supabaseUrl || !supabaseKey) {
-  console.error('❌ Supabase environment variables are not set!')
-  console.error('Please create a .env file in the frontend directory with:')
-  console.error('VITE_SUPABASE_URL=https://your-project-url.supabase.co')
-  console.error('VITE_SUPABASE_ANON_KEY=your-anon-key-here')
-  console.error('')
-  console.error('To get these values:')
-  console.error('1. Go to https://supabase.com')
-  console.error('2. Create a new project or select existing one')
-  console.error('3. Go to Settings > API')
-  console.error('4. Copy the Project URL and anon public key')
-  console.error('')
-  console.error('For now, using mock authentication for development...')
+if (!supabaseUrl || !supabaseKey || supabaseUrl === 'undefined' || supabaseKey === 'undefined') {
+  console.warn('⚠️ Supabase environment variables are not set or invalid!')
+  console.warn('Using mock authentication for development...')
+  console.warn('VITE_SUPABASE_URL:', supabaseUrl ? 'set' : 'not set')
+  console.warn('VITE_SUPABASE_ANON_KEY:', supabaseKey ? 'set' : 'not set')
 }
 
 // Create real client only if we have valid Supabase credentials
