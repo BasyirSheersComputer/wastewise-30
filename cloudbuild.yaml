@@ -202,10 +202,10 @@ availableSecrets:
 
 # Images to be pushed to Container Registry
 images:
-- 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
-- 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
-- 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA'
-- 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
+  - 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
+  - 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
 
 # Build options
 options:
