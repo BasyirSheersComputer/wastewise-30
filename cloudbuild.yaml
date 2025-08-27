@@ -2,7 +2,7 @@
 # Auto-triggered on GitHub push to main branch
 
 steps:
-  # Stage 1: Build and test backend
+  # Stage 1: Build backend
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-backend'
     args: 
@@ -17,7 +17,7 @@ steps:
       - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '.'
 
-  # Stage 2: Build frontend with environment variables
+  # Stage 2: Build frontend (without secrets for now)
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-frontend'
     args: 
@@ -30,18 +30,7 @@ steps:
       - 'Dockerfile.frontend'
       - '--cache-from'
       - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
-      - '--build-arg'
-      - 'VITE_SUPABASE_URL=$$VITE_SUPABASE_URL'
-      - '--build-arg'
-      - 'VITE_SUPABASE_ANON_KEY=$$VITE_SUPABASE_ANON_KEY'
-      - '--build-arg'
-      - 'VITE_STRIPE_PUBLISHABLE_KEY=$$VITE_STRIPE_PUBLISHABLE_KEY'
-      - '--build-arg'
-      - 'VITE_API_BASE_URL=$$VITE_API_BASE_URL'
-      - '--build-arg'
-      - 'VITE_TRIAL_PERIOD_DAYS=$$VITE_TRIAL_PERIOD_DAYS'
       - '.'
-    secretEnv: ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY', 'VITE_STRIPE_PUBLISHABLE_KEY', 'VITE_API_BASE_URL', 'VITE_TRIAL_PERIOD_DAYS']
 
   # Stage 3: Run backend tests
   - name: 'gcr.io/cloud-builders/docker'
@@ -106,8 +95,6 @@ steps:
       - '80'
       - '--set-env-vars'
       - 'NODE_ENV=production,PORT=3000'
-      - '--set-secrets'
-      - 'SUPABASE_URL=supabase-url:latest,SUPABASE_ANON_KEY=supabase-anon-key:latest,SUPABASE_SERVICE_ROLE_KEY=supabase-service-key:latest,JWT_SECRET=jwt-secret:latest,GEMINI_API_KEY=gemini-api-key:latest,OPENAI_API_KEY=openai-api-key:latest,SMTP_HOST=smtp-host:latest,SMTP_PORT=smtp-port:latest,SMTP_USER=smtp-user:latest,SMTP_PASS=smtp-pass:latest'
     waitFor: ['push-backend-latest']
 
   # Stage 6: Deploy frontend to Cloud Run
@@ -141,8 +128,6 @@ steps:
       - '80'
       - '--set-env-vars'
       - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
-      - '--set-secrets'
-      - 'VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=trial-period-days:latest'
     waitFor: ['deploy-backend']
 
   # Stage 7: Update backend CORS with frontend URL
@@ -181,20 +166,6 @@ steps:
       - 'https://wastewise-frontend-$PROJECT_ID-as.a.run.app/'
     waitFor: ['smoke-test-backend']
 
-# Available secrets from Secret Manager
-availableSecrets:
-  secretManager:
-    - versionName: projects/$PROJECT_ID/secrets/supabase-url/versions/latest
-      env: 'VITE_SUPABASE_URL'
-    - versionName: projects/$PROJECT_ID/secrets/supabase-anon-key/versions/latest
-      env: 'VITE_SUPABASE_ANON_KEY'
-    - versionName: projects/$PROJECT_ID/secrets/stripe-publishable-key/versions/latest
-      env: 'VITE_STRIPE_PUBLISHABLE_KEY'
-    - versionName: projects/$PROJECT_ID/secrets/api-base-url/versions/latest
-      env: 'VITE_API_BASE_URL'
-    - versionName: projects/$PROJECT_ID/secrets/trial-period-days/versions/latest
-      env: 'VITE_TRIAL_PERIOD_DAYS'
-
 # Images to be pushed to Container Registry
 images:
   - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
@@ -210,9 +181,6 @@ options:
   env:
     - 'DOCKER_BUILDKIT=1'
     - 'COMPOSE_DOCKER_CLI_BUILD=1'
-
-# Substitutions for dynamic values
-# No custom substitutions needed - using built-in $PROJECT_ID and $COMMIT_SHA
 
 # Timeout for the entire build
 timeout: '1800s'
