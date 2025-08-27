@@ -83,7 +83,7 @@ steps:
       - '--concurrency'
       - '80'
       - '--set-env-vars'
-      - 'NODE_ENV=production'
+      - 'NODE_ENV=production,VITE_SUPABASE_URL=https://placeholder.supabase.co,VITE_SUPABASE_ANON_KEY=placeholder'
     waitFor: ['push-backend-latest']
 
   # Stage 5: Deploy frontend to Cloud Run
