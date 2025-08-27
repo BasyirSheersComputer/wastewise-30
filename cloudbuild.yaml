@@ -112,8 +112,6 @@ steps:
       - '-c'
       - |
         BACKEND_URL=$(gcloud run services describe wastewise-backend --region asia-southeast1 --format="value(status.url)")
-        # This part of your original script was flawed and is now removed.
-        # It's better to manage VITE_API_BASE_URL directly in the frontend deploy step
         echo "Backend URL: $BACKEND_URL"
         echo "BACKEND_URL=$BACKEND_URL" > /workspace/backend_url.txt
     waitFor: ['deploy-backend']
@@ -204,10 +202,10 @@ availableSecrets:
 
 # Images to be pushed to Container Registry
 images:
-  - 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
-  - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
-  - 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA'
-  - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
+- 'gcr.io/$PROJECT_ID/wastewise-backend:$COMMIT_SHA'
+- 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
+- 'gcr.io/$PROJECT_ID/wastewise-frontend:$COMMIT_SHA'
+- 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
 
 # Build options
 options:
