@@ -145,7 +145,7 @@ steps:
       - '300'
       - '--concurrency'
       - '80'
-      - '--set-env-vars'
+        - '--set-env-vars'
       - 'VITE_API_BASE_URL=$(cat /workspace/backend_url.txt | cut -d'=' -f2-)'
       - '--set-secrets'
       - 'VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=trial-period-days:latest'
@@ -213,8 +213,8 @@ options:
   machineType: 'E2_HIGHCPU_8'
   diskSizeGb: '50'
   env:
-    DOCKER_BUILDKIT='1'
-    COMPOSE_DOCKER_CLI_BUILD='1'
+    - 'DOCKER_BUILDKIT=1'
+    - 'COMPOSE_DOCKER_CLI_BUILD=1'
 
 # Substitutions for dynamic values
 substitutions:
