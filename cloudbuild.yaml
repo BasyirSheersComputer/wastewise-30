@@ -148,15 +148,16 @@ steps:
   # Stage 7: Update backend CORS with frontend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'update-cors'
-    entrypoint: 'bash'
+    entrypoint: gcloud
     args:
-      - '-c'
-      - |
-        FRONTEND_URL=$(gcloud run services describe wastewise-frontend --region asia-southeast1 --format="value(status.url)")
-        echo "Frontend URL: $FRONTEND_URL"
-        gcloud run services update wastewise-backend \
-          --region asia-southeast1 \
-          --set-env-vars CORS_ORIGIN=$FRONTEND_URL
+      - 'run'
+      - 'services'
+      - 'update'
+      - 'wastewise-backend'
+      - '--region'
+      - 'asia-southeast1'
+      - '--set-env-vars'
+      - 'CORS_ORIGIN=https://wastewise-frontend-$PROJECT_ID-as.a.run.app'
     waitFor: ['deploy-frontend']
 
   # Stage 8: Run smoke tests
