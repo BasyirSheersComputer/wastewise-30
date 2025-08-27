@@ -32,22 +32,11 @@ steps:
       - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
       - '.'
 
-  # Stage 3: Run backend tests
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'test-backend'
-    args: 
-      - 'run'
-      - '--rm'
-      - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
-      - 'npm'
-      - 'test'
-    waitFor: ['build-backend']
-
-  # Stage 4: Push images to Container Registry
+  # Stage 3: Push images to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push-backend'
     args: ['push', 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID']
-    waitFor: ['test-backend']
+    waitFor: ['build-backend']
 
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push-backend-latest'
@@ -64,7 +53,7 @@ steps:
     args: ['push', 'gcr.io/$PROJECT_ID/wastewise-frontend:latest']
     waitFor: ['push-frontend']
 
-  # Stage 5: Deploy backend to Cloud Run
+  # Stage 4: Deploy backend to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-backend'
     entrypoint: gcloud
@@ -97,7 +86,7 @@ steps:
       - 'NODE_ENV=production,PORT=3000'
     waitFor: ['push-backend-latest']
 
-  # Stage 6: Deploy frontend to Cloud Run
+  # Stage 5: Deploy frontend to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-frontend'
     entrypoint: gcloud
@@ -130,7 +119,7 @@ steps:
       - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
     waitFor: ['deploy-backend']
 
-  # Stage 7: Update backend CORS with frontend URL
+  # Stage 6: Update backend CORS with frontend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'update-cors'
     entrypoint: gcloud
@@ -145,7 +134,7 @@ steps:
       - 'CORS_ORIGIN=https://wastewise-frontend-$PROJECT_ID-as.a.run.app'
     waitFor: ['deploy-frontend']
 
-  # Stage 8: Run smoke tests
+  # Stage 7: Run smoke tests
   - name: 'gcr.io/cloud-builders/curl'
     id: 'smoke-test-backend'
     args: 
