@@ -229,10 +229,6 @@ options:
 # Substitutions for dynamic values
 substitutions:
   _REGION: 'asia-southeast1'
-  _BACKEND_SERVICE: 'wastewise-backend'
-  _FRONTEND_SERVICE: 'wastewise-frontend'
-  _BACKEND_PORT: '3000'
-  _FRONTEND_PORT: '8899'
 
 # Timeout for the entire build
 timeout: '1800s'
