@@ -213,8 +213,8 @@ options:
   machineType: 'E2_HIGHCPU_8'
   diskSizeGb: '50'
   env:
-    - 'DOCKER_BUILDKIT=1'
-    - 'COMPOSE_DOCKER_CLI_BUILD=1'
+    DOCKER_BUILDKIT=1
+    COMPOSE_DOCKER_CLI_BUILD=1
 
 # Substitutions for dynamic values
 substitutions:
