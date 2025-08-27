@@ -212,8 +212,7 @@ options:
     - 'COMPOSE_DOCKER_CLI_BUILD=1'
 
 # Substitutions for dynamic values
-substitutions:
-  _REGION: 'asia-southeast1'
+# No custom substitutions needed - using built-in $PROJECT_ID and $COMMIT_SHA
 
 # Timeout for the entire build
 timeout: '1800s'
