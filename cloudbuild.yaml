@@ -33,6 +33,12 @@ steps:
         cat /tmp/frontend-secrets.env
         echo "=== End Secret Content ==="
         
+        # Debug: Check if the secret environment variable is set
+        echo "=== Environment Variable Debug ==="
+        echo "_FRONTEND_SECRET is set: $([ -n "$${_FRONTEND_SECRET}" ] && echo "YES" || echo "NO")"
+        echo "_FRONTEND_SECRET length: $${#_FRONTEND_SECRET}"
+        echo "=== End Environment Variable Debug ==="
+        
         # Parse the secret and extract individual variables with better error handling
         # Remove comments and empty lines, then extract variables
         grep -v '^#' /tmp/frontend-secrets.env | grep -v '^$' > /tmp/clean-secrets.env
