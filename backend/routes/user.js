@@ -2,14 +2,31 @@ import express from 'express';
 import { createClient } from '@supabase/supabase-js';
 import { DateTime } from 'luxon';
 import dotenv from 'dotenv';
+import logger from '../utils/logger.js';
 
 dotenv.config();
 
 const router = express.Router();
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+    logger.info('User route: Supabase client created successfully');
+  } else {
+    logger.warn('User route: Supabase environment variables not found, user features will be disabled');
+  }
+} catch (error) {
+  logger.error('User route: Failed to create Supabase client:', error.message);
+}
 
 // Get user profile
 router.get('/profile', async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({ error: 'User service unavailable' });
+  }
+  
   try {
     const { data: { user }, error } = await supabase.auth.getUser();
     
@@ -41,6 +58,10 @@ router.get('/profile', async (req, res) => {
 
 // Update user profile
 router.put('/profile', async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({ error: 'User service unavailable' });
+  }
+  
   try {
     const { data: { user }, error } = await supabase.auth.getUser();
     
@@ -83,6 +104,10 @@ router.put('/profile', async (req, res) => {
 
 // Get user trial status
 router.get('/trial-status', async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({ error: 'User service unavailable' });
+  }
+  
   try {
     const { data: { user }, error } = await supabase.auth.getUser();
     
