@@ -1,7 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 import { getRecommendations } from '../ai/recommendations.js';
+import logger from '../utils/logger.js';
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+    logger.info('CSV processing service: Supabase client created successfully');
+  } else {
+    logger.warn('CSV processing service: Supabase environment variables not found, database features will be disabled');
+  }
+} catch (error) {
+  logger.error('CSV processing service: Failed to create Supabase client:', error.message);
+}
 
 export class CSVProcessingService {
   constructor() {
