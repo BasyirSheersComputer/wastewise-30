@@ -182,8 +182,6 @@ options:
 # Available secrets for the build
 availableSecrets:
   secretManager:
-    - versionName: projects/451983642521/secrets/wastewise-30-secret/versions/latest
-      env: 'FRONTEND_SECRET'
     - versionName: projects/451983642521/secrets/wastewise-30-secret-backend/versions/latest
       env: 'BACKEND_SECRET'
 
