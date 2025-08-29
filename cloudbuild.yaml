@@ -17,22 +17,34 @@ steps:
       - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '.'
 
-  # Stage 2: Build frontend with environment variables
+  # Stage 2: Build frontend with secrets
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-frontend'
+    secretEnv: ['FRONTEND_SECRET']
     entrypoint: 'bash'
     args: 
       - '-c'
       - |
-        # Build the frontend with environment variables directly
+        # Extract environment variables from the frontend secret
+        echo "$${_FRONTEND_SECRET}" > /tmp/frontend-secrets.env
+        
+        # Parse the secret and extract individual variables
+        export VITE_SUPABASE_URL=$(grep "VITE_SUPABASE_URL=" /tmp/frontend-secrets.env | cut -d'=' -f2-)
+        export VITE_SUPABASE_ANON_KEY=$(grep "VITE_SUPABASE_ANON_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2-)
+        export VITE_STRIPE_PUBLISHABLE_KEY=$(grep "VITE_STRIPE_PUBLISHABLE_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2-)
+        
+        echo "Extracted VITE_SUPABASE_URL: $${VITE_SUPABASE_URL:0:20}..."
+        echo "Extracted VITE_SUPABASE_ANON_KEY: $${VITE_SUPABASE_ANON_KEY:0:20}..."
+        
+        # Build the frontend with extracted environment variables
         docker build \
           -t gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID \
           -t gcr.io/$PROJECT_ID/wastewise-frontend:latest \
           -f Dockerfile.frontend \
           --cache-from gcr.io/$PROJECT_ID/wastewise-frontend:latest \
-          --build-arg VITE_SUPABASE_URL="https://fbdqrqknqphcyxbmnuaf.supabase.co" \
-          --build-arg VITE_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZHFycWtucXBoY3l4Ym1udWFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0NzkwNDgsImV4cCI6MjA2ODA1NTA0OH0.ywEEaFhppnloTSLmAMxJby0bOIzCyxkT_exH6k2qxWI" \
-          --build-arg VITE_STRIPE_PUBLISHABLE_KEY="pk_test_51RqmsMP5doWxcb8U7P1jlZ88z6AH0Z4IkfyxEo4kLujQPIOD964epUr5Xny5w5UaapEdWBI5q6FHcn721rQtcUee00xpKD98JQ" \
+          --build-arg VITE_SUPABASE_URL="$${VITE_SUPABASE_URL}" \
+          --build-arg VITE_SUPABASE_ANON_KEY="$${VITE_SUPABASE_ANON_KEY}" \
+          --build-arg VITE_STRIPE_PUBLISHABLE_KEY="$${VITE_STRIPE_PUBLISHABLE_KEY}" \
           --build-arg VITE_API_BASE_URL="https://wastewise-backend-$PROJECT_ID-as.a.run.app" \
           --build-arg VITE_TRIAL_PERIOD_DAYS="30" \
           .
@@ -182,6 +194,8 @@ options:
 # Available secrets for the build
 availableSecrets:
   secretManager:
+    - versionName: projects/451983642521/secrets/wastewise-30-secret/versions/latest
+      env: 'FRONTEND_SECRET'
     - versionName: projects/451983642521/secrets/wastewise-30-secret-backend/versions/latest
       env: 'BACKEND_SECRET'
 
