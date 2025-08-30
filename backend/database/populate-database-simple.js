@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 dotenv.config();
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // Generate a test user ID for demonstration
 const TEST_USER_ID = uuidv4();

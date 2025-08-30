@@ -7,7 +7,7 @@ import logger from '../utils/logger.js';
 dotenv.config();
 
 const router = express.Router();
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // User registration with comprehensive onboarding
 router.post('/register', async (req, res) => {
@@ -454,6 +454,32 @@ router.get('/profile/check/:userId', async (req, res) => {
   } catch (error) {
     logger.error('Profile check error', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Create demo user for testing
+router.post('/demo-user', async (req, res) => {
+  try {
+    const { demoType = 'professional' } = req.body;
+    
+    // Validate demo type
+    const validDemoTypes = ['professional', 'enterprise', 'elite'];
+    if (!validDemoTypes.includes(demoType)) {
+      return res.status(400).json({ 
+        error: 'Invalid demo type. Must be one of: professional, enterprise, elite' 
+      });
+    }
+
+    const result = await authService.createDemoUser(demoType);
+
+    res.status(201).json({
+      message: 'Demo user created successfully',
+      user: result.user,
+      note: 'This is a demo user with mock Stripe functionality. Use the provided credentials to login.'
+    });
+  } catch (error) {
+    logger.error('Demo user creation error', error);
+    res.status(500).json({ error: error.message });
   }
 });
 

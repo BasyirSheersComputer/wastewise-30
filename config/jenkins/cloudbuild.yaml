@@ -67,34 +67,25 @@ steps:
         echo "Backend URL: $BACKEND_URL"
         echo "BACKEND_URL=$BACKEND_URL" >> /workspace/backend_url.txt
   
-  # Deploy frontend service
+  # Deploy frontend service with dynamic backend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+    entrypoint: 'bash'
     args:
-      - 'run'
-      - 'deploy'
-      - 'wastewise-frontend'
-      - '--image'
-      - 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
-      - '--allow-unauthenticated'
-      - '--port'
-      - '8080'
-      - '--memory'
-      - '512Mi'
-      - '--cpu'
-      - '500m'
-      - '--min-instances'
-      - '1'
-      - '--max-instances'
-      - '5'
-      - '--set-env-vars'
-      - 'VITE_API_BASE_URL=https://wastewise-backend-xxxxx-uc.a.run.app'
-      - '--set-secrets'
-      - 'VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=30'
+      - '-c'
+      - |
+        BACKEND_URL=$(gcloud run services describe wastewise-backend --region us-central1 --format="value(status.url)")
+        gcloud run deploy wastewise-frontend \
+          --image gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA \
+          --region us-central1 \
+          --platform managed \
+          --allow-unauthenticated \
+          --port 8080 \
+          --memory 512Mi \
+          --cpu 500m \
+          --min-instances 1 \
+          --max-instances 5 \
+          --set-env-vars VITE_API_BASE_URL=$BACKEND_URL \
+          --set-secrets VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=30
   
   # Update backend CORS with frontend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'

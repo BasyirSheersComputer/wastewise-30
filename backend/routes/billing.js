@@ -8,7 +8,7 @@ import stripeService from '../services/stripeService.js';
 dotenv.config();
 
 const router = express.Router();
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // Get all plans with risk reversal guarantees
 router.get('/plans', async (req, res) => {
@@ -379,7 +379,7 @@ router.post('/subscription', async (req, res) => {
     }
 
     // Create subscription
-    const subscription = await stripeService.createSubscription(customerId, priceId, paymentMethodId);
+    const subscription = await stripeService.createSubscription(customerId, priceId, paymentMethodId, userData);
 
     res.json({ 
       message: 'Subscription created successfully',
@@ -624,6 +624,36 @@ router.post('/customer-portal', async (req, res) => {
   } catch (error) {
     logger.error('Error creating customer portal session', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Stripe webhook handler
+router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  try {
+    const sig = req.headers['stripe-signature'];
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    if (!webhookSecret) {
+      logger.warn('Stripe webhook secret not configured');
+      return res.status(400).json({ error: 'Webhook secret not configured' });
+    }
+
+    let event;
+
+    try {
+      event = stripeService.stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    } catch (err) {
+      logger.error('Webhook signature verification failed', err.message);
+      return res.status(400).json({ error: 'Webhook signature verification failed' });
+    }
+
+    // Handle the event
+    await stripeService.handleWebhook(event);
+
+    res.json({ received: true });
+  } catch (error) {
+    logger.error('Error handling webhook', error);
+    res.status(500).json({ error: 'Webhook handler failed' });
   }
 });
 

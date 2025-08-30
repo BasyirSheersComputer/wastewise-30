@@ -36,8 +36,8 @@ AI-powered restaurant waste management backend with real-time analytics and reco
    Create a `.env` file in the backend directory:
    ```env
    # Supabase Configuration
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_ANON_KEY=your_supabase_anon_key
    
    # AI Services
    GEMINI_API_KEY=your_gemini_api_key
@@ -257,8 +257,8 @@ backend/
 ### Environment Variables
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `VITE_SUPABASE_URL` | Supabase project URL | Yes |
-| `VITE_SUPABASE_ANON_KEY` | Supabase anonymous key | Yes |
+| `SUPABASE_URL` | Supabase project URL | Yes |
+| `SUPABASE_ANON_KEY` | Supabase anonymous key | Yes |
 | `GEMINI_API_KEY` | Google AI Studio API key | Yes |
 | `OPENAI_API_KEY` | OpenAI API key | No (fallback) |
 | `PORT` | Server port | No (default: 3000) |

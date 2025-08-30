@@ -1,6 +1,6 @@
 import express from 'express';
-import { getRecommendations, getMultiSectionRecommendations } from '../recommendations.js';
-import { getAnalyticsData } from '../analytics.js';
+import { getRecommendations, getMultiSectionRecommendations } from '../ai/recommendations.js';
+import { getAnalyticsData } from '../ai/analytics.js';
 import dotenv from 'dotenv';
 
 dotenv.config();

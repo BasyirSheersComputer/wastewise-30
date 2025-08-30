@@ -1,0 +1,379 @@
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.ai_cache (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  cache_key text NOT NULL UNIQUE,
+  response_data jsonb NOT NULL,
+  provider text NOT NULL,
+  section text,
+  expires_at timestamp with time zone NOT NULL,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT ai_cache_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.analytics (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid,
+  outlet_id uuid,
+  data_type text NOT NULL CHECK (data_type = ANY (ARRAY['waste'::text, 'sales'::text, 'inventory'::text, 'staff'::text, 'compliance'::text, 'supplier'::text])),
+  data jsonb NOT NULL,
+  period_start date,
+  period_end date,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT analytics_pkey PRIMARY KEY (id),
+  CONSTRAINT analytics_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT analytics_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id)
+);
+CREATE TABLE public.billing_history (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid,
+  subscription_id uuid,
+  amount numeric NOT NULL,
+  currency text DEFAULT 'MYR'::text,
+  status text CHECK (status = ANY (ARRAY['pending'::text, 'paid'::text, 'failed'::text, 'refunded'::text])),
+  stripe_payment_intent_id text,
+  description text,
+  billing_date timestamp with time zone DEFAULT now(),
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT billing_history_pkey PRIMARY KEY (id),
+  CONSTRAINT billing_history_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT billing_history_subscription_id_fkey FOREIGN KEY (subscription_id) REFERENCES public.user_subscriptions(id)
+);
+CREATE TABLE public.coffee_chains (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid,
+  chain_name text NOT NULL,
+  description text,
+  total_outlets integer DEFAULT 1,
+  primary_location text,
+  business_type text DEFAULT 'coffee_chain'::text,
+  established_date date,
+  annual_revenue_range text,
+  employee_count integer,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT coffee_chains_pkey PRIMARY KEY (id),
+  CONSTRAINT coffee_chains_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.forecast_models_results (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  model_name text,
+  created_at timestamp with time zone DEFAULT now(),
+  input_data jsonb,
+  result_data jsonb,
+  related_inventory_id uuid,
+  user_id uuid,
+  CONSTRAINT forecast_models_results_pkey PRIMARY KEY (id),
+  CONSTRAINT forecast_models_results_related_inventory_id_fkey FOREIGN KEY (related_inventory_id) REFERENCES public.inventory_data(id),
+  CONSTRAINT forecast_models_results_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.inventory_data (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  category text,
+  current_stock numeric,
+  min_stock numeric,
+  max_stock numeric,
+  unit text,
+  cost numeric,
+  supplier_id uuid,
+  last_restock timestamp with time zone,
+  status text,
+  user_id uuid,
+  outlet_id uuid,
+  CONSTRAINT inventory_data_pkey PRIMARY KEY (id),
+  CONSTRAINT inventory_data_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id),
+  CONSTRAINT inventory_data_supplier_id_fkey FOREIGN KEY (supplier_id) REFERENCES public.supplier_data(id),
+  CONSTRAINT inventory_data_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.menu_recipe_data (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  category text,
+  price numeric,
+  cost numeric,
+  margin numeric,
+  popularity integer,
+  rating numeric,
+  orders integer,
+  trend text,
+  prep_time integer,
+  ingredients jsonb,
+  status text,
+  user_id uuid,
+  outlet_id uuid,
+  CONSTRAINT menu_recipe_data_pkey PRIMARY KEY (id),
+  CONSTRAINT menu_recipe_data_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id),
+  CONSTRAINT menu_recipe_data_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.outlets (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  chain_id uuid,
+  outlet_name text NOT NULL,
+  address text,
+  city text,
+  state text,
+  postal_code text,
+  country text DEFAULT 'Malaysia'::text,
+  phone_number text,
+  manager_name text,
+  outlet_type text DEFAULT 'full_service'::text CHECK (outlet_type = ANY (ARRAY['full_service'::text, 'kiosk'::text, 'drive_thru'::text, 'catering'::text])),
+  seating_capacity integer,
+  operating_hours jsonb,
+  status text DEFAULT 'active'::text CHECK (status = ANY (ARRAY['active'::text, 'inactive'::text, 'maintenance'::text])),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT outlets_pkey PRIMARY KEY (id),
+  CONSTRAINT outlets_chain_id_fkey FOREIGN KEY (chain_id) REFERENCES public.coffee_chains(id)
+);
+CREATE TABLE public.profiles (
+  id uuid NOT NULL,
+  email text UNIQUE,
+  full_name text,
+  role text NOT NULL DEFAULT 'staff'::text,
+  created_at timestamp with time zone DEFAULT timezone('utc'::text, now()),
+  user_id uuid,
+  company_name text,
+  subscription_status text DEFAULT 'trial'::text,
+  subscription_plan text DEFAULT 'free'::text,
+  trial_start timestamp with time zone DEFAULT now(),
+  trial_end timestamp with time zone DEFAULT (now() + '30 days'::interval),
+  CONSTRAINT profiles_pkey PRIMARY KEY (id),
+  CONSTRAINT profiles_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT profiles_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.raw_data_lake (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  source text NOT NULL,
+  payload jsonb NOT NULL,
+  received_at timestamp with time zone DEFAULT now(),
+  user_id uuid,
+  CONSTRAINT raw_data_lake_pkey PRIMARY KEY (id),
+  CONSTRAINT raw_data_lake_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.recommendations (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid,
+  section text NOT NULL CHECK (section = ANY (ARRAY['waste'::text, 'supplier'::text, 'menu'::text, 'training'::text, 'compliance'::text, 'inventory'::text, 'demand'::text, 'dashboard'::text])),
+  provider text DEFAULT 'auto'::text CHECK (provider = ANY (ARRAY['auto'::text, 'gemini'::text, 'openai'::text])),
+  recommendation_text text NOT NULL,
+  priority text DEFAULT 'medium'::text CHECK (priority = ANY (ARRAY['low'::text, 'medium'::text, 'high'::text, 'critical'::text])),
+  category text,
+  estimated_savings numeric,
+  implementation_difficulty text CHECK (implementation_difficulty = ANY (ARRAY['easy'::text, 'medium'::text, 'hard'::text])),
+  status text DEFAULT 'pending'::text CHECK (status = ANY (ARRAY['pending'::text, 'implemented'::text, 'dismissed'::text, 'in_progress'::text])),
+  analytics_data jsonb,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT recommendations_pkey PRIMARY KEY (id),
+  CONSTRAINT recommendations_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.reports_dashboards (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  type text,
+  date timestamp with time zone,
+  status text,
+  size text,
+  format text,
+  data jsonb,
+  user_id uuid,
+  CONSTRAINT reports_dashboards_pkey PRIMARY KEY (id),
+  CONSTRAINT reports_dashboards_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.sales_pos_data (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  sale_time timestamp with time zone NOT NULL,
+  items jsonb NOT NULL,
+  total_amount numeric,
+  pos_reference text,
+  raw_data_id uuid,
+  user_id uuid,
+  outlet_id uuid,
+  CONSTRAINT sales_pos_data_pkey PRIMARY KEY (id),
+  CONSTRAINT sales_pos_data_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id),
+  CONSTRAINT sales_pos_data_raw_data_id_fkey FOREIGN KEY (raw_data_id) REFERENCES public.raw_data_lake(id),
+  CONSTRAINT sales_pos_data_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.staff (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid,
+  outlet_id uuid,
+  name text NOT NULL,
+  position text,
+  email text,
+  phone text,
+  hire_date date,
+  status text DEFAULT 'active'::text CHECK (status = ANY (ARRAY['active'::text, 'inactive'::text, 'terminated'::text])),
+  training_level text DEFAULT 'basic'::text CHECK (training_level = ANY (ARRAY['basic'::text, 'intermediate'::text, 'advanced'::text, 'expert'::text])),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT staff_pkey PRIMARY KEY (id),
+  CONSTRAINT staff_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id),
+  CONSTRAINT staff_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.subscription_plans (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  plan_name text NOT NULL UNIQUE,
+  display_name text NOT NULL,
+  description text,
+  price_monthly numeric,
+  price_yearly numeric,
+  features jsonb,
+  limits jsonb,
+  is_active boolean DEFAULT true,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT subscription_plans_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.supplier_data (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  category text,
+  rating numeric,
+  status text,
+  contact text,
+  email text,
+  address text,
+  last_delivery timestamp with time zone,
+  total_orders integer,
+  on_time_delivery numeric,
+  quality_score numeric,
+  payment_terms text,
+  user_id uuid,
+  CONSTRAINT supplier_data_pkey PRIMARY KEY (id),
+  CONSTRAINT supplier_data_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.supplier_orders (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  supplier_id uuid,
+  items jsonb,
+  total numeric,
+  status text,
+  order_date timestamp with time zone,
+  delivery_date timestamp with time zone,
+  tracking text,
+  user_id uuid,
+  outlet_id uuid,
+  CONSTRAINT supplier_orders_pkey PRIMARY KEY (id),
+  CONSTRAINT supplier_orders_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id),
+  CONSTRAINT supplier_orders_supplier_id_fkey FOREIGN KEY (supplier_id) REFERENCES public.supplier_data(id),
+  CONSTRAINT supplier_orders_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.training_records (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  staff_id uuid,
+  training_type text CHECK (training_type = ANY (ARRAY['waste_management'::text, 'food_safety'::text, 'customer_service'::text, 'inventory_management'::text])),
+  completion_date date,
+  score integer CHECK (score >= 0 AND score <= 100),
+  certificate_url text,
+  notes text,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT training_records_pkey PRIMARY KEY (id),
+  CONSTRAINT training_records_staff_id_fkey FOREIGN KEY (staff_id) REFERENCES public.staff(id)
+);
+CREATE TABLE public.user_settings (
+  user_id uuid NOT NULL,
+  idle_timeout integer DEFAULT 30,
+  preferred_llm text DEFAULT 'auto'::text CHECK (preferred_llm = ANY (ARRAY['auto'::text, 'gemini'::text, 'openai'::text])),
+  enable_idle_logout boolean DEFAULT true,
+  enable_llm_fallback boolean DEFAULT true,
+  notification_preferences jsonb DEFAULT '{}'::jsonb,
+  theme_preference text DEFAULT 'light'::text CHECK (theme_preference = ANY (ARRAY['light'::text, 'dark'::text, 'auto'::text])),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT user_settings_pkey PRIMARY KEY (user_id),
+  CONSTRAINT user_settings_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.user_staff_data (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  name text NOT NULL,
+  role text,
+  email text,
+  phone text,
+  status text,
+  joined_at timestamp with time zone DEFAULT now(),
+  user_id uuid,
+  outlet_id uuid,
+  CONSTRAINT user_staff_data_pkey PRIMARY KEY (id),
+  CONSTRAINT user_staff_data_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT user_staff_data_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id)
+);
+CREATE TABLE public.user_subscriptions (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid,
+  plan_id uuid,
+  status text DEFAULT 'active'::text CHECK (status = ANY (ARRAY['active'::text, 'cancelled'::text, 'past_due'::text, 'unpaid'::text])),
+  current_period_start timestamp with time zone,
+  current_period_end timestamp with time zone,
+  cancel_at_period_end boolean DEFAULT false,
+  payment_method_id text,
+  stripe_subscription_id text,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT user_subscriptions_pkey PRIMARY KEY (id),
+  CONSTRAINT user_subscriptions_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT user_subscriptions_plan_id_fkey FOREIGN KEY (plan_id) REFERENCES public.subscription_plans(id)
+);
+CREATE TABLE public.users (
+  id uuid NOT NULL,
+  email text NOT NULL UNIQUE,
+  first_name text,
+  last_name text,
+  company_name text NOT NULL,
+  company_size text CHECK (company_size = ANY (ARRAY['small'::text, 'medium'::text, 'large'::text, 'enterprise'::text])),
+  primary_pain text CHECK (primary_pain = ANY (ARRAY['waste_reduction'::text, 'cost_optimization'::text, 'compliance'::text, 'efficiency'::text, 'sustainability'::text])),
+  phone_number text,
+  business_type text DEFAULT 'restaurant'::text CHECK (business_type = ANY (ARRAY['restaurant'::text, 'cafe'::text, 'bakery'::text, 'catering'::text, 'food_service'::text])),
+  locations integer DEFAULT 1,
+  annual_revenue text CHECK (annual_revenue = ANY (ARRAY['under_100k'::text, '100k_500k'::text, '500k_1m'::text, '1m_5m'::text, 'over_5m'::text])),
+  primary_goals ARRAY DEFAULT '{}'::text[],
+  data_sources ARRAY DEFAULT '{}'::text[],
+  team_size text DEFAULT '1-10'::text CHECK (team_size = ANY (ARRAY['1-10'::text, '11-25'::text, '26-50'::text, '51-100'::text, '100+'::text])),
+  timezone text DEFAULT 'Asia/Kuala_Lumpur'::text,
+  trial_start timestamp with time zone DEFAULT now(),
+  trial_end timestamp with time zone DEFAULT (now() + '30 days'::interval),
+  subscription_status text DEFAULT 'trial'::text CHECK (subscription_status = ANY (ARRAY['trial'::text, 'active'::text, 'cancelled'::text, 'expired'::text])),
+  subscription_plan text DEFAULT 'free'::text CHECK (subscription_plan = ANY (ARRAY['free'::text, 'basic'::text, 'pro'::text, 'enterprise'::text])),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT users_pkey PRIMARY KEY (id),
+  CONSTRAINT users_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.waste_data (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid,
+  outlet_id uuid,
+  item_name text NOT NULL,
+  category text CHECK (category = ANY (ARRAY['food'::text, 'packaging'::text, 'beverage'::text, 'ingredient'::text, 'other'::text])),
+  quantity numeric NOT NULL,
+  unit text DEFAULT 'kg'::text CHECK (unit = ANY (ARRAY['kg'::text, 'g'::text, 'l'::text, 'ml'::text, 'pieces'::text])),
+  waste_type text CHECK (waste_type = ANY (ARRAY['spoiled'::text, 'expired'::text, 'overcooked'::text, 'trimming'::text, 'customer_return'::text])),
+  cost_per_unit numeric,
+  total_cost numeric,
+  reason text,
+  recorded_by text,
+  recorded_at timestamp with time zone DEFAULT now(),
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT waste_data_pkey PRIMARY KEY (id),
+  CONSTRAINT waste_data_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id),
+  CONSTRAINT waste_data_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.waste_logs (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  item_id uuid,
+  quantity numeric,
+  unit text,
+  cost numeric,
+  reason text,
+  date timestamp with time zone,
+  staff_id uuid,
+  user_id uuid,
+  outlet_id uuid,
+  CONSTRAINT waste_logs_pkey PRIMARY KEY (id),
+  CONSTRAINT waste_logs_item_id_fkey FOREIGN KEY (item_id) REFERENCES public.inventory_data(id),
+  CONSTRAINT waste_logs_staff_id_fkey FOREIGN KEY (staff_id) REFERENCES public.user_staff_data(id),
+  CONSTRAINT waste_logs_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id),
+  CONSTRAINT waste_logs_outlet_id_fkey FOREIGN KEY (outlet_id) REFERENCES public.outlets(id)
+);

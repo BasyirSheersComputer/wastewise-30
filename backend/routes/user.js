@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const router = express.Router();
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // Get user profile
 router.get('/profile', async (req, res) => {

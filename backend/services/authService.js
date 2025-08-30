@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger.js';
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 class AuthService {
   constructor() {
@@ -602,6 +602,108 @@ class AuthService {
       };
     } catch (error) {
       logger.error('Error checking subscription status', error);
+      throw error;
+    }
+  }
+
+  // Create demo user for testing
+  async createDemoUser(demoType = 'professional') {
+    try {
+      const demoId = Date.now();
+      const email = `demo${demoId}@wastewise.com`;
+      const password = 'Demo123!';
+      
+      const demoUserData = {
+        email,
+        password,
+        first_name: 'Demo',
+        last_name: 'User',
+        company_name: `Demo ${demoType.charAt(0).toUpperCase() + demoType.slice(1)} Company`,
+        company_size: 'medium',
+        primary_pain: 'waste_reduction',
+        phone_number: '+60123456789',
+        business_type: 'restaurant',
+        locations: demoType === 'enterprise' ? 15 : demoType === 'professional' ? 5 : 1,
+        annual_revenue: demoType === 'enterprise' ? 'over_10m' : demoType === 'professional' ? '1m_5m' : 'under_100k',
+        primary_goals: ['reduce_waste', 'improve_efficiency'],
+        data_sources: ['pos_system', 'inventory_management'],
+        team_size: demoType === 'enterprise' ? '50+' : demoType === 'professional' ? '11-50' : '1-10',
+        timezone: 'Asia/Kuala_Lumpur',
+        is_demo_user: true
+      };
+
+      // Create user in Supabase Auth
+      const { data: authData, error: authError } = await this.supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: demoUserData.first_name,
+            last_name: demoUserData.last_name,
+            company_name: demoUserData.company_name,
+            is_demo_user: true
+          }
+        }
+      });
+
+      if (authError) throw authError;
+
+      // Set trial period
+      const now = DateTime.now();
+      const trialStart = now.toISO();
+      const trialEnd = now.plus({ days: 30 }).toISO();
+
+      // Create user profile in database
+      const { error: profileError } = await this.supabase.from('users').insert([{
+        id: authData.user.id,
+        email,
+        first_name: demoUserData.first_name,
+        last_name: demoUserData.last_name,
+        company_name: demoUserData.company_name,
+        company_size: demoUserData.company_size,
+        primary_pain: demoUserData.primary_pain,
+        phone_number: demoUserData.phone_number,
+        business_type: demoUserData.business_type,
+        locations: demoUserData.locations,
+        annual_revenue: demoUserData.annual_revenue,
+        primary_goals: demoUserData.primary_goals,
+        data_sources: demoUserData.data_sources,
+        team_size: demoUserData.team_size,
+        timezone: demoUserData.timezone,
+        trial_start: trialStart,
+        trial_end: trialEnd,
+        subscription_status: 'trial',
+        subscription_plan: 'free',
+        is_demo_user: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }]);
+
+      if (profileError) {
+        logger.error('Demo user profile creation error', profileError);
+        throw new Error(`Demo user profile creation failed: ${profileError.message}`);
+      }
+
+      logger.info('Demo user created successfully', { 
+        user_id: authData.user.id, 
+        email, 
+        demo_type: demoType 
+      });
+
+      return {
+        success: true,
+        user: {
+          id: authData.user.id,
+          email,
+          demo_type: demoType,
+          login_credentials: {
+            email,
+            password
+          }
+        }
+      };
+    } catch (error) {
+      logger.error('Error creating demo user', error);
       throw error;
     }
   }

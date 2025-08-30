@@ -1,5 +1,5 @@
 // Test script for Coffee Chain Service
-import coffeeChainService from './services/coffeeChainService.js';
+import coffeeChainService from '../services/coffeeChainService.js';
 
 console.log('🧪 Testing Coffee Chain Operational Intelligence System...\n');
 

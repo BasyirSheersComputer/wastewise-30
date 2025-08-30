@@ -6,18 +6,18 @@ import path from 'path';
 dotenv.config();
 
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_ANON_KEY
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
 );
 
 async function fixProfilesRLS() {
   console.log('🔧 Fixing profiles table RLS policies...\n');
 
   // Check environment variables
-  if (!process.env.VITE_SUPABASE_URL || !process.env.VITE_SUPABASE_ANON_KEY) {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
     console.error('❌ Missing environment variables:');
-    console.error('   VITE_SUPABASE_URL:', process.env.VITE_SUPABASE_URL ? '✅' : '❌');
-    console.error('   VITE_SUPABASE_ANON_KEY:', process.env.VITE_SUPABASE_ANON_KEY ? '✅' : '❌');
+    console.error('   SUPABASE_URL:', process.env.SUPABASE_URL ? '✅' : '❌');
+    console.error('   SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? '✅' : '❌');
     return;
   }
 

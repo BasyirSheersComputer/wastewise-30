@@ -3,18 +3,18 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 async function testDatabaseConnection() {
   console.log('🔍 Testing database connection...\n');
   
   // Check environment variables
   console.log('📋 Environment Variables:');
-  console.log(`   Supabase URL: ${process.env.VITE_SUPABASE_URL ? '✅ Configured' : '❌ Missing'}`);
-  console.log(`   Supabase Key: ${process.env.VITE_SUPABASE_ANON_KEY ? '✅ Configured' : '❌ Missing'}`);
+  console.log(`   Supabase URL: ${process.env.SUPABASE_URL ? '✅ Configured' : '❌ Missing'}`);
+  console.log(`   Supabase Key: ${process.env.SUPABASE_ANON_KEY ? '✅ Configured' : '❌ Missing'}`);
   console.log('');
   
-  if (!process.env.VITE_SUPABASE_URL || !process.env.VITE_SUPABASE_ANON_KEY) {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
     console.log('❌ Database connection test failed: Missing environment variables');
     return;
   }

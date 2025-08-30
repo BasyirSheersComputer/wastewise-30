@@ -58,7 +58,7 @@ BACKEND_PID=$!
 # Wait for backend to be ready
 echo "⏳ Waiting for backend to be ready..."
 for i in $(seq 1 30); do
-    if curl -f http://localhost:3001/health >/dev/null 2>&1; then
+    if curl -f http://localhost:8080/health >/dev/null 2>&1; then
         echo "✅ Backend is ready"
         break
     fi
@@ -80,13 +80,13 @@ RUN chmod +x /start.sh
 RUN cat > /healthcheck.sh << 'EOF'
 #!/bin/sh
 # Health check for the backend container
-curl -f http://localhost:3001/health >/dev/null 2>&1 || exit 1
+curl -f http://localhost:8080/health >/dev/null 2>&1 || exit 1
 EOF
 
 RUN chmod +x /healthcheck.sh
 
 # Expose port
-EXPOSE 3001
+EXPOSE 8080
 
 # Set health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \

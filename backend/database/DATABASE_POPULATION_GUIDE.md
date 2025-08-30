@@ -7,8 +7,8 @@ This guide will help you populate your Supabase database with realistic sample d
 1. **Supabase Project Setup**: Make sure your Supabase project is properly configured
 2. **Environment Variables**: Ensure your `.env` file contains:
    ```
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_ANON_KEY=your_supabase_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_service_role_key (optional, for admin script)
    ```
 3. **Database Schema**: Run the `setup-database-integrated.sql` script first to create all tables

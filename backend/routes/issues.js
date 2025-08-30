@@ -1,19 +1,16 @@
 import express from 'express';
 import issueReportingService from '../services/issueReportingService.js';
-import authMiddleware from '../utils/authMiddleware.js';
+import { authenticateUser } from '../utils/authMiddleware.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
-
-// Apply authentication middleware to all routes
-router.use(authMiddleware);
 
 /**
  * @route POST /api/issues
  * @desc Create a new issue
  * @access Private
  */
-router.post('/', async (req, res) => {
+router.post('/', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const {
@@ -71,7 +68,7 @@ router.post('/', async (req, res) => {
  * @desc Get all issues for the authenticated user
  * @access Private
  */
-router.get('/', async (req, res) => {
+router.get('/', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const filters = {
@@ -101,7 +98,7 @@ router.get('/', async (req, res) => {
  * @desc Get a specific issue with comments
  * @access Private
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const issueId = req.params.id;
@@ -125,7 +122,7 @@ router.get('/:id', async (req, res) => {
  * @desc Update an issue
  * @access Private
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const issueId = req.params.id;
@@ -151,7 +148,7 @@ router.put('/:id', async (req, res) => {
  * @desc Delete an issue (only if open)
  * @access Private
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const issueId = req.params.id;
@@ -176,7 +173,7 @@ router.delete('/:id', async (req, res) => {
  * @desc Add a comment to an issue
  * @access Private
  */
-router.post('/:id/comments', async (req, res) => {
+router.post('/:id/comments', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const issueId = req.params.id;
@@ -208,7 +205,7 @@ router.post('/:id/comments', async (req, res) => {
  * @desc Get issue history
  * @access Private
  */
-router.get('/:id/history', async (req, res) => {
+router.get('/:id/history', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const issueId = req.params.id;
@@ -232,7 +229,7 @@ router.get('/:id/history', async (req, res) => {
  * @desc Get issue statistics for the user
  * @access Private
  */
-router.get('/stats/overview', async (req, res) => {
+router.get('/stats/overview', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -341,7 +338,7 @@ router.get('/templates', async (req, res) => {
  * @desc Get user's outlets for issue reporting
  * @access Private
  */
-router.get('/outlets', async (req, res) => {
+router.get('/outlets', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -364,7 +361,7 @@ router.get('/outlets', async (req, res) => {
  * @desc Upload attachment for an issue
  * @access Private
  */
-router.post('/:id/attachments', async (req, res) => {
+router.post('/:id/attachments', authenticateUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const issueId = req.params.id;

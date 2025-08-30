@@ -1,0 +1,53 @@
+WasteWise: Optimize Food & Beverage Costs with AI-Powered Waste Management
+Transform Your F&B Operations with Data-Driven Waste Reduction
+WasteWise is a comprehensive SaaS platform designed to help F&B chains in Malaysia minimize food waste, optimize inventory, and boost profitability through real-time analytics and smart recommendations powered by AI.
+
+Why Choose WasteWise?
+Accurate Inventory Tracking: Stay on top of stock levels with real-time updates, so you never overorder or run out.
+
+Waste Logging & Categorization: Log daily waste with ease and understand what’s being discarded, why, and how to reduce it.
+
+Cost Impact Analysis: See the direct financial impact of waste and identify key savings opportunities.
+
+Smart Forecasting & Recommendations: Leverage AI technology to predict inventory needs and optimize orders for maximum efficiency.
+
+Menu Optimization Insights: Understand how menu items correlate with waste patterns and profitability to refine your offerings.
+
+Supplier Performance Management: Track and compare supplier quality and pricing to ensure cost-effective purchasing.
+
+Key Features
+Seamless User Experience: Intuitive dashboard and multi-step onboarding designed for busy F&B operators.
+
+Trial & Subscription: Start with a 30-day free trial and manage your subscription effortlessly.
+
+Compliance & Reporting: Automated reports keep you aligned with regulatory requirements.
+
+Staff Training & Progress: Built-in training modules to upskill your team and track performance.
+
+Issue Reporting System: Quickly capture and resolve operational issues with a user-friendly interface.
+
+Secure Payment & Billing: Reliable Stripe integration for hassle-free payments.
+
+How WasteWise Works Across Your Business
+Inventory & Waste Tracking: Daily logging with photo documentation; alerts on low stock and expiries.
+
+AI-Powered Analytics: Receive personalized insights and trend analysis for smarter decisions.
+
+Continuous Improvement: Use ongoing performance metrics to refine operations and reduce waste.
+
+Collaborative Team Management: Coordinate across departments with clear roles and communication tools.
+
+Benefits for Your F&B Chain
+Increase Profit Margins by reducing waste-related losses.
+
+Optimize Stock Management using real-time data and predictive analytics.
+
+Enhance Sustainability through effective waste reduction strategies.
+
+Improve Staff Performance via targeted training and progress tracking.
+
+Simplify Operations with centralized tools for inventory, suppliers, and issue reporting.
+
+Join Leading F&B Chains Who Trust WasteWise
+Experience the future of waste management and cost optimization. Start your free 30-day trial today!
+

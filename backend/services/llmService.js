@@ -1,5 +1,5 @@
 // llmService.js
-import { askAI, askAIWithMetadata } from '../ai-service.js';
+import { askAI, askAIWithMetadata } from '../ai/ai-service.js';
 import logger from '../utils/logger.js';
 
 /**

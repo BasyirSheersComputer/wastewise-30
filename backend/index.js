@@ -2,8 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { getRecommendations, getMultiSectionRecommendations } from './recommendations.js';
-import { getAnalyticsData } from './analytics.js';
+import { getRecommendations, getMultiSectionRecommendations } from './ai/recommendations.js';
+import { getAnalyticsData } from './ai/analytics.js';
 import { createClient } from '@supabase/supabase-js';
 import { DateTime } from 'luxon';
 import logger from './utils/logger.js';
@@ -21,7 +21,7 @@ import accessControlRoutes from './routes/accessControl.js';
 
 dotenv.config();
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -110,8 +110,8 @@ app.get('/api/test-db', async (req, res) => {
       status: passedTests === totalTests ? 'success' : 'partial',
       message: passedTests === totalTests ? 'Database connection successful' : 'Database connection partially working',
       connection: {
-        url: process.env.VITE_SUPABASE_URL ? 'configured' : 'missing',
-        key: process.env.VITE_SUPABASE_ANON_KEY ? 'configured' : 'missing'
+        url: process.env.SUPABASE_URL ? 'configured' : 'missing',
+        key: process.env.SUPABASE_ANON_KEY ? 'configured' : 'missing'
       },
       tests: {
         basic_connection: tests.connection,
