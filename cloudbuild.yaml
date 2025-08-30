@@ -87,7 +87,7 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--port'
-      - '3000'
+      - '8080'
       - '--memory'
       - '512Mi'
       - '--cpu'
@@ -101,7 +101,7 @@ steps:
       - '--concurrency'
       - '80'
       - '--set-env-vars'
-      - 'NODE_ENV=production'
+      - 'NODE_ENV=production,PORT=8080'
       - '--set-secrets'
       - 'BACKEND_SECRET=wastewise-30-secret-backend:latest'
     waitFor: ['push-backend-latest']
