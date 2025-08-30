@@ -10,15 +10,16 @@ build/
 .next/
 out/
 
-# Environment files - Allow specific ones for build but exclude sensitive ones
+# Environment files - Exclude all .env files for production builds
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+backend/.env
 # Allow environment files that are needed for build
 !frontend/.env
 !frontend/.env.production
-!backend/.env
 !config/environment/
 
 # IDE files
