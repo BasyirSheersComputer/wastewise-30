@@ -20,9 +20,6 @@ import {
   Menu,
   X,
   CreditCard,
-  Coffee,
-  Calculator,
-  Target,
   Settings,
   Upload,
 } from "lucide-react";
@@ -50,11 +47,12 @@ import OnboardingForm from "./components/Auth/OnboardingForm";
 import TrialEnded from "./components/Auth/TrialEnded";
 
 import { supabase } from "./supabaseClient";
-import { useEffect } from "react";
+
 import UserSettings from "./components/UI/UserSettings";
 import IdleWarning from "./components/UI/IdleWarning";
 import useIdleLogout from "./hooks/useIdleLogout";
 import IssueReporting from "./components/UI/IssueReporting";
+import ProductDemo from "./components/UI/ProductDemo";
 
 const navigationItems = [
   { id: "dashboard", label: "Operational Intelligence", icon: BarChart3 },
@@ -89,7 +87,7 @@ function Sidebar({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [session, setSession] = React.useState<any>(null);
+  const [session, setSession] = React.useState<unknown>(null);
   const [loading, setLoading] = React.useState(true);
   const { extendSession } = useIdleLogout();
   
@@ -114,8 +112,7 @@ function Sidebar({
       await supabase.auth.signOut();
       // Redirect to login page after successful logout
       navigate('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
+    } catch {
       // Still redirect to login even if there's an error
       navigate('/login');
     }
@@ -171,7 +168,7 @@ function Sidebar({
 }
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = React.useState<any>(null);
+  const [session, setSession] = React.useState<unknown>(null);
   const [loading, setLoading] = React.useState(true);
   
   React.useEffect(() => {
@@ -268,6 +265,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />
+        <Route path="/demo" element={<ProductDemo />} />
 
         {/* Onboarding/Trial - With Sidebar */}
         <Route

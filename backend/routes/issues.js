@@ -4,7 +4,6 @@ import { authenticateUser } from '../utils/authMiddleware.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
-
 /**
  * @route POST /api/issues
  * @desc Create a new issue

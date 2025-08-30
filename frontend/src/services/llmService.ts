@@ -1,8 +1,10 @@
 // frontend/services/llmService.ts
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 interface AnalyticsData {
   section: string;
-  analytics: any;
+  analytics: unknown;
   recommendations: string;
   timestamp: string;
   provider: string;
@@ -21,7 +23,7 @@ export async function getSectionRecommendations(
 ): Promise<AnalyticsData> {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/recommendations/${section}?provider=${provider}`
+      `${API_BASE_URL}/api/recommendations/${section}?provider=${provider}`
     );
     
     if (!response.ok) {
@@ -30,7 +32,6 @@ export async function getSectionRecommendations(
     
     return await response.json();
   } catch (error) {
-    console.error('Error fetching recommendations:', error);
     return {
       section,
       analytics: {},
@@ -57,7 +58,7 @@ export async function getMultiSectionRecommendations(
   try {
     const sectionsParam = sections.join(',');
     const response = await fetch(
-      `http://localhost:3000/api/recommendations?sections=${sectionsParam}&provider=${provider}`
+      `${API_BASE_URL}/api/recommendations?sections=${sectionsParam}&provider=${provider}`
     );
     
     if (!response.ok) {
@@ -67,7 +68,6 @@ export async function getMultiSectionRecommendations(
     const data = await response.json();
     return data.results;
   } catch (error) {
-    console.error('Error fetching multi-section recommendations:', error);
     return sections.map(section => ({
       section,
       analytics: {},

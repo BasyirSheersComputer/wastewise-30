@@ -7,7 +7,19 @@ import logger from '../utils/logger.js';
 dotenv.config();
 
 const router = express.Router();
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    logger.info('Auth route: Supabase client created successfully');
+  } else {
+    logger.warn('Auth route: Supabase environment variables not found, auth features will be disabled');
+  }
+} catch (error) {
+  logger.error('Auth route: Failed to create Supabase client:', error.message);
+}
 
 // User registration with comprehensive onboarding
 router.post('/register', async (req, res) => {
@@ -283,6 +295,9 @@ router.post('/logout', async (req, res) => {
 // Get current user
 router.get('/me', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Authentication service unavailable' });
+    }
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -302,6 +317,9 @@ router.get('/me', async (req, res) => {
 // Complete onboarding
 router.post('/onboarding', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Authentication service unavailable' });
+    }
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -323,6 +341,9 @@ router.post('/onboarding', async (req, res) => {
 // Extend trial
 router.post('/extend-trial', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Authentication service unavailable' });
+    }
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -345,6 +366,9 @@ router.post('/extend-trial', async (req, res) => {
 // Update user profile
 router.put('/profile', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Authentication service unavailable' });
+    }
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -387,6 +411,9 @@ router.post('/refresh', async (req, res) => {
 // Check subscription status
 router.get('/subscription-status', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Authentication service unavailable' });
+    }
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -430,6 +457,9 @@ router.post('/validate', async (req, res) => {
 // Check if user profile exists
 router.get('/profile/check/:userId', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Authentication service unavailable' });
+    }
     const { userId } = req.params;
     
     if (!userId) {

@@ -1,213 +1,152 @@
 #!/usr/bin/env node
 
-/**
- * Secret Verification Script for WasteWise-30
- * 
- * This script verifies that all required secrets are properly loaded
- * in the deployed containers.
- */
+const { execSync } = require('child_process');
 
-import { exec } from 'child_process';
-import util from 'util';
-const execAsync = util.promisify(exec);
+const PROJECT_ID = '451983642521';
+const FRONTEND_SECRET = 'wastewise-30-secret';
+const BACKEND_SECRET = 'wastewise-30-secret-backend';
 
-const REQUIRED_SECRETS = [
-    'VITE_SUPABASE_URL',
-    'VITE_SUPABASE_ANON_KEY',
-    'GEMINI_API_KEY',
-    'OPENAI_API_KEY',
-    'JWT_SECRET',
-    'STRIPE_SECRET_KEY',
-    'STRIPE_PUBLISHABLE_KEY',
-    'DATABASE_URL'
-];
+console.log('🔐 Verifying Google Secret Manager Secrets');
+console.log('==========================================\n');
 
-const OPTIONAL_SECRETS = [
-    'SMTP_USER',
-    'SMTP_PASS',
-    'TWILIO_ACCOUNT_SID',
-    'TWILIO_AUTH_TOKEN',
-    'TWILIO_PHONE_NUMBER'
-];
-
-async function checkContainerSecrets(containerName) {
-    console.log(`\n🔍 Checking secrets in ${containerName}...`);
-    
-    try {
-        // Get environment variables from container
-        const { stdout } = await execAsync(`docker exec ${containerName} env`);
-        const envVars = stdout.split('\n').reduce((acc, line) => {
-            const [key, value] = line.split('=');
-            if (key && value) {
-                acc[key] = value;
-            }
-            return acc;
-        }, {});
-
-        // Check required secrets
-        const missingRequired = [];
-        const presentRequired = [];
-        
-        REQUIRED_SECRETS.forEach(secret => {
-            if (envVars[secret]) {
-                const maskedValue = envVars[secret].substring(0, 8) + '...';
-                presentRequired.push(`${secret}=${maskedValue}`);
-            } else {
-                missingRequired.push(secret);
-            }
-        });
-
-        // Check optional secrets
-        const missingOptional = [];
-        const presentOptional = [];
-        
-        OPTIONAL_SECRETS.forEach(secret => {
-            if (envVars[secret]) {
-                const maskedValue = envVars[secret].substring(0, 8) + '...';
-                presentOptional.push(`${secret}=${maskedValue}`);
-            } else {
-                missingOptional.push(secret);
-            }
-        });
-
-        // Report results
-        if (presentRequired.length > 0) {
-            console.log(`✅ Required secrets found (${presentRequired.length}/${REQUIRED_SECRETS.length}):`);
-            presentRequired.forEach(secret => console.log(`   ${secret}`));
-        }
-
-        if (missingRequired.length > 0) {
-            console.log(`❌ Missing required secrets (${missingRequired.length}/${REQUIRED_SECRETS.length}):`);
-            missingRequired.forEach(secret => console.log(`   ${secret}`));
-        }
-
-        if (presentOptional.length > 0) {
-            console.log(`ℹ️  Optional secrets found (${presentOptional.length}/${OPTIONAL_SECRETS.length}):`);
-            presentOptional.forEach(secret => console.log(`   ${secret}`));
-        }
-
-        if (missingOptional.length > 0) {
-            console.log(`⚠️  Missing optional secrets (${missingOptional.length}/${OPTIONAL_SECRETS.length}):`);
-            missingOptional.forEach(secret => console.log(`   ${secret}`));
-        }
-
-        return {
-            container: containerName,
-            required: { present: presentRequired.length, missing: missingRequired.length, total: REQUIRED_SECRETS.length },
-            optional: { present: presentOptional.length, missing: missingOptional.length, total: OPTIONAL_SECRETS.length },
-            allRequiredPresent: missingRequired.length === 0
-        };
-
-    } catch (error) {
-        console.log(`❌ Error checking ${containerName}: ${error.message}`);
-        return {
-            container: containerName,
-            error: error.message,
-            allRequiredPresent: false
-        };
-    }
+function runCommand(command) {
+  try {
+    return execSync(command, { encoding: 'utf8' });
+  } catch (error) {
+    console.error(`❌ Command failed: ${command}`);
+    console.error(`Error: ${error.message}`);
+    return null;
+  }
 }
 
-async function checkContainerHealth(containerName) {
-    console.log(`\n🏥 Checking health of ${containerName}...`);
-    
-    try {
-        const { stdout } = await execAsync(`docker inspect ${containerName} --format='{{.State.Health.Status}}'`);
-        const healthStatus = stdout.trim();
-        
-        if (healthStatus === 'healthy') {
-            console.log(`✅ ${containerName} is healthy`);
-            return true;
-        } else if (healthStatus === 'unhealthy') {
-            console.log(`❌ ${containerName} is unhealthy`);
-            return false;
-        } else {
-            console.log(`⚠️  ${containerName} health status: ${healthStatus}`);
-            return false;
-        }
-    } catch (error) {
-        console.log(`❌ Error checking health of ${containerName}: ${error.message}`);
-        return false;
-    }
+function checkSecret(secretName, description) {
+  console.log(`📋 Checking ${description} (${secretName})...`);
+  
+  // Check if secret exists
+  const listResult = runCommand(`gcloud secrets list --filter="name:${secretName}" --project=${PROJECT_ID}`);
+  
+  if (!listResult || !listResult.includes(secretName)) {
+    console.log(`❌ Secret ${secretName} does not exist`);
+    return false;
+  }
+  
+  console.log(`✅ Secret ${secretName} exists`);
+  
+  // Get the latest version
+  const versionResult = runCommand(`gcloud secrets versions list ${secretName} --project=${PROJECT_ID} --limit=1`);
+  
+  if (!versionResult) {
+    console.log(`❌ Could not get version info for ${secretName}`);
+    return false;
+  }
+  
+  console.log(`📅 Latest version info:\n${versionResult}`);
+  
+  // Try to access the secret content (this will be masked for security)
+  const accessResult = runCommand(`gcloud secrets versions access latest --secret=${secretName} --project=${PROJECT_ID}`);
+  
+  if (!accessResult) {
+    console.log(`❌ Could not access secret content for ${secretName}`);
+    return false;
+  }
+  
+  console.log(`✅ Secret content is accessible (${accessResult.length} characters)`);
+  console.log(`📄 Content preview: ${accessResult.substring(0, 100)}...`);
+  
+  return true;
 }
 
-async function checkContainerLogs(containerName, lines = 10) {
-    console.log(`\n📋 Recent logs from ${containerName}:`);
+function createOrUpdateSecret(secretName, description, content) {
+  console.log(`\n🔧 Creating/Updating ${description} (${secretName})...`);
+  
+  // Check if secret exists
+  const listResult = runCommand(`gcloud secrets list --filter="name:${secretName}" --project=${PROJECT_ID}`);
+  
+  if (!listResult || !listResult.includes(secretName)) {
+    console.log(`📝 Creating new secret: ${secretName}`);
+    const createResult = runCommand(`echo -n "${content}" | gcloud secrets create ${secretName} --data-file=- --project=${PROJECT_ID}`);
     
-    try {
-        const { stdout } = await execAsync(`docker logs --tail=${lines} ${containerName}`);
-        console.log(stdout);
-    } catch (error) {
-        console.log(`❌ Error getting logs from ${containerName}: ${error.message}`);
+    if (!createResult) {
+      console.log(`❌ Failed to create secret ${secretName}`);
+      return false;
     }
+    
+    console.log(`✅ Secret ${secretName} created successfully`);
+  } else {
+    console.log(`📝 Updating existing secret: ${secretName}`);
+    const updateResult = runCommand(`echo -n "${content}" | gcloud secrets versions add ${secretName} --data-file=- --project=${PROJECT_ID}`);
+    
+    if (!updateResult) {
+      console.log(`❌ Failed to update secret ${secretName}`);
+      return false;
+    }
+    
+    console.log(`✅ Secret ${secretName} updated successfully`);
+  }
+  
+  return true;
 }
 
 async function main() {
-    console.log('🔐 WasteWise-30 Secret Verification Script');
-    console.log('==========================================');
-
-    const containers = ['wastewise-backend', 'wastewise-frontend'];
-    const results = [];
-
-    for (const container of containers) {
-        // Check if container exists and is running
-        try {
-            const { stdout } = await execAsync(`docker ps --filter name=${container} --format='{{.Names}}'`);
-            if (!stdout.trim()) {
-                console.log(`\n❌ Container ${container} is not running`);
-                continue;
-            }
-        } catch (error) {
-            console.log(`\n❌ Error checking container ${container}: ${error.message}`);
-            continue;
-        }
-
-        // Check secrets
-        const secretResult = await checkContainerSecrets(container);
-        results.push(secretResult);
-
-        // Check health
-        await checkContainerHealth(container);
-
-        // Show recent logs
-        await checkContainerLogs(container);
-    }
-
-    // Summary
-    console.log('\n📊 SUMMARY');
-    console.log('==========');
+  console.log('🔍 Checking existing secrets...\n');
+  
+  const frontendExists = checkSecret(FRONTEND_SECRET, 'Frontend Secret');
+  const backendExists = checkSecret(BACKEND_SECRET, 'Backend Secret');
+  
+  console.log('\n' + '='.repeat(50));
+  console.log('📝 SECRET SETUP INSTRUCTIONS');
+  console.log('='.repeat(50));
+  
+  if (!frontendExists) {
+    console.log('\n🔧 Frontend Secret Setup Required:');
+    console.log('The frontend secret should contain:');
+    console.log('VITE_SUPABASE_URL=https://your-project.supabase.co');
+    console.log('VITE_SUPABASE_ANON_KEY=your-anon-key-here');
+    console.log('VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your-stripe-key');
     
-    const allRequiredPresent = results.every(r => r.allRequiredPresent);
-    const totalRequired = results.reduce((sum, r) => sum + (r.required?.total || 0), 0);
-    const totalPresent = results.reduce((sum, r) => sum + (r.required?.present || 0), 0);
-
-    if (allRequiredPresent) {
-        console.log('✅ All required secrets are present in all containers!');
-    } else {
-        console.log('❌ Some required secrets are missing from containers');
-    }
-
-    console.log(`📈 Secret Coverage: ${totalPresent}/${totalRequired} (${Math.round((totalPresent/totalRequired)*100)}%)`);
-
-    // Recommendations
-    console.log('\n💡 RECOMMENDATIONS');
-    console.log('==================');
+    const frontendContent = `VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your-stripe-key`;
     
-    if (!allRequiredPresent) {
-        console.log('1. Check Jenkins credentials configuration');
-        console.log('2. Verify .env file is properly created on the deployment host');
-        console.log('3. Ensure docker-compose.yml is mounting the .env file correctly');
-        console.log('4. Check container logs for any environment loading errors');
-    } else {
-        console.log('1. All secrets are properly configured!');
-        console.log('2. Consider enabling optional services if needed');
-        console.log('3. Monitor application logs for any runtime issues');
-    }
+    console.log('\n💡 To create the frontend secret, run:');
+    console.log(`echo -n "${frontendContent}" | gcloud secrets create ${FRONTEND_SECRET} --data-file=- --project=${PROJECT_ID}`);
+  }
+  
+  if (!backendExists) {
+    console.log('\n🔧 Backend Secret Setup Required:');
+    console.log('The backend secret should contain:');
+    console.log('VITE_SUPABASE_URL=https://your-project.supabase.co');
+    console.log('VITE_SUPABASE_ANON_KEY=your-anon-key-here');
+    
+    const backendContent = `VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here`;
+    
+    console.log('\n💡 To create the backend secret, run:');
+    console.log(`echo -n "${backendContent}" | gcloud secrets create ${BACKEND_SECRET} --data-file=- --project=${PROJECT_ID}`);
+  }
+  
+  if (frontendExists && backendExists) {
+    console.log('\n✅ Both secrets exist!');
+    console.log('If you\'re still having issues, the secret content might be incorrect.');
+    console.log('\n🔍 To check secret content (will be masked):');
+    console.log(`gcloud secrets versions access latest --secret=${FRONTEND_SECRET} --project=${PROJECT_ID}`);
+    console.log(`gcloud secrets versions access latest --secret=${BACKEND_SECRET} --project=${PROJECT_ID}`);
+  }
+  
+  console.log('\n🚀 Next Steps:');
+  console.log('1. Update the secret content with your actual Supabase credentials');
+  console.log('2. Trigger a new Cloud Build deployment');
+  console.log('3. Check the build logs for the secret parsing debug output');
+  
+  console.log('\n📋 Example secret content format:');
+  console.log('Frontend Secret:');
+  console.log('VITE_SUPABASE_URL=https://abcdefghijklmnop.supabase.co');
+  console.log('VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...');
+  console.log('VITE_STRIPE_PUBLISHABLE_KEY=pk_test_51ABC123DEF456...');
+  
+  console.log('\nBackend Secret:');
+  console.log('VITE_SUPABASE_URL=https://abcdefghijklmnop.supabase.co');
+  console.log('VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...');
 }
 
-// Check if this is the main module
-if (import.meta.url === `file://${process.argv[1]}`) {
-    main().catch(console.error);
-}
-
-export { checkContainerSecrets, checkContainerHealth, checkContainerLogs };
+main().catch(console.error);

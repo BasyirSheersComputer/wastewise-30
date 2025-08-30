@@ -4,7 +4,18 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import logger from '../utils/logger.js';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    logger.info('Supabase client created successfully');
+  } else {
+    logger.warn('Supabase environment variables not found, auth features will be disabled');
+  }
+} catch (error) {
+  logger.error('Failed to create Supabase client:', error.message);
+}
 
 class AuthService {
   constructor() {
@@ -12,8 +23,17 @@ class AuthService {
     this.jwtSecret = process.env.JWT_SECRET || 'your-secret-key';
   }
 
+  // Check if Supabase is available
+  isSupabaseAvailable() {
+    return this.supabase !== null;
+  }
+
   // Register new user with comprehensive onboarding
   async registerUser(userData) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const {
         email,
@@ -100,29 +120,27 @@ class AuthService {
         throw new Error(`Profile creation failed: ${profileError.message}`);
       }
 
-      // Create welcome email and onboarding sequence
-      await this.sendWelcomeEmail(email, first_name, company_name);
-
-      logger.info('User registered successfully', { 
-        user_id: authData.user.id, 
-        email, 
-        company_name 
-      });
+      // Calculate days left in trial
+      const daysLeft = Math.max(0, Math.ceil(DateTime.fromISO(trialEnd).diff(DateTime.now(), 'days').days));
 
       return {
         user: authData.user,
         session: authData.session,
         trialEnd,
-        daysLeft: 30
+        daysLeft
       };
     } catch (error) {
-      logger.error('Error registering user', error);
+      logger.error('Registration error', error);
       throw error;
     }
   }
 
   // Create user profile after auth signup (for frontend flow)
   async createUserProfile(userId, userData) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const {
         email,
@@ -194,6 +212,10 @@ class AuthService {
 
   // Google OAuth sign in
   async signInWithGoogle(accessToken, idToken) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       logger.info('Processing Google OAuth sign in');
       
@@ -332,6 +354,10 @@ class AuthService {
 
   // Login user
   async loginUser(email, password) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const { data, error } = await this.supabase.auth.signInWithPassword({
         email,
@@ -385,6 +411,10 @@ class AuthService {
 
   // Complete user onboarding
   async completeOnboarding(userId, onboardingData) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const {
         company_name,
@@ -440,6 +470,10 @@ class AuthService {
 
   // Extend trial period
   async extendTrial(userId, days = 7) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const { data: user, error: userError } = await this.supabase
         .from('users')
@@ -476,6 +510,11 @@ class AuthService {
 
   // Send welcome email
   async sendWelcomeEmail(email, firstName, companyName) {
+    if (!this.isSupabaseAvailable()) {
+      logger.warn('Supabase is not configured, skipping welcome email.');
+      return;
+    }
+
     try {
       // In production, integrate with email service like SendGrid or AWS SES
       logger.info('Welcome email sent', { email, firstName, companyName });
@@ -489,6 +528,11 @@ class AuthService {
 
   // Send onboarding completion email
   async sendOnboardingCompletionEmail(email, firstName) {
+    if (!this.isSupabaseAvailable()) {
+      logger.warn('Supabase is not configured, skipping onboarding completion email.');
+      return;
+    }
+
     try {
       logger.info('Onboarding completion email sent', { email, firstName });
       
@@ -501,6 +545,10 @@ class AuthService {
 
   // Get user profile
   async getUserProfile(userId) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const { data, error } = await this.supabase
         .from('users')
@@ -519,6 +567,10 @@ class AuthService {
 
   // Update user profile
   async updateUserProfile(userId, profileData) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const { error } = await this.supabase
         .from('users')
@@ -540,6 +592,10 @@ class AuthService {
 
   // Logout user
   async logoutUser() {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const { error } = await this.supabase.auth.signOut();
       
@@ -555,6 +611,11 @@ class AuthService {
 
   // Validate JWT token
   validateToken(token) {
+    if (!this.isSupabaseAvailable()) {
+      logger.warn('Supabase is not configured, skipping token validation.');
+      return null;
+    }
+
     try {
       const decoded = jwt.verify(token, this.jwtSecret);
       return decoded;
@@ -566,6 +627,10 @@ class AuthService {
 
   // Refresh token
   async refreshToken(refreshToken) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const { data, error } = await this.supabase.auth.refreshSession({
         refresh_token: refreshToken
@@ -582,6 +647,10 @@ class AuthService {
 
   // Check if user has active subscription
   async hasActiveSubscription(userId) {
+    if (!this.isSupabaseAvailable()) {
+      throw new Error('Supabase is not configured. Please check environment variables.');
+    }
+
     try {
       const { data, error } = await this.supabase
         .from('users')

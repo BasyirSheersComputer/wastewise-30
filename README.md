@@ -31,39 +31,81 @@ WasteWise-30 is a comprehensive coffee chain operational intelligence platform t
 
 ## 🚀 **Quick Start**
 
-### **Prerequisites:**
+### **Option 1: Local Development**
+**Prerequisites:**
 - Docker and Docker Compose
 - Node.js 20+
 - Git
 
-### **1. Clone the Repository:**
+**1. Clone the Repository:**
 ```bash
 git clone https://github.com/BasyirSheersComputer/wastewise-30.git
 cd wastewise-30
 ```
 
-### **2. Set Up Environment:**
+**2. Set Up Environment:**
 ```bash
-# Copy environment template
-cp env.example .env
+# Copy Docker environment template
+cp config/environment/docker.env.example .env
 
-# Edit environment variables (see env.example for required keys)
+# Edit environment variables (see Docker Environment Setup Guide for details)
 nano .env
 ```
 
-### **3. Deploy with Docker Compose:**
+**3. Build and Deploy:**
 ```bash
+# Build Docker images with proper environment variable handling
+# Linux/macOS:
+./scripts/build-docker.sh
+
+# Windows PowerShell:
+.\scripts\build-docker.ps1
+
 # Deploy the application
-docker-compose up -d --build
+docker-compose up -d
 
 # Check status
 docker-compose ps
 ```
 
+### **Option 2: Auto-Deployment with Google Cloud Build**
+**Prerequisites:**
+- Google Cloud project with billing enabled
+- Google Cloud CLI (gcloud) installed and authenticated
+- GitHub repository access
+
+**1. Set Up Auto-Deployment:**
+```bash
+# Linux/macOS:
+export PROJECT_ID=your-project-id
+./scripts/setup-cloudbuild.sh
+
+# Windows PowerShell:
+.\scripts\setup-cloudbuild.ps1 -ProjectId "your-project-id"
+```
+
+**2. Configure GitHub Secrets:**
+- Add `GCP_SA_KEY` and `GCP_PROJECT_ID` to repository secrets
+- Update secrets in Google Cloud Secret Manager
+
+**3. Deploy Automatically:**
+```bash
+git push origin main
+```
+
+**📖 For detailed setup instructions, see:**
+- [Docker Environment Setup Guide](./docs/deployment/DOCKER_ENVIRONMENT_SETUP.md)
+- [Auto-Trigger Setup Guide](./docs/deployment/AUTO_TRIGGER_SETUP.md)
+
 ### **4. Access the Application:**
 - **Frontend**: http://localhost:8899/
 - **Backend API**: http://localhost:3000/
 - **Health Check**: http://localhost:3000/health
+
+**🌏 Production URLs (Asia Southeast Region):**
+- **Frontend**: `https://wastewise-frontend-{PROJECT_ID}-as.a.run.app`
+- **Backend API**: `https://wastewise-backend-{PROJECT_ID}-as.a.run.app`
+- **Health Check**: `https://wastewise-backend-{PROJECT_ID}-as.a.run.app/health`
 
 ## 📁 **Project Structure**
 

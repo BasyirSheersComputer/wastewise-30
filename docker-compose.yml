@@ -2,16 +2,20 @@ version: '3.8'
 
 services:
   wastewise-frontend:
-    image: basyir/wastewise-30-frontend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+        VITE_STRIPE_PUBLISHABLE_KEY: ${VITE_STRIPE_PUBLISHABLE_KEY}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://wastewise-backend:3000}
+        VITE_TRIAL_PERIOD_DAYS: ${VITE_TRIAL_PERIOD_DAYS:-30}
     container_name: wastewise-frontend
     restart: always
     ports:
       - "127.0.0.1:8899:8899"
-    env_file:
-      - .env
     environment:
-      - REACT_APP_API_URL=http://wastewise-backend:3000
-      - REACT_APP_BACKEND_URL=http://wastewise-backend:3000
       - NODE_ENV=production
     depends_on:
       wastewise-backend:
@@ -28,7 +32,9 @@ services:
       - ./logs:/app/logs
 
   wastewise-backend:
-    image: basyir/wastewise-30-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     container_name: wastewise-backend
     restart: always
     ports:
@@ -38,7 +44,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - CORS_ORIGIN=https://sheerstechnologies.com
+      - CORS_ORIGIN=${CORS_ORIGIN:-https://sheerstechnologies.com}
     networks:
       - wastewise-network
     healthcheck:
@@ -49,7 +55,6 @@ services:
       start_period: 40s
     volumes:
       - ./logs:/app/logs
-      - ./.env:/app/.env:ro
 
 networks:
   wastewise-network:

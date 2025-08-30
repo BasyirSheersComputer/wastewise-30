@@ -13,6 +13,23 @@ RUN npm ci --only=production
 # Copy frontend source code
 COPY frontend/ ./
 
+# Copy environment files if they exist (for build-time variables)
+COPY frontend/.env* ./ 2>/dev/null || true
+
+# Build the application with environment variables
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_ANON_KEY
+ARG VITE_STRIPE_PUBLISHABLE_KEY
+ARG VITE_API_BASE_URL
+ARG VITE_TRIAL_PERIOD_DAYS
+
+# Set environment variables for build
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
+ENV VITE_STRIPE_PUBLISHABLE_KEY=$VITE_STRIPE_PUBLISHABLE_KEY
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_TRIAL_PERIOD_DAYS=$VITE_TRIAL_PERIOD_DAYS
+
 # Build the application
 RUN npm run build
 

@@ -8,7 +8,19 @@ import stripeService from '../services/stripeService.js';
 dotenv.config();
 
 const router = express.Router();
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    logger.info('Billing route: Supabase client created successfully');
+  } else {
+    logger.warn('Billing route: Supabase environment variables not found, billing features will be disabled');
+  }
+} catch (error) {
+  logger.error('Billing route: Failed to create Supabase client:', error.message);
+}
 
 // Get all plans with risk reversal guarantees
 router.get('/plans', async (req, res) => {
@@ -282,6 +294,10 @@ router.get('/plans', async (req, res) => {
 // Get subscription status
 router.get('/subscription', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Billing features are currently unavailable' });
+    }
+
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -336,6 +352,10 @@ router.get('/subscription', async (req, res) => {
 // Create a new subscription
 router.post('/subscription', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Billing features are currently unavailable' });
+    }
+
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -398,6 +418,10 @@ router.post('/subscription', async (req, res) => {
 // Cancel subscription
 router.delete('/subscription', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Billing features are currently unavailable' });
+    }
+
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -431,6 +455,10 @@ router.delete('/subscription', async (req, res) => {
 // Reactivate subscription
 router.post('/subscription/reactivate', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Billing features are currently unavailable' });
+    }
+
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -469,6 +497,10 @@ router.post('/subscription/reactivate', async (req, res) => {
 // Get billing history
 router.get('/history', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Billing features are currently unavailable' });
+    }
+
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {
@@ -599,6 +631,10 @@ router.get('/guarantees', async (req, res) => {
 // Get customer portal URL
 router.post('/customer-portal', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ error: 'Billing features are currently unavailable' });
+    }
+
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error || !user) {

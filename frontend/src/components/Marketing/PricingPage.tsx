@@ -362,8 +362,8 @@ export default function PricingPage() {
                   
                   {!stripeTableLoading && !stripeTableError && (
                     <stripe-pricing-table 
-                      pricing-table-id="prctbl_1RwcWE1awWwGP4dI3uDwUQGp"
-                      publishable-key="pk_live_51Rqms71awWwGP4dIrms0QUcKCCvsUU3m6KaWcjrHi6FkeoJD41tW8EM7m7fvvxyMds0M7HAgHz8Rn5q9az7s7SVp00EKbZehYr"
+                      pricing-table-id={import.meta.env.VITE_STRIPE_PRICING_TABLE_ID || "prctbl_1RwcWE1awWwGP4dI3uDwUQGp"}
+                      publishable-key={import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_live_51Rqms71awWwGP4dIrms0QUcKCCvsUU3m6KaWcjrHi6FkeoJD41tW8EM7m7fvvxyMds0M7HAgHz8Rn5q9az7s7SVp00EKbZehYr"}
                     ></stripe-pricing-table>
                   )}
                 </div>

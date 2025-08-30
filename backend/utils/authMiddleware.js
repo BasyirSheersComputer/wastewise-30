@@ -5,7 +5,18 @@ import logger from './logger.js';
 
 dotenv.config();
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    logger.info('Auth middleware: Supabase client created successfully');
+  } else {
+    logger.warn('Auth middleware: Supabase environment variables not found, auth middleware will be disabled');
+  }
+} catch (error) {
+  logger.error('Auth middleware: Failed to create Supabase client:', error.message);
+}
 
 /**
  * Plan definitions with features and limitations

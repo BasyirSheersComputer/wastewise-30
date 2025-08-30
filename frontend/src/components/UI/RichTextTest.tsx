@@ -34,7 +34,6 @@ This text contains *italic formatting* and _alternative italic_.
 ## Code Block
 \`\`\`
 function testFunction() {
-  console.log("This is a code block");
   return "Hello World";
 }
 \`\`\`

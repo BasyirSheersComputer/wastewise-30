@@ -104,8 +104,7 @@ const SubscriptionManager: React.FC = () => {
         setUserProfile(data.profile);
       }
     } catch (error) {
-      console.error('Error fetching user profile:', error);
-    }
+      }
   };
 
   const fetchSubscriptionData = async () => {
@@ -116,7 +115,6 @@ const SubscriptionManager: React.FC = () => {
         setSubscriptionData(data);
       }
     } catch (error) {
-      console.error('Error fetching subscription data:', error);
       toast.error('Failed to load subscription data');
     } finally {
       setLoading(false);
@@ -131,8 +129,7 @@ const SubscriptionManager: React.FC = () => {
         setPlans(data.plans);
       }
     } catch (error) {
-      console.error('Error fetching plans:', error);
-    }
+      }
   };
 
   const fetchBillingHistory = async () => {
@@ -143,8 +140,7 @@ const SubscriptionManager: React.FC = () => {
         setBillingHistory(data.billingHistory);
       }
     } catch (error) {
-      console.error('Error fetching billing history:', error);
-    }
+      }
   };
 
   const handleUpgradePlan = (plan: Plan) => {
@@ -152,7 +148,7 @@ const SubscriptionManager: React.FC = () => {
     setShowPaymentModal(true);
   };
 
-  const handlePaymentSuccess = async (subscription: any) => {
+  const handlePaymentSuccess = async (_subscription: unknown) => {
     toast.success('Subscription upgraded successfully!');
     await fetchSubscriptionData();
     setShowPaymentModal(false);
@@ -172,7 +168,6 @@ const SubscriptionManager: React.FC = () => {
         toast.error(error.error || 'Failed to cancel subscription');
       }
     } catch (error) {
-      console.error('Error cancelling subscription:', error);
       toast.error('Failed to cancel subscription');
     }
   };
@@ -190,7 +185,6 @@ const SubscriptionManager: React.FC = () => {
         toast.error('Failed to open customer portal');
       }
     } catch (error) {
-      console.error('Error opening customer portal:', error);
       toast.error('Failed to open customer portal');
     }
   };
@@ -213,7 +207,6 @@ const SubscriptionManager: React.FC = () => {
         toast.error(error.error || 'Failed to extend trial');
       }
     } catch (error) {
-      console.error('Error extending trial:', error);
       toast.error('Failed to extend trial');
     }
   };

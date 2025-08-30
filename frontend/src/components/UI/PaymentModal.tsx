@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { CheckCircle, AlertCircle, CreditCard, Building, Wallet, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const publishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string | undefined;
+const stripePromise: Promise<Stripe | null> | null = publishableKey ? loadStripe(publishableKey) : null;
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -284,7 +285,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, plan, onSu
 
         {/* Content */}
         <div className="p-6">
-          <Elements stripe={stripePromise}>
+          <Elements stripe={stripePromise ?? undefined}>
             <PaymentForm plan={plan} onSuccess={onSuccess} onClose={onClose} />
           </Elements>
         </div>

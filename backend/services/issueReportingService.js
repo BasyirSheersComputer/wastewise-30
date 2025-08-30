@@ -1,7 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
 import logger from '../utils/logger.js';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    logger.info('Issue reporting service: Supabase client created successfully');
+  } else {
+    logger.warn('Issue reporting service: Supabase environment variables not found, database features will be disabled');
+  }
+} catch (error) {
+  logger.error('Issue reporting service: Failed to create Supabase client:', error.message);
+}
 
 class IssueReportingService {
   constructor() {
@@ -13,6 +24,10 @@ class IssueReportingService {
    */
   async createIssue(userId, issueData) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const {
         title,
         description,
@@ -88,6 +103,10 @@ class IssueReportingService {
    */
   async getUserIssues(userId, filters = {}) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       let query = this.supabase
         .from('issues')
         .select(`
@@ -130,6 +149,10 @@ class IssueReportingService {
    */
   async getIssue(issueId, userId) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data: issue, error } = await this.supabase
         .from('issues')
         .select(`
@@ -173,6 +196,10 @@ class IssueReportingService {
    */
   async updateIssue(issueId, userId, updateData) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data: issue, error } = await this.supabase
         .from('issues')
         .update(updateData)
@@ -202,6 +229,10 @@ class IssueReportingService {
    */
   async addComment(issueId, userId, content, attachments = []) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data: comment, error } = await this.supabase
         .from('issue_comments')
         .insert([{
@@ -231,6 +262,10 @@ class IssueReportingService {
    */
   async getUserIssueStats(userId) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .rpc('get_user_issue_stats', { user_uuid: userId });
 
@@ -252,6 +287,10 @@ class IssueReportingService {
    */
   async getUserIssuesByStatus(userId) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .rpc('get_user_issues_by_status', { user_uuid: userId });
 
@@ -268,6 +307,10 @@ class IssueReportingService {
    */
   async getCategories() {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .from('issue_categories')
         .select('*')
@@ -287,6 +330,10 @@ class IssueReportingService {
    */
   async getPriorities() {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .from('issue_priorities')
         .select('*')
@@ -305,6 +352,10 @@ class IssueReportingService {
    */
   async getStatuses() {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .from('issue_statuses')
         .select('*')
@@ -323,6 +374,10 @@ class IssueReportingService {
    */
   async getTemplates() {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .from('issue_templates')
         .select(`
@@ -346,6 +401,10 @@ class IssueReportingService {
    */
   async getUserOutlets(userId) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .from('outlets')
         .select('id, outlet_name, address, city, state')
@@ -371,6 +430,11 @@ class IssueReportingService {
    */
   async addIssueHistory(issueId, userId, fieldName, oldValue, newValue, changeType) {
     try {
+      if (!this.supabase) {
+        logger.warn('Database not available, skipping issue history');
+        return;
+      }
+
       const { error } = await this.supabase
         .from('issue_history')
         .insert([{
@@ -394,6 +458,10 @@ class IssueReportingService {
    */
   async getIssueHistory(issueId, userId) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const { data, error } = await this.supabase
         .from('issue_history')
         .select(`
@@ -416,6 +484,10 @@ class IssueReportingService {
    */
   async deleteIssue(issueId, userId) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       // Check if issue exists and user owns it
       const { data: issue, error: checkError } = await this.supabase
         .from('issues')
@@ -452,6 +524,10 @@ class IssueReportingService {
    */
   async uploadAttachment(issueId, userId, file) {
     try {
+      if (!this.supabase) {
+        throw new Error('Database not available');
+      }
+
       const fileName = `${issueId}/${Date.now()}-${file.name}`;
       const filePath = `issue-attachments/${fileName}`;
 

@@ -24,7 +24,18 @@ if (stripeSecretKey) {
   logger.warn('Stripe secret key not found - using mock implementation');
 }
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    logger.info('Stripe service: Supabase client created successfully');
+  } else {
+    logger.warn('Stripe service: Supabase environment variables not found, database features will be disabled');
+  }
+} catch (error) {
+  logger.error('Stripe service: Failed to create Supabase client:', error.message);
+}
 
 // Malaysian payment methods configuration
 const MALAYSIAN_PAYMENT_METHODS = {
@@ -169,10 +180,12 @@ class StripeService {
       });
 
       // Update user record with Stripe customer ID
-      await this.supabase
-        .from('users')
-        .update({ stripe_customer_id: customer.id })
-        .eq('id', userData.id);
+      if (this.supabase) {
+        await this.supabase
+          .from('users')
+          .update({ stripe_customer_id: customer.id })
+          .eq('id', userData.id);
+      }
 
       logger.info('Stripe customer created', { customer_id: customer.id, user_id: userData.id });
       return customer;

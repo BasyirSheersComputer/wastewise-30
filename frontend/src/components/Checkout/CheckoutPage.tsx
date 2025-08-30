@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 import {
   Elements,
   PaymentElement,
@@ -21,8 +21,9 @@ import {
   TrendingUp
 } from 'lucide-react';
 
-// Initialize Stripe
-const stripePromise = loadStripe('pk_live_51Rqms71awWwGP4dIrms0QUcKCCvsUU3m6KaWcjrHi6FkeoJD41tW8EM7m7fvvxyMds0M7HAgHz8Rn5q9az7s7SVp00EKbZehYr');
+// Initialize Stripe using env var; avoid throwing if not set in dev
+const publishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string | undefined;
+const stripePromise: Promise<Stripe | null> | null = publishableKey ? loadStripe(publishableKey) : null;
 
 interface PlanDetails {
   id: string;
@@ -88,6 +89,7 @@ function CheckoutForm({ planId, clientSecret }: { planId: string; clientSecret: 
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [configError, setConfigError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -258,6 +260,11 @@ export default function CheckoutPage() {
   const plan = plans[planId];
 
   useEffect(() => {
+    if (!publishableKey) {
+      setConfigError('Stripe is not configured. Set VITE_STRIPE_PUBLISHABLE_KEY in frontend/.env');
+      setLoading(false);
+      return;
+    }
     const createPaymentIntent = async () => {
       try {
         const response = await fetch('/api/billing/create-payment-intent', {
@@ -294,6 +301,24 @@ export default function CheckoutPage() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Setting up your checkout...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (configError) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Configuration Error</h2>
+          <p className="text-gray-600 mb-6">{configError}</p>
+          <button
+            onClick={() => navigate('/pricing')}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Back to Pricing
+          </button>
         </div>
       </div>
     );
@@ -348,9 +373,19 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h1 className="text-2xl font-bold text-gray-900 mb-6">Complete Your Purchase</h1>
               
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm planId={planId} clientSecret={clientSecret} />
-              </Elements>
+              {stripePromise && (
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                  <CheckoutForm planId={planId} clientSecret={clientSecret} />
+                </Elements>
+              )}
+              {!stripePromise && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="flex items-center">
+                    <XCircle className="w-5 h-5 text-red-500 mr-2" />
+                    <span className="text-red-700">Stripe key not configured.</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
