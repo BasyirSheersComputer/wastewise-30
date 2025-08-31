@@ -25,7 +25,19 @@ import coffeeChainRoutes from './routes/coffeeChain.js';
 
 dotenv.config();
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+// Initialize Supabase client with error handling
+let supabase;
+try {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+    console.warn('Supabase environment variables not found. Some features will be disabled.');
+    supabase = null;
+  } else {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+  }
+} catch (error) {
+  console.error('Failed to initialize Supabase client:', error.message);
+  supabase = null;
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -92,6 +104,35 @@ app.get('/health', (req, res) => {
 // Database connection test endpoint
 app.get('/api/test-db', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.json({
+        status: 'error',
+        message: 'Supabase client not initialized',
+        connection: {
+          url: process.env.SUPABASE_URL ? 'configured' : 'missing',
+          key: process.env.SUPABASE_ANON_KEY ? 'configured' : 'missing'
+        },
+        tests: {
+          basic_connection: false,
+          rpc_functions: false,
+          auth_service: false,
+          schema_access: false
+        },
+        details: {
+          connection_error: 'Supabase client not initialized',
+          rpc_error: 'Supabase client not initialized',
+          auth_error: 'Supabase client not initialized',
+          available_tables: []
+        },
+        summary: {
+          passed: 0,
+          total: 4,
+          percentage: 0
+        },
+        timestamp: new Date().toISOString()
+      });
+    }
+
     // Test 1: Basic connection by checking if we can connect to Supabase
     const { data: connectionTest, error: connectionError } = await supabase
       .from('_supabase_migrations')
@@ -206,4 +247,6 @@ app.listen(PORT, () => {
   logger.info(`Server listening on port ${PORT}`);
   logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
   logger.info(`Health check: http://localhost:${PORT}/health`);
+  logger.info(`Supabase configured: ${supabase ? 'Yes' : 'No'}`);
+  logger.info(`Supabase URL: ${process.env.SUPABASE_URL ? 'Configured' : 'Not configured'}`);
 });

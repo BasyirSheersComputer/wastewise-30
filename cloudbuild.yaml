@@ -100,10 +100,13 @@ steps:
       - '300'
       - '--concurrency'
       - '80'
+      - '--cpu-boost'
       - '--set-env-vars'
       - 'NODE_ENV=production'
       - '--set-secrets'
       - 'BACKEND_SECRET=wastewise-30-secret-backend:latest'
+      - '--execution-environment'
+      - 'gen2'
     waitFor: ['push-backend-latest']
 
   # Stage 5: Deploy frontend to Cloud Run
