@@ -101,7 +101,7 @@ steps:
       - '--concurrency'
       - '80'
       - '--set-env-vars'
-      - 'NODE_ENV=production,PORT=8080'
+      - 'NODE_ENV=production'
       - '--set-secrets'
       - 'BACKEND_SECRET=wastewise-30-secret-backend:latest'
     waitFor: ['push-backend-latest']
