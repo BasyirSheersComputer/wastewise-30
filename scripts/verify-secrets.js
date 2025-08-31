@@ -1,152 +1,212 @@
 #!/usr/bin/env node
 
-const { execSync } = require('child_process');
+/**
+ * Secret Verification Script for WasteWise-30
+ * Verifies that all required secrets are properly configured in Cloud Run
+ */
 
-const PROJECT_ID = '451983642521';
-const FRONTEND_SECRET = 'wastewise-30-secret';
-const BACKEND_SECRET = 'wastewise-30-secret-backend';
+const https = require('https');
 
-console.log('🔐 Verifying Google Secret Manager Secrets');
-console.log('==========================================\n');
+const BACKEND_URL = 'https://wastewise-backend-451983642521.asia-southeast1.run.app';
 
-function runCommand(command) {
+// Colors for console output
+const colors = {
+  green: '\x1b[32m',
+  red: '\x1b[31m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  reset: '\x1b[0m',
+  bold: '\x1b[1m'
+};
+
+function log(message, color = 'reset') {
+  console.log(`${colors[color]}${message}${colors.reset}`);
+}
+
+function makeRequest(url, method = 'GET') {
+  return new Promise((resolve, reject) => {
+    const req = https.request(url, { method }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const jsonData = JSON.parse(data);
+          resolve({ status: res.statusCode, data: jsonData });
+        } catch (e) {
+          resolve({ status: res.statusCode, data: data });
+        }
+      });
+    });
+    
+    req.on('error', reject);
+    req.setTimeout(10000, () => req.destroy());
+    req.end();
+  });
+}
+
+async function checkHealth() {
+  log('\n🔍 Checking Backend Health...', 'blue');
+  
   try {
-    return execSync(command, { encoding: 'utf8' });
+    const response = await makeRequest(`${BACKEND_URL}/health`);
+    if (response.status === 200) {
+      log('✅ Backend is healthy and responding', 'green');
+      log(`   Environment: ${response.data.environment}`, 'blue');
+      log(`   Version: ${response.data.version}`, 'blue');
+      return true;
+    } else {
+      log(`❌ Backend health check failed: ${response.status}`, 'red');
+      return false;
+    }
   } catch (error) {
-    console.error(`❌ Command failed: ${command}`);
-    console.error(`Error: ${error.message}`);
-    return null;
+    log(`❌ Backend health check error: ${error.message}`, 'red');
+    return false;
   }
 }
 
-function checkSecret(secretName, description) {
-  console.log(`📋 Checking ${description} (${secretName})...`);
+async function checkDatabaseConnection() {
+  log('\n🗄️  Checking Database Connection...', 'blue');
   
-  // Check if secret exists
-  const listResult = runCommand(`gcloud secrets list --filter="name:${secretName}" --project=${PROJECT_ID}`);
-  
-  if (!listResult || !listResult.includes(secretName)) {
-    console.log(`❌ Secret ${secretName} does not exist`);
-    return false;
-  }
-  
-  console.log(`✅ Secret ${secretName} exists`);
-  
-  // Get the latest version
-  const versionResult = runCommand(`gcloud secrets versions list ${secretName} --project=${PROJECT_ID} --limit=1`);
-  
-  if (!versionResult) {
-    console.log(`❌ Could not get version info for ${secretName}`);
-    return false;
-  }
-  
-  console.log(`📅 Latest version info:\n${versionResult}`);
-  
-  // Try to access the secret content (this will be masked for security)
-  const accessResult = runCommand(`gcloud secrets versions access latest --secret=${secretName} --project=${PROJECT_ID}`);
-  
-  if (!accessResult) {
-    console.log(`❌ Could not access secret content for ${secretName}`);
-    return false;
-  }
-  
-  console.log(`✅ Secret content is accessible (${accessResult.length} characters)`);
-  console.log(`📄 Content preview: ${accessResult.substring(0, 100)}...`);
-  
-  return true;
-}
-
-function createOrUpdateSecret(secretName, description, content) {
-  console.log(`\n🔧 Creating/Updating ${description} (${secretName})...`);
-  
-  // Check if secret exists
-  const listResult = runCommand(`gcloud secrets list --filter="name:${secretName}" --project=${PROJECT_ID}`);
-  
-  if (!listResult || !listResult.includes(secretName)) {
-    console.log(`📝 Creating new secret: ${secretName}`);
-    const createResult = runCommand(`echo -n "${content}" | gcloud secrets create ${secretName} --data-file=- --project=${PROJECT_ID}`);
-    
-    if (!createResult) {
-      console.log(`❌ Failed to create secret ${secretName}`);
+  try {
+    const response = await makeRequest(`${BACKEND_URL}/api/test-db`);
+    if (response.status === 200) {
+      const data = response.data;
+      log(`✅ Database connection: ${data.status}`, 'green');
+      log(`   Connection URL: ${data.connection.url}`, 'blue');
+      log(`   Connection Key: ${data.connection.key}`, 'blue');
+      log(`   Tests Passed: ${data.summary.passed}/${data.summary.total} (${data.summary.percentage}%)`, 'blue');
+      
+      if (data.summary.percentage < 100) {
+        log('⚠️  Some database tests failed:', 'yellow');
+        Object.entries(data.tests).forEach(([test, passed]) => {
+          log(`   ${test}: ${passed ? '✅' : '❌'}`, passed ? 'green' : 'red');
+        });
+      }
+      
+      return data.summary.percentage >= 75; // At least 75% of tests should pass
+    } else {
+      log(`❌ Database test failed: ${response.status}`, 'red');
       return false;
     }
-    
-    console.log(`✅ Secret ${secretName} created successfully`);
+  } catch (error) {
+    log(`❌ Database test error: ${error.message}`, 'red');
+    return false;
+  }
+}
+
+async function checkAIService() {
+  log('\n🤖 Checking AI Service...', 'blue');
+  
+  try {
+    const response = await makeRequest(`${BACKEND_URL}/api/dashboard/overview`);
+    if (response.status === 200) {
+      const data = response.data;
+      
+      if (data.recommendations && data.recommendations.includes('Error getting recommendations from AI service')) {
+        log('❌ AI service is failing', 'red');
+        log('   This indicates missing or invalid API keys', 'yellow');
+        return false;
+      } else if (data.recommendations) {
+        log('✅ AI service is working', 'green');
+        log(`   Recommendations: ${data.recommendations.substring(0, 100)}...`, 'blue');
+        return true;
+      } else {
+        log('⚠️  AI service status unclear', 'yellow');
+        return false;
+      }
+    } else {
+      log(`❌ AI service test failed: ${response.status}`, 'red');
+      return false;
+    }
+  } catch (error) {
+    log(`❌ AI service test error: ${error.message}`, 'red');
+    return false;
+  }
+}
+
+async function checkTestEndpoint() {
+  log('\n🧪 Checking Test Endpoint...', 'blue');
+  
+  try {
+    const response = await makeRequest(`${BACKEND_URL}/api/test`);
+    if (response.status === 200) {
+      const data = response.data;
+      log('✅ Test endpoint is working', 'green');
+      log(`   Supabase URL: ${data.supabaseUrl}`, 'blue');
+      log(`   Gemini API Key: ${data.geminiApiKey}`, 'blue');
+      log(`   OpenAI API Key: ${data.openaiApiKey}`, 'blue');
+      return true;
+    } else {
+      log(`❌ Test endpoint failed: ${response.status}`, 'red');
+      return false;
+    }
+  } catch (error) {
+    log(`❌ Test endpoint error: ${error.message}`, 'red');
+    return false;
+  }
+}
+
+async function generateReport(results) {
+  log('\n' + '='.repeat(60), 'bold');
+  log('📊 SECRET VERIFICATION REPORT', 'bold');
+  log('='.repeat(60), 'bold');
+  
+  const totalTests = Object.keys(results).length;
+  const passedTests = Object.values(results).filter(Boolean).length;
+  const percentage = Math.round((passedTests / totalTests) * 100);
+  
+  log(`\nOverall Status: ${passedTests}/${totalTests} tests passed (${percentage}%)`, percentage >= 75 ? 'green' : 'red');
+  
+  Object.entries(results).forEach(([test, passed]) => {
+    const status = passed ? '✅ PASS' : '❌ FAIL';
+    const color = passed ? 'green' : 'red';
+    log(`   ${test}: ${status}`, color);
+  });
+  
+  log('\n' + '='.repeat(60), 'bold');
+  
+  if (percentage >= 75) {
+    log('🎉 Most secrets are working correctly!', 'green');
+    if (!results.aiService) {
+      log('\n⚠️  AI Service Issues:', 'yellow');
+      log('   - Check if Gemini API key is configured in Secret Manager', 'yellow');
+      log('   - Verify the secret name is "gemini-api-key"', 'yellow');
+      log('   - Ensure the API key is valid and has sufficient quota', 'yellow');
+    }
   } else {
-    console.log(`📝 Updating existing secret: ${secretName}`);
-    const updateResult = runCommand(`echo -n "${content}" | gcloud secrets versions add ${secretName} --data-file=- --project=${PROJECT_ID}`);
-    
-    if (!updateResult) {
-      console.log(`❌ Failed to update secret ${secretName}`);
-      return false;
-    }
-    
-    console.log(`✅ Secret ${secretName} updated successfully`);
+    log('❌ Multiple issues detected with secret configuration', 'red');
+    log('\n🔧 Recommended Actions:', 'yellow');
+    log('   1. Run the setup-individual-secrets.sh script to create missing secrets', 'yellow');
+    log('   2. Verify all required secrets exist in Secret Manager', 'yellow');
+    log('   3. Check Cloud Run service configuration', 'yellow');
+    log('   4. Review deployment logs for errors', 'yellow');
   }
   
-  return true;
+  log('\n📋 Next Steps:', 'blue');
+  log('   1. If AI service is failing, add your Gemini API key:', 'blue');
+  log('      gcloud secrets versions add gemini-api-key --data-file=- <<< "your-api-key"', 'blue');
+  log('   2. Redeploy the service after adding secrets:', 'blue');
+  log('      gcloud builds submit --config=cloudbuild.yaml .', 'blue');
+  log('   3. Check Cloud Run logs for detailed error messages:', 'blue');
+  log('      gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=wastewise-backend" --limit=10', 'blue');
 }
 
 async function main() {
-  console.log('🔍 Checking existing secrets...\n');
+  log('🔐 WasteWise-30 Secret Verification Tool', 'bold');
+  log('Checking secrets configuration in Cloud Run...', 'blue');
   
-  const frontendExists = checkSecret(FRONTEND_SECRET, 'Frontend Secret');
-  const backendExists = checkSecret(BACKEND_SECRET, 'Backend Secret');
+  const results = {
+    health: await checkHealth(),
+    database: await checkDatabaseConnection(),
+    aiService: await checkAIService(),
+    testEndpoint: await checkTestEndpoint()
+  };
   
-  console.log('\n' + '='.repeat(50));
-  console.log('📝 SECRET SETUP INSTRUCTIONS');
-  console.log('='.repeat(50));
-  
-  if (!frontendExists) {
-    console.log('\n🔧 Frontend Secret Setup Required:');
-    console.log('The frontend secret should contain:');
-    console.log('VITE_SUPABASE_URL=https://your-project.supabase.co');
-    console.log('VITE_SUPABASE_ANON_KEY=your-anon-key-here');
-    console.log('VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your-stripe-key');
-    
-    const frontendContent = `VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your-stripe-key`;
-    
-    console.log('\n💡 To create the frontend secret, run:');
-    console.log(`echo -n "${frontendContent}" | gcloud secrets create ${FRONTEND_SECRET} --data-file=- --project=${PROJECT_ID}`);
-  }
-  
-  if (!backendExists) {
-    console.log('\n🔧 Backend Secret Setup Required:');
-    console.log('The backend secret should contain:');
-    console.log('VITE_SUPABASE_URL=https://your-project.supabase.co');
-    console.log('VITE_SUPABASE_ANON_KEY=your-anon-key-here');
-    
-    const backendContent = `VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here`;
-    
-    console.log('\n💡 To create the backend secret, run:');
-    console.log(`echo -n "${backendContent}" | gcloud secrets create ${BACKEND_SECRET} --data-file=- --project=${PROJECT_ID}`);
-  }
-  
-  if (frontendExists && backendExists) {
-    console.log('\n✅ Both secrets exist!');
-    console.log('If you\'re still having issues, the secret content might be incorrect.');
-    console.log('\n🔍 To check secret content (will be masked):');
-    console.log(`gcloud secrets versions access latest --secret=${FRONTEND_SECRET} --project=${PROJECT_ID}`);
-    console.log(`gcloud secrets versions access latest --secret=${BACKEND_SECRET} --project=${PROJECT_ID}`);
-  }
-  
-  console.log('\n🚀 Next Steps:');
-  console.log('1. Update the secret content with your actual Supabase credentials');
-  console.log('2. Trigger a new Cloud Build deployment');
-  console.log('3. Check the build logs for the secret parsing debug output');
-  
-  console.log('\n📋 Example secret content format:');
-  console.log('Frontend Secret:');
-  console.log('VITE_SUPABASE_URL=https://abcdefghijklmnop.supabase.co');
-  console.log('VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...');
-  console.log('VITE_STRIPE_PUBLISHABLE_KEY=pk_test_51ABC123DEF456...');
-  
-  console.log('\nBackend Secret:');
-  console.log('VITE_SUPABASE_URL=https://abcdefghijklmnop.supabase.co');
-  console.log('VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...');
+  await generateReport(results);
 }
 
-main().catch(console.error);
+// Run the verification
+main().catch(error => {
+  log(`\n❌ Verification failed: ${error.message}`, 'red');
+  process.exit(1);
+});

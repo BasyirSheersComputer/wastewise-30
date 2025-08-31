@@ -25,23 +25,9 @@ import coffeeChainRoutes from './routes/coffeeChain.js';
 
 dotenv.config();
 
-// Parse backend secret if available (for Cloud Run deployment)
+// Get environment variables directly
 let supabaseUrl = process.env.SUPABASE_URL;
 let supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-
-// If we have a BACKEND_SECRET, parse it for individual variables
-if (process.env.BACKEND_SECRET) {
-  const secretLines = process.env.BACKEND_SECRET.split('\n');
-  for (const line of secretLines) {
-    const [key, value] = line.split('=');
-    if (key && value) {
-      process.env[key.trim()] = value.trim();
-    }
-  }
-  // Update our variables after parsing
-  supabaseUrl = process.env.SUPABASE_URL;
-  supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-}
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -193,7 +179,8 @@ app.get('/api/test', (req, res) => {
     message: 'Backend API is working',
     timestamp: new Date().toISOString(),
     supabaseUrl: supabaseUrl ? 'Configured' : 'Not configured',
-    backendSecret: process.env.BACKEND_SECRET ? 'Available' : 'Not available'
+    geminiApiKey: process.env.GEMINI_API_KEY ? 'Configured' : 'Not configured',
+    openaiApiKey: process.env.OPENAI_API_KEY ? 'Configured' : 'Not configured'
   });
 });
 

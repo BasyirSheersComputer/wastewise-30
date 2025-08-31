@@ -52,6 +52,10 @@ trap cleanup TERM INT
 
 # Start backend application
 echo "🚀 Starting backend application..."
+echo "📁 Current directory: $(pwd)"
+echo "📄 Files in current directory:"
+ls -la
+
 su nodejs -c "node index.js" &
 BACKEND_PID=$!
 
