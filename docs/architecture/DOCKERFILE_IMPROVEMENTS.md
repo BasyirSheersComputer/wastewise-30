@@ -70,7 +70,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 # Custom health check script
 #!/bin/sh
-curl -f http://localhost:8899/health >/dev/null 2>&1 || exit 1
+curl -f http://localhost:8080/health >/dev/null 2>&1 || exit 1
 ```
 
 ### **5. Graceful Shutdown Handling**
@@ -243,7 +243,7 @@ docker exec -it wastewise-30 sh
 docker exec wastewise-30 nginx -t
 
 # Test health endpoint
-docker exec wastewise-30 curl -f http://localhost:8899/health
+docker exec wastewise-30 curl -f http://localhost:8080/health
 ```
 
 ## 🚀 **Deployment Commands**
@@ -256,7 +256,7 @@ docker build -t wastewise-30:latest .
 # Deploy with health checks
 docker run -d \
   --name wastewise-30 \
-  -p 8899:8899 \
+  -p 8080:8080 \
   --restart always \
   --health-cmd "/healthcheck.sh" \
   --health-interval=30s \
@@ -271,7 +271,7 @@ docker run -d \
 docker pull basyir/wastewise-30:latest
 docker stop wastewise-30 || true
 docker rm wastewise-30 || true
-docker run -d --name wastewise-30 -p 8899:8899 --restart always basyir/wastewise-30:latest
+docker run -d --name wastewise-30 -p 8080:8080 --restart always basyir/wastewise-30:latest
 ```
 
 ## 🎉 **Success Indicators**

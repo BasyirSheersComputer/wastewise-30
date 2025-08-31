@@ -98,7 +98,7 @@ http {
     add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
     
     server {
-        listen 8899;
+        listen 8080;
         server_name localhost;
         root /usr/share/nginx/html;
         index index.html;
@@ -217,13 +217,13 @@ RUN chmod +x /start.sh
 RUN cat > /healthcheck.sh << 'EOF'
 #!/bin/sh
 # Health check for the container
-curl -f http://localhost:8899/health >/dev/null 2>&1 || exit 1
+curl -f http://localhost:8080/health >/dev/null 2>&1 || exit 1
 EOF
 
 RUN chmod +x /healthcheck.sh
 
 # Expose port
-EXPOSE 8899
+EXPOSE 8080
 
 # Set health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \

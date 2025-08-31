@@ -9,23 +9,23 @@ WasteWise-30 is a comprehensive coffee chain operational intelligence platform t
 - **Real-time Inventory Management**: Track ingredients and expiration dates
 - **Smart Menu Optimization**: Suggest menu items based on available ingredients
 - **Analytics Dashboard**: Comprehensive waste and cost analytics
-- **Multi-container Architecture**: Scalable microservices deployment
-- **CI/CD Pipeline**: Automated testing and deployment
+- **Cloud-Native Architecture**: Scalable Google Cloud Run deployment
+- **Simplified CI/CD Pipeline**: Automated testing and deployment via Cloud Build
 
 ## 🏗️ **Architecture**
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend       │    │   Nginx Proxy   │
-│   (React/Vite)  │    │   (Node.js/Exp) │    │   (Load Balancer)│
-│   Port 8899     │    │   Port 3000     │    │   Port 80/443   │
+│   Frontend      │    │   Backend       │    │   Google Cloud  │
+│   (React/Vite)  │    │   (Node.js/Exp) │    │   Run Services  │
+│   Port 8080     │    │   Port 3000     │    │   (Managed)     │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          └───────────────────────┼───────────────────────┘
                                  │
                     ┌─────────────────┐
-                    │   Docker Network │
-                    │ wastewise-network│
+                    │   Google Cloud  │
+                    │   Secret Manager│
                     └─────────────────┘
 ```
 
@@ -34,7 +34,7 @@ WasteWise-30 is a comprehensive coffee chain operational intelligence platform t
 ### **Option 1: Local Development**
 **Prerequisites:**
 - Docker and Docker Compose
-- Node.js 20+
+- Node.js 18+
 - Git
 
 **1. Clone the Repository:**
@@ -45,22 +45,15 @@ cd wastewise-30
 
 **2. Set Up Environment:**
 ```bash
-# Copy Docker environment template
-cp config/environment/docker.env.example .env
+# Copy environment template
+cp config/environment/env.example .env
 
-# Edit environment variables (see Docker Environment Setup Guide for details)
+# Edit environment variables
 nano .env
 ```
 
 **3. Build and Deploy:**
 ```bash
-# Build Docker images with proper environment variable handling
-# Linux/macOS:
-./scripts/build-docker.sh
-
-# Windows PowerShell:
-.\scripts\build-docker.ps1
-
 # Deploy the application
 docker-compose up -d
 
@@ -68,37 +61,38 @@ docker-compose up -d
 docker-compose ps
 ```
 
-### **Option 2: Auto-Deployment with Google Cloud Build**
+### **Option 2: Cloud Deployment with Google Cloud Build**
 **Prerequisites:**
 - Google Cloud project with billing enabled
 - Google Cloud CLI (gcloud) installed and authenticated
 - GitHub repository access
 
-**1. Set Up Auto-Deployment:**
+**1. Set Up Cloud Build:**
 ```bash
-# Linux/macOS:
-export PROJECT_ID=your-project-id
-./scripts/setup-cloudbuild.sh
+# Enable required APIs
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable run.googleapis.com
+gcloud services enable secretmanager.googleapis.com
 
-# Windows PowerShell:
-.\scripts\setup-cloudbuild.ps1 -ProjectId "your-project-id"
+# Set up secrets in Google Secret Manager
+./scripts/setup-secrets.sh
 ```
 
-**2. Configure GitHub Secrets:**
-- Add `GCP_SA_KEY` and `GCP_PROJECT_ID` to repository secrets
-- Update secrets in Google Cloud Secret Manager
-
-**3. Deploy Automatically:**
+**2. Deploy with Cloud Build:**
 ```bash
+# Trigger deployment
+gcloud builds submit --config cloudbuild.yaml
+
+# Or push to trigger automatic deployment
 git push origin main
 ```
 
 **📖 For detailed setup instructions, see:**
-- [Docker Environment Setup Guide](./docs/deployment/DOCKER_ENVIRONMENT_SETUP.md)
-- [Auto-Trigger Setup Guide](./docs/deployment/AUTO_TRIGGER_SETUP.md)
+- [Cloud Build Setup Guide](./docs/deployment/CLOUD_BUILD_SETUP.md)
+- [Secret Manager Setup Guide](./docs/deployment/SECRET_MANAGER_SETUP.md)
 
 ### **4. Access the Application:**
-- **Frontend**: http://localhost:8899/
+- **Frontend**: http://localhost:8080/
 - **Backend API**: http://localhost:3000/
 - **Health Check**: http://localhost:3000/health
 
@@ -113,7 +107,7 @@ This project has been organized for better maintainability and developer experie
 
 ### Quick Navigation
 - 📚 **Documentation**: `docs/` - Architecture, user guides, development docs
-- ⚙️ **Configuration**: `config/` - Docker, Nginx, Jenkins, environment configs
+- ⚙️ **Configuration**: `config/` - Docker, Nginx, environment configs
 - 🔧 **Scripts**: `scripts/` - Database, deployment, testing, maintenance scripts
 - 🖥️ **Backend**: `backend/` - Node.js API and services
 - 🎨 **Frontend**: `frontend/` - React application
@@ -136,7 +130,6 @@ wastewise-30/
 ├── 📁 config/                  # Configuration files
 │   ├── 📁 docker/              # Docker configurations
 │   ├── 📁 nginx/               # Nginx configurations
-│   ├── 📁 jenkins/             # Jenkins configurations
 │   └── 📁 environment/         # Environment configurations
 ├── 📁 frontend/                # React frontend application
 ├── 📁 backend/                 # Node.js backend application
@@ -187,11 +180,11 @@ docker-compose down
 
 ### **Production Deployment:**
 ```bash
-# Build and push images
-./scripts/build-and-push-images.ps1
+# Deploy with Cloud Build (simplified approach)
+gcloud builds submit --config cloudbuild.yaml
 
-# Deploy with Jenkins
-# (See docs/cicd/ for CI/CD setup)
+# Or use the deployment script
+./scripts/deploy-cloud-run.sh
 ```
 
 ## 📚 **Documentation**

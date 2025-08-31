@@ -55,7 +55,7 @@ else
 fi
 
 # Check nginx proxy
-if curl -f http://localhost:8899/health >/dev/null 2>&1; then
+if curl -f http://localhost:8080/health >/dev/null 2>&1; then
     echo "✅ Nginx proxy is healthy"
 else
     echo "❌ Nginx proxy health check failed"
@@ -73,8 +73,8 @@ echo "🎉 Multi-container deployment completed!"
 echo "🌐 Application URLs:"
 echo "   - Frontend: http://localhost:3000"
 echo "   - Backend API: http://localhost:3001"
-echo "   - Nginx Proxy: http://localhost:8899"
-echo "   - Health Check: http://localhost:8899/health"
+echo "   - Nginx Proxy: http://localhost:8080"
+echo "   - Health Check: http://localhost:8080/health"
 
 echo "🔧 Management Commands:"
 echo "   - View logs: docker-compose -f $COMPOSE_FILE logs -f"

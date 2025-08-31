@@ -14,7 +14,7 @@ class CICDTrigger {
     this.jenkinsUrl = 'http://192.168.20.215:8080';
     this.jobName = 'wastewise-30';
     this.containerName = 'wastewise-30';
-    this.directUrl = 'http://192.168.20.215:8899';
+    this.directUrl = 'http://192.168.20.215:8080';
   }
 
   async triggerPipeline() {
@@ -183,7 +183,7 @@ class CICDTrigger {
     console.log('\n   🌐 Application URLs:');
     console.log(`   - Direct Access: ${this.directUrl}`);
     console.log('   - Nginx Proxy: http://sheerstechnologies.com/wastewise-30/');
-    console.log('   - Health Check: http://192.168.20.215:8899/health');
+    console.log('   - Health Check: http://192.168.20.215:8080/health');
     
     console.log('\n   🔧 Manual Commands:');
     console.log(`   # Check container: docker ps | grep ${this.containerName}`);

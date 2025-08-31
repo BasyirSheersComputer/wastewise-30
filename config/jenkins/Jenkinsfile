@@ -173,7 +173,7 @@ pipeline {
                         # Test health endpoints
                         curl -f http://localhost:3000/health || exit 1
                         curl -f http://localhost:3001/health || exit 1
-                        curl -f http://localhost:8899/health || exit 1
+                        curl -f http://localhost:8080/health || exit 1
                         
                         echo "✅ Multi-container test passed"
                         
@@ -239,7 +239,7 @@ EOF"
                             ssh root@$REMOTE_HOST "sleep 30"
                             
                             # Verify deployment
-                            ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health || exit 1"
+                            ssh root@$REMOTE_HOST "curl -f http://localhost:8080/health || exit 1"
                         '''
                     }
                     echo '✅ Multi-container deployment completed'
@@ -252,9 +252,9 @@ EOF"
                 script {
                     echo '🏥 Verifying multi-container deployment...'
                     sleep 15
-                    ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health || exit 1"
-                    ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health/frontend || exit 1"
-                    ssh root@$REMOTE_HOST "curl -f http://localhost:8899/health/backend || exit 1"
+                    ssh root@$REMOTE_HOST "curl -f http://localhost:8080/health || exit 1"
+                    ssh root@$REMOTE_HOST "curl -f http://localhost:8080/health/frontend || exit 1"
+                    ssh root@$REMOTE_HOST "curl -f http://localhost:8080/health/backend || exit 1"
                     echo "✅ Multi-container deployment verification passed"
                 }
             }
@@ -268,8 +268,8 @@ EOF"
                 echo "🌐 Multi-container application deployed:"
                 echo "   - Frontend: http://$REMOTE_HOST:3000"
                 echo "   - Backend API: http://$REMOTE_HOST:3001"
-                echo "   - Nginx Proxy: http://$REMOTE_HOST:8899"
-                echo "   - Health Check: http://$REMOTE_HOST:8899/health"
+                echo "   - Nginx Proxy: http://$REMOTE_HOST:8080"
+                echo "   - Health Check: http://$REMOTE_HOST:8080/health"
                 echo "📋 Docker Compose Commands:"
                 echo "   - View logs: docker-compose -f $COMPOSE_FILE logs -f"
                 echo "   - Stop services: docker-compose -f $COMPOSE_FILE down"

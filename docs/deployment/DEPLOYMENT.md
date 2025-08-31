@@ -8,9 +8,9 @@
 - **Path**: /wastewise-30/
 
 ### Direct Container Access
-- **Container URL**: http://192.168.20.215:8899
+- **Container URL**: http://192.168.20.215:8080
 - **Server IP**: 192.168.20.215
-- **Container Port**: 8899
+- **Container Port**: 8080
 
 ## 🏗️ Infrastructure Setup
 
@@ -24,7 +24,7 @@ server {
 
     # WasteWise-30 app served at /wastewise-30
     location /wastewise-30/ {
-        proxy_pass http://127.0.0.1:8899/;
+        proxy_pass http://127.0.0.1:8080/;
         rewrite ^/wastewise-30/(.*)$ /$1 break;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -40,7 +40,7 @@ server {
 ### Docker Container
 - **Container Name**: wastewise-30
 - **Image**: basyir/wastewise-30
-- **Port Mapping**: 8899:80
+- **Port Mapping**: 8080:80
 - **Restart Policy**: always
 
 ## 🚀 CI/CD Pipeline
@@ -83,7 +83,7 @@ docker exec -it wastewise-30 sh
 ### Test Application
 ```bash
 # Test container directly
-curl http://192.168.20.215:8899
+curl http://192.168.20.215:8080
 
 # Test through nginx proxy
 curl http://sheerstechnologies.com/wastewise-30/
@@ -105,7 +105,7 @@ docker logs -f wastewise-30
 ## 📊 Monitoring and Troubleshooting
 
 ### Health Check URLs
-- **Container Health**: http://192.168.20.215:8899
+- **Container Health**: http://192.168.20.215:8080
 - **Public Health**: http://sheerstechnologies.com/wastewise-30/
 
 ### Common Issues
@@ -116,7 +116,7 @@ docker logs -f wastewise-30
 docker logs wastewise-30
 
 # Check if port is in use
-netstat -tulpn | grep 8899
+netstat -tulpn | grep 8080
 
 # Restart container
 docker restart wastewise-30
@@ -143,7 +143,7 @@ docker ps | grep wastewise-30
 docker port wastewise-30
 
 # Test local connectivity
-curl http://127.0.0.1:8899
+curl http://127.0.0.1:8080
 ```
 
 ## 🔄 Update Process
@@ -161,7 +161,7 @@ docker rm wastewise-30
 
 # Start new container
 docker run -d --name wastewise-30 \
-  -p 8899:80 \
+  -p 8080:80 \
   --restart always \
   basyir/wastewise-30:latest
 ```
@@ -191,7 +191,7 @@ docker system df
 ## 🔐 Security Considerations
 
 ### Network Security
-- Container runs on internal port 8899
+- Container runs on internal port 8080
 - External access only through nginx proxy
 - SSL termination handled by nginx (if configured)
 
@@ -234,7 +234,7 @@ docker exec -it wastewise-30 sh
 
 ### URLs
 - **Production**: http://sheerstechnologies.com/wastewise-30/
-- **Direct**: http://192.168.20.215:8899
+- **Direct**: http://192.168.20.215:8080
 - **Jenkins**: http://your-jenkins-server/job/your-pipeline-name/
 
 ### Commands
@@ -254,4 +254,4 @@ ssh basyir@192.168.20.215 "docker logs wastewise-30"
 - `REMOTE_HOST`: 192.168.20.215
 - `REMOTE_USER`: basyir
 - `CONTAINER_NAME`: wastewise-30
-- `CONTAINER_PORT`: 8899 
+- `CONTAINER_PORT`: 8080 

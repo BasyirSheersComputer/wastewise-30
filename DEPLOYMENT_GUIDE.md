@@ -1,7 +1,7 @@
-# WasteWise Container Deployment Guide
+# WasteWise Cloud Run Deployment Guide
 
 ## Overview
-This guide provides step-by-step instructions for building and deploying the WasteWise frontend and backend containers to Google Cloud Run.
+This guide provides step-by-step instructions for deploying the WasteWise application using the simplified Google Cloud Build and Cloud Run approach.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ gcloud config set project YOUR_PROJECT_ID
 
 ## Environment Variables Setup
 
-### Frontend Environment Variables
+### Frontend Environment Variables (aligned with cloudbuild.yaml)
 Create a `.env` file in the frontend directory:
 
 ```env
@@ -31,12 +31,11 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 # Stripe Configuration
 VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
-VITE_STRIPE_PRICING_TABLE_ID=prctbl_your_pricing_table_id
 
-# API Configuration
-VITE_API_BASE_URL=http://localhost:3000
+# API Configuration (aligned with cloudbuild.yaml)
+VITE_API_BASE_URL=https://wastewise-backend-your-project-id-as.a.run.app
 
-# Trial Configuration
+# Trial Configuration (aligned with cloudbuild.yaml)
 VITE_TRIAL_PERIOD_DAYS=30
 ```
 
@@ -58,218 +57,143 @@ JWT_SECRET=your_jwt_secret_key_here
 # Application Configuration
 NODE_ENV=production
 PORT=3000
-CORS_ORIGIN=https://sheerstechnologies.com
+CORS_ORIGIN=https://wastewise-frontend-your-project-id-as.a.run.app
 ```
 
-## Building Containers
+## Google Cloud Setup
 
-### Option 1: Using PowerShell Script (Windows)
-```powershell
-# Run the build script
-.\scripts\build-containers.ps1
-```
-
-### Option 2: Manual Build Commands
-
-#### Build Backend Container
+### 1. Enable Required APIs
 ```bash
-docker build -f Dockerfile.backend -t basyir/wastewise-30-backend:latest .
+# Enable required services
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable run.googleapis.com
+gcloud services enable secretmanager.googleapis.com
+gcloud services enable containerregistry.googleapis.com
 ```
 
-#### Build Frontend Container
+### 2. Set Up Secret Manager
+```bash
+# Create secrets for frontend
+echo "your-supabase-url" | gcloud secrets create wastewise-30-secret --data-file=-
+echo "your-supabase-anon-key" | gcloud secrets create wastewise-30-secret --data-file=-
+echo "your-stripe-publishable-key" | gcloud secrets create wastewise-30-secret --data-file=-
+
+# Create secrets for backend
+echo "your-backend-secrets" | gcloud secrets create wastewise-30-secret-backend --data-file=-
+```
+
+## Deployment Options
+
+### Option 1: Cloud Build (Recommended)
+```bash
+# Deploy using the simplified cloudbuild.yaml
+gcloud builds submit --config cloudbuild.yaml
+
+# Or trigger via GitHub push
+git push origin main
+```
+
+### Option 2: Manual Cloud Run Deployment
+```bash
+# Use the deployment script
+./scripts/deploy-cloud-run.sh
+```
+
+### Option 3: Local Development
+```bash
+# Start services locally
+docker-compose up -d
+
+# Check status
+docker-compose ps
+```
+
+## Building Containers (Local Development)
+
+### Build Backend Container
+```bash
+docker build -f Dockerfile.backend -t wastewise-backend:latest .
+```
+
+### Build Frontend Container (aligned with cloudbuild.yaml)
 ```bash
 docker build -f Dockerfile.frontend \
   --build-arg VITE_SUPABASE_URL=https://your-project-url.supabase.co \
   --build-arg VITE_SUPABASE_ANON_KEY=your-anon-key-here \
   --build-arg VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key \
-  --build-arg VITE_API_BASE_URL=http://localhost:3000 \
+  --build-arg VITE_API_BASE_URL=https://wastewise-backend-your-project-id-as.a.run.app \
   --build-arg VITE_TRIAL_PERIOD_DAYS=30 \
-  -t basyir/wastewise-30-frontend:latest .
+  -t wastewise-frontend:latest .
 ```
 
-## Testing Containers Locally
+## Testing
 
-### Using Docker Compose
+### Local Testing
 ```bash
-# Start both services
-docker-compose up -d
-
-# Check logs
-docker-compose logs -f
-
-# Stop services
-docker-compose down
-```
-
-### Manual Testing
-```bash
-# Test backend
-docker run -p 3000:3000 --env-file backend/.env basyir/wastewise-30-backend:latest
+# Test backend health
+curl http://localhost:3000/health
 
 # Test frontend
-docker run -p 8899:8899 basyir/wastewise-30-frontend:latest
+curl http://localhost:8080/
 ```
 
-## Deploying to Google Cloud Run
-
-### Option 1: Using PowerShell Script (Windows)
-```powershell
-# Update PROJECT_ID in the script first
-.\scripts\deploy-to-cloud-run.ps1
-```
-
-### Option 2: Manual Deployment
-
-#### 1. Enable Required APIs
+### Production Testing
 ```bash
-gcloud services enable run.googleapis.com
-gcloud services enable cloudbuild.googleapis.com
-gcloud services enable secretmanager.googleapis.com
+# Test backend health (aligned with cloudbuild.yaml smoke tests)
+curl -f --retry 3 --retry-delay 10 https://wastewise-backend-your-project-id-as.a.run.app/health
+
+# Test frontend (aligned with cloudbuild.yaml smoke tests)
+curl -f --retry 3 --retry-delay 10 https://wastewise-frontend-your-project-id-as.a.run.app/
 ```
 
-#### 2. Push Images to Container Registry
-```bash
-# Tag images for Google Container Registry
-docker tag basyir/wastewise-30-backend:latest gcr.io/YOUR_PROJECT_ID/wastewise-backend:latest
-docker tag basyir/wastewise-30-frontend:latest gcr.io/YOUR_PROJECT_ID/wastewise-frontend:latest
+## Service URLs
 
-# Push images
-docker push gcr.io/YOUR_PROJECT_ID/wastewise-backend:latest
-docker push gcr.io/YOUR_PROJECT_ID/wastewise-frontend:latest
-```
+### Production URLs (Asia Southeast Region)
+- **Frontend**: `https://wastewise-frontend-{PROJECT_ID}-as.a.run.app`
+- **Backend API**: `https://wastewise-backend-{PROJECT_ID}-as.a.run.app`
+- **Health Check**: `https://wastewise-backend-{PROJECT_ID}-as.a.run.app/health`
 
-#### 3. Deploy Backend
-```bash
-gcloud run deploy wastewise-backend \
-  --image gcr.io/YOUR_PROJECT_ID/wastewise-backend:latest \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --port 3000 \
-  --memory 1Gi \
-  --cpu 1 \
-  --max-instances 10 \
-  --set-env-vars "NODE_ENV=production" \
-  --set-env-vars "PORT=3000" \
-  --set-env-vars "CORS_ORIGIN=https://sheerstechnologies.com"
-```
+### Local Development URLs
+- **Frontend**: `http://localhost:8080/`
+- **Backend API**: `http://localhost:3000/`
+- **Health Check**: `http://localhost:3000/health`
 
-#### 4. Deploy Frontend
-```bash
-# Get backend URL first
-BACKEND_URL=$(gcloud run services describe wastewise-backend --region=us-central1 --format="value(status.url)")
+## Configuration Details
 
-gcloud run deploy wastewise-frontend \
-  --image gcr.io/YOUR_PROJECT_ID/wastewise-frontend:latest \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --port 8899 \
-  --memory 512Mi \
-  --cpu 1 \
-  --max-instances 5 \
-  --set-env-vars "VITE_API_BASE_URL=$BACKEND_URL"
-```
+### Cloud Build Configuration
+The `cloudbuild.yaml` file defines:
+- **Build stages**: Backend and frontend image building
+- **Deployment stages**: Cloud Run service deployment
+- **Health checks**: Smoke tests using curl
+- **Secret management**: Google Secret Manager integration
+- **30-day trial period**: Built into frontend configuration
 
-## Environment Variables in Production
-
-### Using Google Secret Manager
-```bash
-# Create secrets
-echo "your-supabase-url" | gcloud secrets create wastewise-supabase-url --data-file=-
-echo "your-supabase-key" | gcloud secrets create wastewise-supabase-anon-key --data-file=-
-echo "your-gemini-key" | gcloud secrets create wastewise-gemini-api-key --data-file=-
-
-# Update services to use secrets
-gcloud run services update wastewise-backend \
-  --update-secrets VITE_SUPABASE_URL=wastewise-supabase-url:latest \
-  --update-secrets VITE_SUPABASE_ANON_KEY=wastewise-supabase-anon-key:latest \
-  --update-secrets GEMINI_API_KEY=wastewise-gemini-api-key:latest
-```
+### Service Configuration
+- **Backend**: Port 3000, 512Mi memory, 1 CPU
+- **Frontend**: Port 8080, 256Mi memory, 1 CPU
+- **Region**: Asia Southeast (asia-southeast1)
+- **Authentication**: Unauthenticated access enabled
 
 ## Troubleshooting
 
 ### Common Issues
+1. **Build failures**: Check Dockerfile syntax and build args
+2. **Deployment failures**: Verify Cloud Run permissions and API enablement
+3. **Health check failures**: Ensure services are responding on correct ports
+4. **Secret access issues**: Verify Secret Manager permissions
 
-#### 1. Docker Desktop Not Running
-- Start Docker Desktop application
-- Wait for it to fully initialize
-- Verify with `docker --version`
-
-#### 2. Environment Variables Not Set
-- Ensure `.env` files exist in both frontend and backend directories
-- Check that all required variables are defined
-- Verify variable names match exactly (case-sensitive)
-
-#### 3. Build Failures
-- Check Node.js version (requires 18+)
-- Ensure all dependencies are installed
-- Verify file paths in Dockerfiles
-
-#### 4. Runtime Errors
-- Check container logs: `docker logs <container-name>`
-- Verify environment variables are passed correctly
-- Check network connectivity between services
-
-### Health Checks
+### Logs and Monitoring
 ```bash
-# Backend health check
-curl http://localhost:3000/health
+# View Cloud Build logs
+gcloud builds log [BUILD_ID]
 
-# Frontend health check
-curl http://localhost:8899/health
+# View Cloud Run logs
+gcloud logs read --service=wastewise-backend
+gcloud logs read --service=wastewise-frontend
 ```
-
-## Monitoring and Logging
-
-### View Logs
-```bash
-# Cloud Run logs
-gcloud logs read --service=wastewise-backend --limit=50
-gcloud logs read --service=wastewise-frontend --limit=50
-
-# Docker logs
-docker logs wastewise-backend
-docker logs wastewise-frontend
-```
-
-### Set Up Monitoring
-```bash
-# Enable monitoring
-gcloud services enable monitoring.googleapis.com
-
-# Create alerting policies (optional)
-# Configure in Google Cloud Console
-```
-
-## Security Considerations
-
-1. **Environment Variables**: Never commit `.env` files to version control
-2. **Secrets Management**: Use Google Secret Manager for production secrets
-3. **Network Security**: Configure proper CORS settings
-4. **Container Security**: Regularly update base images
-5. **Access Control**: Use IAM roles and service accounts
-
-## Performance Optimization
-
-1. **Container Size**: Use multi-stage builds to reduce image size
-2. **Caching**: Implement proper caching strategies
-3. **Scaling**: Configure appropriate min/max instances
-4. **CDN**: Use Cloud CDN for static assets
-
-## Support
-
-For issues or questions:
-1. Check the troubleshooting section above
-2. Review container logs
-3. Verify environment configuration
-4. Test locally before deploying
 
 ## Next Steps
-
-After successful deployment:
-1. Configure custom domain (optional)
-2. Set up monitoring and alerting
-3. Implement CI/CD pipeline
-4. Configure backup strategies
-5. Set up development/staging environments
+- Set up custom domain mapping
+- Configure monitoring and alerting
+- Set up automated backups
+- Implement CI/CD pipeline with GitHub integration

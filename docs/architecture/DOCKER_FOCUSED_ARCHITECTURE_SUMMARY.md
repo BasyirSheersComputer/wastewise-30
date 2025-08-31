@@ -44,9 +44,9 @@ docker rm wastewise-30 || true
 # Deploy new container
 docker run -d \
   --name wastewise-30 \
-  -p 8899:8899 \
+  -p 8080:8080 \
   --restart always \
-  --health-cmd "curl -f http://localhost:8899/ || exit 1" \
+  --health-cmd "curl -f http://localhost:8080/ || exit 1" \
   --health-interval=30s \
   --health-timeout=10s \
   --health-retries=3 \
@@ -128,13 +128,13 @@ docker logs -f wastewise-30
 ### **Application Health Checks:**
 ```bash
 # Health endpoint
-curl -f http://192.168.20.215:8899/health
+curl -f http://192.168.20.215:8080/health
 
 # Main application
-curl -f http://192.168.20.215:8899/
+curl -f http://192.168.20.215:8080/
 
 # API endpoint
-curl -f http://192.168.20.215:8899/api
+curl -f http://192.168.20.215:8080/api
 ```
 
 ## 🔧 **Automated Deployment Scripts**
@@ -146,7 +146,7 @@ set -e
 
 IMAGE_NAME="basyir/wastewise-30"
 CONTAINER_NAME="wastewise-30"
-PORT="8899"
+PORT="8080"
 
 echo "🚀 Deploying WasteWise-30..."
 
@@ -160,9 +160,9 @@ docker rm $CONTAINER_NAME || true
 # Deploy new container
 docker run -d \
   --name $CONTAINER_NAME \
-  -p $PORT:8899 \
+  -p $PORT:8080 \
   --restart always \
-  --health-cmd "curl -f http://localhost:8899/ || exit 1" \
+  --health-cmd "curl -f http://localhost:8080/ || exit 1" \
   --health-interval=30s \
   --health-timeout=10s \
   --health-retries=3 \
@@ -244,7 +244,7 @@ Git Push → GitHub Webhook → Jenkins CI/CD → Docker Build → Docker Deploy
 
 - **Jenkins**: `http://192.168.20.215:8080/job/wastewise-30/`
 - **Application**: `http://sheerstechnologies.com/wastewise-30/`
-- **Direct Access**: `http://192.168.20.215:8899`
-- **Health Check**: `http://192.168.20.215:8899/health`
+- **Direct Access**: `http://192.168.20.215:8080`
+- **Health Check**: `http://192.168.20.215:8080/health`
 
 **🚀 Your CI/CD pipeline is now properly architected with Jenkins handling orchestration and Docker managing all deployment operations!** 

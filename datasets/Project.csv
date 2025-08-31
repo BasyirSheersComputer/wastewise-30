@@ -4904,7 +4904,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 118629,05-06-2023,08:18:30,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Monday,8,6,0
 118742,05-06-2023,09:48:54,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Monday,9,6,0
 118786,05-06-2023,10:36:55,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Monday,10,6,0
-118899,05-06-2023,11:52:05,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Monday,11,6,0
+118080,05-06-2023,11:52:05,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Monday,11,6,0
 119502,05-06-2023,17:29:21,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Monday,17,6,0
 119548,05-06-2023,17:59:56,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Monday,17,6,0
 119927,06-06-2023,11:01:35,5,Lower Manhattan,49,1,3,3,Tea,Brewed Black tea,English Breakfast,Large,June,Tuesday,11,6,1
@@ -9662,7 +9662,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 88860,08-05-2023,19:24:15,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Monday,19,5,0
 88861,08-05-2023,19:24:15,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Monday,19,5,0
 88973,09-05-2023,07:20:13,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,7,5,1
-88991,09-05-2023,07:32:06,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,7,5,1
+80801,09-05-2023,07:32:06,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,7,5,1
 89051,09-05-2023,07:55:54,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,7,5,1
 89529,09-05-2023,10:50:55,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,10,5,1
 89689,09-05-2023,13:16:18,3,Astoria,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,13,5,1
@@ -10381,7 +10381,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 87012,07-05-2023,09:22:43,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Sunday,9,5,6
 87876,08-05-2023,08:09:53,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Monday,8,5,0
 88077,08-05-2023,09:27:26,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Monday,9,5,0
-88990,09-05-2023,07:31:51,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,7,5,1
+80800,09-05-2023,07:31:51,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,7,5,1
 89092,09-05-2023,08:11:32,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,8,5,1
 89324,09-05-2023,09:40:56,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,9,5,1
 89614,09-05-2023,11:54:42,5,Lower Manhattan,26,1,3,3,Coffee,Organic brewed coffee,Brazilian,Regular,May,Tuesday,11,5,1
@@ -17858,7 +17858,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 88495,08-05-2023,13:36:10,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Monday,13,5,0
 88521,08-05-2023,14:00:12,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Monday,14,5,0
 88975,09-05-2023,07:22:22,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Tuesday,7,5,1
-88998,09-05-2023,07:35:06,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Tuesday,7,5,1
+80808,09-05-2023,07:35:06,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Tuesday,7,5,1
 89083,09-05-2023,08:06:07,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Tuesday,8,5,1
 89380,09-05-2023,10:00:06,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Tuesday,10,5,1
 89690,09-05-2023,13:19:19,3,Astoria,23,1,2.5,2.5,Coffee,Drip coffee,Our Old Time Diner Blend,Regular,May,Tuesday,13,5,1
@@ -21571,7 +21571,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 88163,08-05-2023,10:06:06,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Monday,10,5,0
 88175,08-05-2023,10:11:23,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Monday,10,5,0
 88573,08-05-2023,14:42:16,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Monday,14,5,0
-88996,09-05-2023,07:32:57,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Tuesday,7,5,1
+80806,09-05-2023,07:32:57,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Tuesday,7,5,1
 89012,09-05-2023,07:42:24,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Tuesday,7,5,1
 89255,09-05-2023,09:16:54,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Tuesday,9,5,1
 89382,09-05-2023,10:01:21,8,Hell's Kitchen,46,1,2.5,2.5,Tea,Brewed Green tea,Serenity Green Tea,Regular,May,Tuesday,10,5,1
@@ -37576,7 +37576,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 88223,08-05-2023,10:29:17,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Monday,10,5,0
 88246,08-05-2023,10:42:26,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Monday,10,5,0
 88511,08-05-2023,13:54:17,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Monday,13,5,0
-88899,08-05-2023,20:18:39,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Monday,20,5,0
+88080,08-05-2023,20:18:39,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Monday,20,5,0
 90042,10-05-2023,06:40:35,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Wednesday,6,5,2
 90117,10-05-2023,07:15:12,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Wednesday,7,5,2
 90513,10-05-2023,09:48:29,5,Lower Manhattan,79,1,3.75,3.75,Bakery,Scone,Jumbo Savory Scone,Not Defined,May,Wednesday,9,5,2
@@ -39775,7 +39775,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 58095,04-04-2023,17:57:04,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Tuesday,17,4,1
 58288,05-04-2023,09:09:42,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Wednesday,9,4,2
 58497,05-04-2023,12:26:29,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Wednesday,12,4,2
-58899,05-04-2023,17:55:40,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Wednesday,17,4,2
+58080,05-04-2023,17:55:40,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Wednesday,17,4,2
 59448,06-04-2023,15:18:26,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Thursday,15,4,3
 59863,07-04-2023,07:31:50,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Friday,7,4,4
 59954,07-04-2023,08:28:23,5,Lower Manhattan,40,1,3.75,3.75,Coffee,Barista Espresso,Cappuccino,Not Defined,April,Friday,8,4,4
@@ -45286,7 +45286,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 7971,15-01-2023,07:57:11,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Sunday,7,1,6
 8433,15-01-2023,16:56:00,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Sunday,16,1,6
 8578,16-01-2023,07:18:55,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Monday,7,1,0
-8899,16-01-2023,10:57:01,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Monday,10,1,0
+8080,16-01-2023,10:57:01,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Monday,10,1,0
 10324,19-01-2023,07:07:12,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Thursday,7,1,3
 10549,19-01-2023,09:56:38,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Thursday,9,1,3
 10863,19-01-2023,18:57:49,3,Astoria,27,1,3.5,3.5,Coffee,Organic brewed coffee,Brazilian,Large,January,Thursday,18,1,3
@@ -48802,7 +48802,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 68613,17-04-2023,06:01:54,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,6,4,0
 68629,17-04-2023,06:27:19,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,6,4,0
 68811,17-04-2023,08:09:34,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,8,4,0
-68899,17-04-2023,09:07:42,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,9,4,0
+68080,17-04-2023,09:07:42,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,9,4,0
 69171,17-04-2023,11:46:21,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,11,4,0
 69243,17-04-2023,14:08:56,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,14,4,0
 69294,17-04-2023,15:57:52,5,Lower Manhattan,75,1,3.5,3.5,Bakery,Pastry,Croissant,Not Defined,April,Monday,15,4,0
@@ -52034,7 +52034,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 28490,20-02-2023,07:39:20,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Monday,7,2,0
 28675,20-02-2023,09:25:03,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Monday,9,2,0
 28734,20-02-2023,09:55:20,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Monday,9,2,0
-28899,20-02-2023,13:48:24,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Monday,13,2,0
+28080,20-02-2023,13:48:24,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Monday,13,2,0
 28914,20-02-2023,14:12:14,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Monday,14,2,0
 29020,20-02-2023,17:38:10,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Monday,17,2,0
 29692,22-02-2023,07:12:55,3,Astoria,76,1,3.5,3.5,Bakery,Biscotti,Chocolate Chip Biscotti,Not Defined,February,Wednesday,7,2,2
@@ -60796,7 +60796,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 88109,08-05-2023,09:39:18,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Monday,9,5,0
 88510,08-05-2023,13:54:17,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Monday,13,5,0
 88800,08-05-2023,18:30:02,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Monday,18,5,0
-88993,09-05-2023,07:32:37,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Tuesday,7,5,1
+80803,09-05-2023,07:32:37,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Tuesday,7,5,1
 89073,09-05-2023,08:02:30,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Tuesday,8,5,1
 89157,09-05-2023,08:37:34,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Tuesday,8,5,1
 89485,09-05-2023,10:35:40,5,Lower Manhattan,59,1,4.5,4.5,Drinking Chocolate,Hot chocolate,Dark chocolate,Large,May,Tuesday,10,5,1
@@ -62388,7 +62388,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 97795,16-05-2023,18:19:36,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Tuesday,18,5,1
 98182,17-05-2023,08:44:27,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Wednesday,8,5,2
 98337,17-05-2023,09:53:25,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Wednesday,9,5,2
-98899,18-05-2023,06:37:50,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Thursday,6,5,3
+98080,18-05-2023,06:37:50,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Thursday,6,5,3
 98953,18-05-2023,07:05:29,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Thursday,7,5,3
 99114,18-05-2023,08:03:47,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Thursday,8,5,3
 99351,18-05-2023,09:44:42,8,Hell's Kitchen,65,1,0.8,0.8,Flavours,Sugar free syrup,Sugar Free Vanilla syrup,Not Defined,May,Thursday,9,5,3
@@ -67304,7 +67304,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 133269,17-06-2023,07:59:43,3,Astoria,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,June,Saturday,7,6,5
 136155,19-06-2023,10:34:04,3,Astoria,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,June,Monday,10,6,0
 136872,20-06-2023,08:01:28,3,Astoria,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,June,Tuesday,8,6,1
-138899,21-06-2023,15:40:16,3,Astoria,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,June,Wednesday,15,6,2
+138080,21-06-2023,15:40:16,3,Astoria,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,June,Wednesday,15,6,2
 4052,08-01-2023,10:12:05,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,January,Sunday,10,1,6
 5182,10-01-2023,09:01:37,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,January,Tuesday,9,1,1
 5609,11-01-2023,07:04:59,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,January,Wednesday,7,1,2
@@ -67320,7 +67320,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 23424,11-02-2023,13:13:13,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,February,Saturday,13,2,5
 26688,17-02-2023,07:05:39,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,February,Friday,7,2,4
 28971,20-02-2023,15:51:10,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,February,Monday,15,2,0
-38899,08-03-2023,15:58:27,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,March,Wednesday,15,3,2
+38080,08-03-2023,15:58:27,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,March,Wednesday,15,3,2
 39524,09-03-2023,11:06:22,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,March,Thursday,11,3,3
 40045,10-03-2023,09:01:37,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,March,Friday,9,3,4
 42102,13-03-2023,08:55:27,8,Hell's Kitchen,20,1,7.6,7.6,Packaged Chocolate,Organic Chocolate,Sustainably Grown Organic,Not Defined,March,Monday,8,3,0
@@ -67627,7 +67627,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 76902,26-04-2023,13:44:30,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,April,Wednesday,13,4,2
 77239,27-04-2023,07:09:41,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,April,Thursday,7,4,3
 77695,27-04-2023,10:57:51,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,April,Thursday,10,4,3
-88994,09-05-2023,07:32:37,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,May,Tuesday,7,5,1
+80804,09-05-2023,07:32:37,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,May,Tuesday,7,5,1
 89330,09-05-2023,09:42:16,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,May,Tuesday,9,5,1
 89804,09-05-2023,15:49:33,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,May,Tuesday,15,5,1
 90614,10-05-2023,10:24:17,5,Lower Manhattan,81,1,28,28,Branded,Clothing,I Need My Bean! T-shirt,Not Defined,May,Wednesday,10,5,2
@@ -71644,7 +71644,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 88407,08-05-2023,12:21:18,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Monday,12,5,0
 88813,08-05-2023,18:37:32,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Monday,18,5,0
 88963,09-05-2023,07:15:09,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Tuesday,7,5,1
-88995,09-05-2023,07:32:52,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Tuesday,7,5,1
+80805,09-05-2023,07:32:52,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Tuesday,7,5,1
 89129,09-05-2023,08:23:59,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Tuesday,8,5,1
 89244,09-05-2023,09:11:09,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Tuesday,9,5,1
 89694,09-05-2023,13:21:03,3,Astoria,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,May,Tuesday,13,5,1
@@ -72695,7 +72695,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 126877,12-06-2023,06:52:21,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Monday,6,6,0
 126963,12-06-2023,07:25:33,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Monday,7,6,0
 127548,12-06-2023,12:11:15,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Monday,12,6,0
-128899,13-06-2023,13:53:03,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Tuesday,13,6,1
+128080,13-06-2023,13:53:03,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Tuesday,13,6,1
 131265,15-06-2023,11:47:15,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Thursday,11,6,3
 131459,15-06-2023,15:23:42,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Thursday,15,6,3
 132109,16-06-2023,09:01:03,5,Lower Manhattan,55,1,4,4,Tea,Brewed Chai tea,Morning Sunrise Chai,Large,June,Friday,9,6,4
@@ -73131,7 +73131,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 86407,06-05-2023,17:07:23,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Saturday,17,5,5
 86814,07-05-2023,08:05:27,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Sunday,8,5,6
 88638,08-05-2023,15:44:32,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Monday,15,5,0
-88997,09-05-2023,07:34:51,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Tuesday,7,5,1
+80807,09-05-2023,07:34:51,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Tuesday,7,5,1
 89023,09-05-2023,07:46:10,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Tuesday,7,5,1
 89050,09-05-2023,07:55:09,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Tuesday,7,5,1
 90003,10-05-2023,06:08:14,5,Lower Manhattan,56,1,2.55,2.55,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Regular,May,Wednesday,6,5,2
@@ -86920,7 +86920,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 146995,28-06-2023,15:21:01,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Wednesday,15,6,2
 147540,29-06-2023,09:44:00,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Thursday,9,6,3
 148236,29-06-2023,17:58:21,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Thursday,17,6,3
-148899,30-06-2023,10:21:53,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Friday,10,6,4
+148080,30-06-2023,10:21:53,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Friday,10,6,4
 148918,30-06-2023,10:26:32,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Friday,10,6,4
 149194,30-06-2023,14:21:43,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Friday,14,6,4
 149240,30-06-2023,15:30:53,5,Lower Manhattan,41,1,4.25,4.25,Coffee,Barista Espresso,Cappuccino,Large,June,Friday,15,6,4
@@ -89677,7 +89677,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 18648,03-02-2023,12:41:02,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Friday,12,2,4
 18659,03-02-2023,12:51:09,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Friday,12,2,4
 18722,03-02-2023,13:57:24,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Friday,13,2,4
-18899,03-02-2023,16:48:31,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Friday,16,2,4
+18080,03-02-2023,16:48:31,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Friday,16,2,4
 19443,04-02-2023,15:59:32,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Saturday,15,2,5
 19780,05-02-2023,11:38:26,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Sunday,11,2,6
 19962,05-02-2023,15:13:52,3,Astoria,57,2,3.1,6.2,Tea,Brewed Chai tea,Spicy Eye Opener Chai,Large,February,Sunday,15,2,6
@@ -91390,7 +91390,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 108572,26-05-2023,14:10:32,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Friday,14,5,4
 108649,26-05-2023,15:13:29,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Friday,15,5,4
 108889,26-05-2023,19:02:25,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Friday,19,5,4
-108899,26-05-2023,19:13:19,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Friday,19,5,4
+108080,26-05-2023,19:13:19,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Friday,19,5,4
 109590,27-05-2023,11:55:42,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Saturday,11,5,5
 109816,27-05-2023,15:28:44,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Saturday,15,5,5
 109859,27-05-2023,15:59:09,3,Astoria,47,2,3,6,Tea,Brewed Green tea,Serenity Green Tea,Large,May,Saturday,15,5,5
@@ -121087,7 +121087,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 78125,27-04-2023,19:01:09,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Thursday,19,4,3
 78461,28-04-2023,12:04:09,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Friday,12,4,4
 78724,28-04-2023,16:03:45,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Friday,16,4,4
-78899,28-04-2023,18:43:05,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Friday,18,4,4
+78080,28-04-2023,18:43:05,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Friday,18,4,4
 79325,29-04-2023,14:30:57,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Saturday,14,4,5
 79333,29-04-2023,14:45:51,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Saturday,14,4,5
 80172,30-04-2023,13:38:47,3,Astoria,25,2,2.2,4.4,Coffee,Organic brewed coffee,Brazilian,Small,April,Sunday,13,4,6
@@ -127263,7 +127263,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 88146,08-05-2023,10:01:12,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Monday,10,5,0
 88688,08-05-2023,16:25:50,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Monday,16,5,0
 88987,09-05-2023,07:30:38,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Tuesday,7,5,1
-88999,09-05-2023,07:35:46,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Tuesday,7,5,1
+80809,09-05-2023,07:35:46,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Tuesday,7,5,1
 89213,09-05-2023,09:00:25,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Tuesday,9,5,1
 89413,09-05-2023,10:15:19,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Tuesday,10,5,1
 89988,09-05-2023,19:53:14,5,Lower Manhattan,39,2,4.25,8.5,Coffee,Barista Espresso,Latte,Regular,May,Tuesday,19,5,1
@@ -138052,7 +138052,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 47641,20-03-2023,17:56:55,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Monday,17,3,0
 48402,22-03-2023,07:10:53,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Wednesday,7,3,2
 48534,22-03-2023,09:03:56,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Wednesday,9,3,2
-48899,22-03-2023,16:32:38,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Wednesday,16,3,2
+48080,22-03-2023,16:32:38,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Wednesday,16,3,2
 50460,25-03-2023,07:02:11,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Saturday,7,3,5
 50850,25-03-2023,12:48:37,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Saturday,12,3,5
 50929,25-03-2023,15:09:44,5,Lower Manhattan,31,2,2.2,4.4,Coffee,Gourmet brewed coffee,Ethiopia,Small,March,Saturday,15,3,5
@@ -143908,7 +143908,7 @@ transaction_id,transaction_date,transaction_time,store_id,store_location,product
 87691,07-05-2023,20:05:39,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Sunday,20,5,6
 87709,07-05-2023,20:41:43,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Sunday,20,5,6
 88728,08-05-2023,17:03:42,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Monday,17,5,0
-88992,09-05-2023,07:32:28,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Tuesday,7,5,1
+80802,09-05-2023,07:32:28,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Tuesday,7,5,1
 89088,09-05-2023,08:07:54,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Tuesday,8,5,1
 89226,09-05-2023,09:05:40,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Tuesday,9,5,1
 89339,09-05-2023,09:43:54,8,Hell's Kitchen,24,2,3,6,Coffee,Drip coffee,Our Old Time Diner Blend,Large,May,Tuesday,9,5,1

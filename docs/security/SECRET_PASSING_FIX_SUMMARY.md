@@ -60,7 +60,7 @@ services:
     networks:
       - wastewise-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8899"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
     volumes:
       - ./logs:/app/logs
 
@@ -119,7 +119,7 @@ docker-compose ps
 curl -f http://${REMOTE_HOST}:3000/health
 
 # Test frontend accessibility
-curl -f http://${REMOTE_HOST}:8899
+curl -f http://${REMOTE_HOST}:8080
 
 # Check container logs
 docker-compose logs --tail=20 wastewise-backend
@@ -176,7 +176,7 @@ docker-compose ps
 
 # Test health endpoints
 curl http://localhost:3000/health
-curl http://localhost:8899
+curl http://localhost:8080
 ```
 
 ## Expected Results

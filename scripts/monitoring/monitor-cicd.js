@@ -15,7 +15,7 @@ class CICDMonitor {
     this.jobName = 'wastewise-30';
     this.containerName = 'wastewise-30';
     this.appUrl = 'http://sheerstechnologies.com/wastewise-30/';
-    this.directUrl = 'http://192.168.20.215:8899';
+    this.directUrl = 'http://192.168.20.215:8080';
   }
 
   async monitorPipeline() {
@@ -176,7 +176,7 @@ class CICDMonitor {
     console.log('\n   🎯 Expected Flow:');
     console.log('   1. Git Push → GitHub Webhook → Jenkins Build → Docker Build → Deploy');
     console.log('   2. Application accessible at: http://sheerstechnologies.com/wastewise-30/');
-    console.log('   3. Direct access at: http://192.168.20.215:8899');
+    console.log('   3. Direct access at: http://192.168.20.215:8080');
     
     console.log('\n   🚀 Manual Trigger Commands:');
     console.log(`   # Trigger Jenkins build: curl -X POST ${this.jenkinsUrl}/job/${this.jobName}/build`);

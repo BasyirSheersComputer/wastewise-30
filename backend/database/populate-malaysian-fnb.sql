@@ -31,7 +31,7 @@ INSERT INTO suppliers (id, user_id, supplier_name, contact_person, email, phone,
 ('660e8400-e29b-41d4-a716-446655440005', '00000000-0000-0000-0000-000000000001', 'Farm Fresh Berhad', 'Azizah Rahman', 'wholesale@farmfresh.com.my', '+60-3-8765-4321', 'Seremban, Negeri Sembilan 70400', 'ingredients', 'low', 8, CURRENT_DATE - INTERVAL '2 days', 2, 'Organic milk and dairy alternatives'),
 
 -- Equipment Suppliers
-('660e8400-e29b-41d4-a716-446655440006', '00000000-0000-0000-0000-000000000001', 'La Marzocco Malaysia', 'David Wong', 'malaysia@lamarzocco.com', '+60-3-2287-8899', 'Bangsar, Kuala Lumpur 59100', 'equipment', 'low', 9, CURRENT_DATE - INTERVAL '7 days', 14, 'Premium coffee machines and equipment'),
+('660e8400-e29b-41d4-a716-446655440006', '00000000-0000-0000-0000-000000000001', 'La Marzocco Malaysia', 'David Wong', 'malaysia@lamarzocco.com', '+60-3-2287-8080', 'Bangsar, Kuala Lumpur 59100', 'equipment', 'low', 9, CURRENT_DATE - INTERVAL '7 days', 14, 'Premium coffee machines and equipment'),
 ('660e8400-e29b-41d4-a716-446655440007', '00000000-0000-0000-0000-000000000001', 'Bunn Malaysia', 'Kumar Rajan', 'sales@bunn.com.my', '+60-3-7880-1122', 'Shah Alam, Selangor 40000', 'equipment', 'medium', 7, CURRENT_DATE - INTERVAL '10 days', 21, 'Commercial coffee brewers and dispensers'),
 
 -- Packaging Suppliers
@@ -40,7 +40,7 @@ INSERT INTO suppliers (id, user_id, supplier_name, contact_person, email, phone,
 
 -- Local Food Suppliers
 ('660e8400-e29b-41d4-a716-446655440010', '00000000-0000-0000-0000-000000000001', 'Kampung Bakeries', 'Aminah Hassan', 'orders@kampungbakeries.com.my', '+60-3-5566-7788', 'Kajang, Selangor 43000', 'ingredients', 'medium', 7, CURRENT_DATE - INTERVAL '1 day', 1, 'Traditional Malaysian pastries and breads'),
-('660e8400-e29b-41d4-a716-446655440011', '00000000-0000-0000-0000-000000000001', 'Tropical Fruits Malaysia', 'Lee Chong Wei', 'sales@tropicalfruits.com.my', '+60-3-6677-8899', 'Batu Pahat, Johor 83000', 'ingredients', 'medium', 7, CURRENT_DATE - INTERVAL '2 days', 2, 'Fresh local fruits and tropical ingredients');
+('660e8400-e29b-41d4-a716-446655440011', '00000000-0000-0000-0000-000000000001', 'Tropical Fruits Malaysia', 'Lee Chong Wei', 'sales@tropicalfruits.com.my', '+60-3-6677-8080', 'Batu Pahat, Johor 83000', 'ingredients', 'medium', 7, CURRENT_DATE - INTERVAL '2 days', 2, 'Fresh local fruits and tropical ingredients');
 
 -- =====================================================
 -- SAMPLE OUTLETS

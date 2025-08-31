@@ -41,7 +41,7 @@ The 404 error you encountered is because you're trying to access the **developme
 
 2. **Access the application**:
    ```
-   http://localhost:8899/wastewise-30/
+   http://localhost:8080/wastewise-30/
    ```
 
 ### Method 3: Production Testing with Integrated Setup
@@ -98,7 +98,7 @@ cd frontend && npm run dev
 # Build and run production containers
 docker-compose -f config/docker/docker-compose.yml up --build
 
-# Access: http://localhost:8899/wastewise-30/
+# Access: http://localhost:8080/wastewise-30/
 ```
 
 ## 🚨 Common Mistakes

@@ -79,7 +79,7 @@ node test-coffee-chain-features.js
 - `scripts/` - Utility scripts
 
 ### Important URLs
-- **Frontend**: http://localhost:8899
+- **Frontend**: http://localhost:8080
 - **Backend**: http://localhost:3000
 - **Health Check**: http://localhost:3000/health
 

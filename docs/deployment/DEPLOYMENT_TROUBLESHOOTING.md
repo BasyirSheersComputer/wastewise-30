@@ -107,7 +107,7 @@ docker rm wastewise-frontend wastewise-backend
 
 # Run with updated environment variables
 docker run -d --name wastewise-frontend \
-  -p 127.0.0.1:8899:8899 \
+  -p 127.0.0.1:8080:8080 \
   --restart always \
   -e VITE_SUPABASE_URL="$VITE_SUPABASE_URL" \
   -e VITE_SUPABASE_ANON_KEY="$VITE_SUPABASE_ANON_KEY" \

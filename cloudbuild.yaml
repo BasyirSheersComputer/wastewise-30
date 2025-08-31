@@ -1,11 +1,10 @@
 # Google Cloud Build Configuration for WasteWise-30
 # Auto-triggered on GitHub push to main branch
-
 steps:
-  # Stage 1: Build backend
+  # Stage 1: Build and tag the backend Docker image
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-backend'
-    args: 
+    args:
       - 'build'
       - '-t'
       - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
@@ -13,88 +12,37 @@ steps:
       - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '-f'
       - 'Dockerfile.backend'
-      - '--cache-from'
-      - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
       - '.'
 
-  # Stage 2: Build frontend with secrets
+  # Stage 2: Build and tag the frontend Docker image with secrets passed as build-args
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-frontend'
     secretEnv: ['FRONTEND_SECRET']
-    entrypoint: 'bash'
-    args: 
-      - '-c'
-      - |
-        # Extract environment variables from the frontend secret
-        echo "$${_FRONTEND_SECRET}" > /tmp/frontend-secrets.env
-        
-        # Debug: Show the secret content
-        echo "Secret content:"
-        cat /tmp/frontend-secrets.env
-        
-        # Parse the secret and extract individual variables with better error handling
-        VITE_SUPABASE_URL=$(grep "VITE_SUPABASE_URL=" /tmp/frontend-secrets.env | cut -d'=' -f2- | tr -d '\r')
-        VITE_SUPABASE_ANON_KEY=$(grep "VITE_SUPABASE_ANON_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2- | tr -d '\r')
-        VITE_STRIPE_PUBLISHABLE_KEY=$(grep "VITE_STRIPE_PUBLISHABLE_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2- | tr -d '\r')
-        
-        # Export the variables
-        export VITE_SUPABASE_URL
-        export VITE_SUPABASE_ANON_KEY
-        export VITE_STRIPE_PUBLISHABLE_KEY
-        
-        echo "Extracted VITE_SUPABASE_URL: $${VITE_SUPABASE_URL:0:20}..."
-        echo "Extracted VITE_SUPABASE_ANON_KEY: $${VITE_SUPABASE_ANON_KEY:0:20}..."
-        echo "Extracted VITE_STRIPE_PUBLISHABLE_KEY: $${VITE_STRIPE_PUBLISHABLE_KEY:0:20}..."
-        
-        # Verify variables are not empty
-        if [ -z "$${VITE_SUPABASE_URL}" ]; then
-          echo "ERROR: VITE_SUPABASE_URL is empty!"
-          exit 1
-        fi
-        if [ -z "$${VITE_SUPABASE_ANON_KEY}" ]; then
-          echo "ERROR: VITE_SUPABASE_ANON_KEY is empty!"
-          exit 1
-        fi
-        
-        # Build the frontend with extracted environment variables
-        docker build \
-          -t gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID \
-          -t gcr.io/$PROJECT_ID/wastewise-frontend:latest \
-          -f Dockerfile.frontend \
-          --cache-from gcr.io/$PROJECT_ID/wastewise-frontend:latest \
-          --build-arg VITE_SUPABASE_URL="$${VITE_SUPABASE_URL}" \
-          --build-arg VITE_SUPABASE_ANON_KEY="$${VITE_SUPABASE_ANON_KEY}" \
-          --build-arg VITE_STRIPE_PUBLISHABLE_KEY="$${VITE_STRIPE_PUBLISHABLE_KEY}" \
-          --build-arg VITE_API_BASE_URL="https://wastewise-backend-$PROJECT_ID-as.a.run.app" \
-          --build-arg VITE_TRIAL_PERIOD_DAYS="30" \
-          .
-
-  # Stage 3: Push images to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-backend'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID']
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
+      - '-f'
+      - 'Dockerfile.frontend'
+      - '--build-arg'
+      - 'VITE_SUPABASE_URL=$FRONTEND_SECRET_VITE_SUPABASE_URL'
+      - '--build-arg'
+      - 'VITE_SUPABASE_ANON_KEY=$FRONTEND_SECRET_VITE_SUPABASE_ANON_KEY'
+      - '--build-arg'
+      - 'VITE_STRIPE_PUBLISHABLE_KEY=$FRONTEND_SECRET_VITE_STRIPE_PUBLISHABLE_KEY'
+      - '--build-arg'
+      - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
+      - '--build-arg'
+      - 'VITE_TRIAL_PERIOD_DAYS=30'
+      - '.'
     waitFor: ['build-backend']
 
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-backend-latest'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-backend:latest']
-    waitFor: ['push-backend']
-
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-frontend'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID']
-    waitFor: ['build-frontend']
-
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-frontend-latest'
-    args: ['push', 'gcr.io/$PROJECT_ID/wastewise-frontend:latest']
-    waitFor: ['push-frontend']
-
-  # Stage 4: Deploy backend to Cloud Run
+  # Stage 3: Deploy backend to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-backend'
-    secretEnv: ['BACKEND_SECRET']
-    entrypoint: gcloud
+    entrypoint: 'gcloud'
     args:
       - 'run'
       - 'deploy'
@@ -112,24 +60,16 @@ steps:
       - '512Mi'
       - '--cpu'
       - '1'
-      - '--min-instances'
-      - '0'
-      - '--max-instances'
-      - '2'
-      - '--timeout'
-      - '300'
-      - '--concurrency'
-      - '80'
       - '--set-env-vars'
       - 'NODE_ENV=production'
       - '--set-secrets'
       - 'BACKEND_SECRET=wastewise-30-secret-backend:latest'
-    waitFor: ['push-backend-latest']
+    waitFor: ['build-backend']
 
-  # Stage 5: Deploy frontend to Cloud Run
+  # Stage 4: Deploy frontend to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-frontend'
-    entrypoint: gcloud
+    entrypoint: 'gcloud'
     args:
       - 'run'
       - 'deploy'
@@ -147,22 +87,14 @@ steps:
       - '256Mi'
       - '--cpu'
       - '1'
-      - '--min-instances'
-      - '0'
-      - '--max-instances'
-      - '2'
-      - '--timeout'
-      - '300'
-      - '--concurrency'
-      - '80'
       - '--set-env-vars'
       - 'VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app'
-    waitFor: ['deploy-backend']
+    waitFor: ['build-frontend']
 
-  # Stage 6: Update backend CORS with frontend URL
+  # Stage 5: Update backend CORS with frontend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'update-cors'
-    entrypoint: gcloud
+    entrypoint: 'gcloud'
     args:
       - 'run'
       - 'services'
@@ -170,14 +102,14 @@ steps:
       - 'wastewise-backend'
       - '--region'
       - 'asia-southeast1'
-      - '--set-env-vars'
+      - '--update-env-vars'
       - 'CORS_ORIGIN=https://wastewise-frontend-$PROJECT_ID-as.a.run.app'
-    waitFor: ['deploy-frontend']
+    waitFor: ['deploy-backend']
 
-  # Stage 7: Run smoke tests
+  # Stage 6: Run smoke tests
   - name: 'gcr.io/cloud-builders/curl'
     id: 'smoke-test-backend'
-    args: 
+    args:
       - '--retry'
       - '3'
       - '--retry-delay'
@@ -187,7 +119,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/curl'
     id: 'smoke-test-frontend'
-    args: 
+    args:
       - '--retry'
       - '3'
       - '--retry-delay'
@@ -195,21 +127,10 @@ steps:
       - 'https://wastewise-frontend-$PROJECT_ID-as.a.run.app/'
     waitFor: ['smoke-test-backend']
 
-# Images to be pushed to Container Registry
+# Images to be pushed to Container Registry (GCB does this automatically)
 images:
-  - 'gcr.io/$PROJECT_ID/wastewise-backend:$BUILD_ID'
   - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
-  - 'gcr.io/$PROJECT_ID/wastewise-frontend:$BUILD_ID'
   - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
-
-# Build options
-options:
-  logging: CLOUD_LOGGING_ONLY
-  machineType: 'E2_HIGHCPU_8'
-  diskSizeGb: '50'
-  env:
-    - 'DOCKER_BUILDKIT=1'
-    - 'COMPOSE_DOCKER_CLI_BUILD=1'
 
 # Available secrets for the build
 availableSecrets:
@@ -219,5 +140,10 @@ availableSecrets:
     - versionName: projects/451983642521/secrets/wastewise-30-secret-backend/versions/latest
       env: 'BACKEND_SECRET'
 
-# Timeout for the entire build
-timeout: '1800s'
+# Global options for the build
+options:
+  # The machine type is still a good practice for faster builds
+  machineType: 'E2_HIGHCPU_8'
+  # The disk size is optional, 100GB is default but 50GB is fine if needed
+  diskSizeGb: '50'
+  timeout: '1800s'

@@ -56,9 +56,9 @@ docker rm wastewise-30 || true
 # Deploy new container
 docker run -d \
   --name wastewise-30 \
-  -p 8899:8899 \
+  -p 8080:8080 \
   --restart always \
-  --health-cmd "curl -f http://localhost:8899/ || exit 1" \
+  --health-cmd "curl -f http://localhost:8080/ || exit 1" \
   --health-interval=30s \
   --health-timeout=10s \
   --health-retries=3 \
@@ -113,10 +113,10 @@ services:
     image: basyir/wastewise-30:latest
     container_name: wastewise-30
     ports:
-      - "8899:8899"
+      - "8080:8080"
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8899/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -173,13 +173,13 @@ docker inspect wastewise-30
 ### **Application Health Checks:**
 ```bash
 # Health endpoint
-curl -f http://192.168.20.215:8899/health
+curl -f http://192.168.20.215:8080/health
 
 # Main application
-curl -f http://192.168.20.215:8899/
+curl -f http://192.168.20.215:8080/
 
 # API endpoint
-curl -f http://192.168.20.215:8899/api
+curl -f http://192.168.20.215:8080/api
 ```
 
 ## 🔄 **Automated Deployment Scripts**
@@ -191,7 +191,7 @@ set -e
 
 IMAGE_NAME="basyir/wastewise-30"
 CONTAINER_NAME="wastewise-30"
-PORT="8899"
+PORT="8080"
 
 echo "🚀 Deploying WasteWise-30..."
 
@@ -208,9 +208,9 @@ docker rm $CONTAINER_NAME || true
 echo "🚀 Starting new container..."
 docker run -d \
   --name $CONTAINER_NAME \
-  -p $PORT:8899 \
+  -p $PORT:8080 \
   --restart always \
-  --health-cmd "curl -f http://localhost:8899/ || exit 1" \
+  --health-cmd "curl -f http://localhost:8080/ || exit 1" \
   --health-interval=30s \
   --health-timeout=10s \
   --health-retries=3 \
@@ -249,9 +249,9 @@ docker rm $CONTAINER_NAME || true
 echo "🚀 Deploying previous version..."
 docker run -d \
   --name $CONTAINER_NAME \
-  -p 8899:8899 \
+  -p 8080:8080 \
   --restart always \
-  --health-cmd "curl -f http://localhost:8899/ || exit 1" \
+  --health-cmd "curl -f http://localhost:8080/ || exit 1" \
   --health-interval=30s \
   --health-timeout=10s \
   --health-retries=3 \
@@ -284,7 +284,7 @@ docker network create wastewise-network
 docker run -d --network wastewise-network --name wastewise-30 ...
 
 # Expose only necessary ports
-docker run -d -p 8899:8899 --name wastewise-30 ...
+docker run -d -p 8080:8080 --name wastewise-30 ...
 ```
 
 ## 📈 **Scaling with Docker**
@@ -292,16 +292,16 @@ docker run -d -p 8899:8899 --name wastewise-30 ...
 ### **Horizontal Scaling:**
 ```bash
 # Scale to multiple containers
-docker run -d --name wastewise-30-1 -p 8899:8899 basyir/wastewise-30:latest
-docker run -d --name wastewise-30-2 -p 8900:8899 basyir/wastewise-30:latest
-docker run -d --name wastewise-30-3 -p 8901:8899 basyir/wastewise-30:latest
+docker run -d --name wastewise-30-1 -p 8080:8080 basyir/wastewise-30:latest
+docker run -d --name wastewise-30-2 -p 8900:8080 basyir/wastewise-30:latest
+docker run -d --name wastewise-30-3 -p 8901:8080 basyir/wastewise-30:latest
 ```
 
 ### **Load Balancing:**
 ```nginx
 # Nginx configuration for multiple containers
 upstream wastewise_backend {
-    server 192.168.20.215:8899;
+    server 192.168.20.215:8080;
     server 192.168.20.215:8900;
     server 192.168.20.215:8901;
 }

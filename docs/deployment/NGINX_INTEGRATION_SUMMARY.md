@@ -6,7 +6,7 @@
 
 #### 1. **Jenkinsfile Updates**
 - **Frontend Container**: 
-  - Port binding changed to `127.0.0.1:8899:8899` (localhost only)
+  - Port binding changed to `127.0.0.1:8080:8080` (localhost only)
   - Environment variables updated to use HTTPS URLs:
     - `VITE_FRONTEND_URL="https://sheerstechnologies.com/wastewise-30"`
     - `VITE_BACKEND_URL="https://sheerstechnologies.com/wastewise-30/api"`
@@ -28,7 +28,7 @@ location /wastewise-30/api/ {
 
 # WasteWise-30 app served at /wastewise-30
 location /wastewise-30/ {
-    proxy_pass http://127.0.0.1:8899/;
+    proxy_pass http://127.0.0.1:8080/;
     rewrite ^/wastewise-30/(.*)$ /$1 break;
     # ... proxy headers
 }
@@ -42,13 +42,13 @@ location /wastewise-30/ {
 - **Health Check**: `https://sheerstechnologies.com/wastewise-30/api/health`
 
 ### **Internal Container Ports:**
-- **Frontend**: `127.0.0.1:8899` (localhost only)
+- **Frontend**: `127.0.0.1:8080` (localhost only)
 - **Backend**: `127.0.0.1:3000` (localhost only)
 
 ## 🔧 **Routing Flow**
 
 1. **User Request**: `https://sheerstechnologies.com/wastewise-30`
-2. **Nginx**: Routes to `http://127.0.0.1:8899/`
+2. **Nginx**: Routes to `http://127.0.0.1:8080/`
 3. **Frontend Container**: Serves the React app
 4. **API Requests**: `https://sheerstechnologies.com/wastewise-30/api/*`
 5. **Nginx**: Routes to `http://127.0.0.1:3000/*`

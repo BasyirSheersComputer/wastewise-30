@@ -50,7 +50,7 @@ ssh basyir@192.168.20.215 "docker logs wastewise-backend --tail 20" 2>/dev/null
 
 echo ""
 echo "4. Checking if containers are listening on correct ports..."
-ssh basyir@192.168.20.215 "netstat -tlnp | grep -E ':(8899|3000)'" 2>/dev/null
+ssh basyir@192.168.20.215 "netstat -tlnp | grep -E ':(8080|3000)'" 2>/dev/null
 if [ $? -eq 0 ]; then
     print_status "OK" "Containers are listening on correct ports"
 else
@@ -59,11 +59,11 @@ fi
 
 echo ""
 echo "5. Testing local connectivity to containers..."
-ssh basyir@192.168.20.215 "curl -s http://127.0.0.1:8899 | head -5" 2>/dev/null
+ssh basyir@192.168.20.215 "curl -s http://127.0.0.1:8080 | head -5" 2>/dev/null
 if [ $? -eq 0 ]; then
-    print_status "OK" "Frontend container responding on localhost:8899"
+    print_status "OK" "Frontend container responding on localhost:8080"
 else
-    print_status "ERROR" "Frontend container not responding on localhost:8899"
+    print_status "ERROR" "Frontend container not responding on localhost:8080"
 fi
 
 ssh basyir@192.168.20.215 "curl -s http://127.0.0.1:3000/health" 2>/dev/null
@@ -158,7 +158,7 @@ if ! ssh basyir@192.168.20.215 "sudo systemctl is-active nginx" >/dev/null 2>&1;
 fi
 
 # Check if ports are accessible
-if ! ssh basyir@192.168.20.215 "curl -s http://127.0.0.1:8899" >/dev/null 2>&1; then
+if ! ssh basyir@192.168.20.215 "curl -s http://127.0.0.1:8080" >/dev/null 2>&1; then
     echo "3. Check frontend container:"
     echo "   ssh basyir@192.168.20.215"
     echo "   docker logs wastewise-frontend"
@@ -175,7 +175,7 @@ echo "5. Manual container restart commands:"
 echo "   ssh basyir@192.168.20.215"
 echo "   docker pull basyir/wastewise-30-frontend:latest"
 echo "   docker pull basyir/wastewise-30-backend:latest"
-echo "   docker run -d --name wastewise-frontend -p 127.0.0.1:8899:8899 --restart always -e VITE_SUPABASE_URL=\"\$VITE_SUPABASE_URL\" -e VITE_SUPABASE_ANON_KEY=\"\$VITE_SUPABASE_ANON_KEY\" -e VITE_STRIPE_PUBLISHABLE_KEY=\"\$STRIPE_PUBLISHABLE_KEY\" -e VITE_FRONTEND_URL=\"https://sheerstechnologies.com/wastewise-30\" -e VITE_BACKEND_URL=\"https://sheerstechnologies.com/wastewise-30/api\" basyir/wastewise-30-frontend:latest"
+echo "   docker run -d --name wastewise-frontend -p 127.0.0.1:8080:8080 --restart always -e VITE_SUPABASE_URL=\"\$VITE_SUPABASE_URL\" -e VITE_SUPABASE_ANON_KEY=\"\$VITE_SUPABASE_ANON_KEY\" -e VITE_STRIPE_PUBLISHABLE_KEY=\"\$STRIPE_PUBLISHABLE_KEY\" -e VITE_FRONTEND_URL=\"https://sheerstechnologies.com/wastewise-30\" -e VITE_BACKEND_URL=\"https://sheerstechnologies.com/wastewise-30/api\" basyir/wastewise-30-frontend:latest"
 echo "   docker run -d --name wastewise-backend -p 127.0.0.1:3000:3000 --restart always -e STRIPE_SECRET_KEY=\"\$STRIPE_SECRET_KEY\" -e STRIPE_PUBLISHABLE_KEY=\"\$STRIPE_PUBLISHABLE_KEY\" -e FRONTEND_URL=\"https://sheerstechnologies.com/wastewise-30\" -e CORS_ORIGIN=\"https://sheerstechnologies.com\" -e PAYMENT_PROCESSING_ENABLED=\"false\" basyir/wastewise-30-backend:latest"
 
 echo ""

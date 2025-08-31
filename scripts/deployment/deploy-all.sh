@@ -127,7 +127,7 @@ services:
   wastewise-app:
     build: .
     ports:
-      - "8899:80"
+      - "8080:80"
     environment:
       - NODE_ENV=production
     depends_on:
@@ -444,7 +444,7 @@ wait_for_services() {
     print_status "Waiting for main application..."
     timeout=60
     while [ $timeout -gt 0 ]; do
-        if curl -f http://localhost:8899/health >/dev/null 2>&1; then
+        if curl -f http://localhost:8080/health >/dev/null 2>&1; then
             print_success "Main application is ready"
             break
         fi
@@ -485,7 +485,7 @@ run_health_checks() {
     print_status "Testing health endpoints..."
     
     # Main application health
-    if curl -f http://localhost:8899/health >/dev/null 2>&1; then
+    if curl -f http://localhost:8080/health >/dev/null 2>&1; then
         print_success "Main application health check passed"
     else
         print_error "Main application health check failed"
@@ -530,7 +530,7 @@ show_summary() {
     echo ""
     echo "🌐 Application URLs:"
     echo "   - Main Application: http://localhost"
-    echo "   - Direct Container: http://localhost:8899"
+    echo "   - Direct Container: http://localhost:8080"
     echo "   - Data Platform: http://localhost:4000"
     echo "   - Health Check: http://localhost/health"
     echo ""

@@ -180,7 +180,7 @@ wastewise-30/
 docker build -t wastewise-30 .
 
 # Run the container
-docker run -p 8899:80 wastewise-30
+docker run -p 8080:80 wastewise-30
 ```
 
 ### CI/CD Pipeline

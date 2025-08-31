@@ -77,9 +77,9 @@ environment {
 - **Deploy to Production**: ✅ Should work
 
 ### **3. Test Application**
-- **Direct Access**: `http://192.168.20.215:8899`
+- **Direct Access**: `http://192.168.20.215:8080`
 - **Nginx Proxy**: `http://sheerstechnologies.com/wastewise-30/`
-- **Health Check**: `http://192.168.20.215:8899/health`
+- **Health Check**: `http://192.168.20.215:8080/health`
 
 ## 🔧 **Alternative Solutions (If Needed)**
 
@@ -146,13 +146,13 @@ curl -s http://192.168.20.215:8080/job/wastewise-30/lastBuild/api/json
 ### **Check Application:**
 ```bash
 # Test direct access
-curl -I http://192.168.20.215:8899
+curl -I http://192.168.20.215:8080
 
 # Test health endpoint
-curl -f http://192.168.20.215:8899/health
+curl -f http://192.168.20.215:8080/health
 
 # Test API endpoint
-curl -I http://192.168.20.215:8899/api
+curl -I http://192.168.20.215:8080/api
 ```
 
 ### **Check Docker Container:**

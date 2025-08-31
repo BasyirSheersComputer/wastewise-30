@@ -65,8 +65,8 @@ Once the webhook is properly configured:
 
 2. **Application Accessible At**:
    - **Main URL**: `http://sheerstechnologies.com/wastewise-30/`
-   - **Direct Container**: `http://192.168.20.215:8899`
-   - **Health Check**: `http://192.168.20.215:8899/health`
+   - **Direct Container**: `http://192.168.20.215:8080`
+   - **Health Check**: `http://192.168.20.215:8080/health`
 
 ## 📋 **Verification Steps**
 
@@ -131,7 +131,7 @@ jobs:
 - Git repository and pushes
 - Jenkins server accessibility
 - Webhook endpoint availability
-- Docker configuration (updated for port 8899)
+- Docker configuration (updated for port 8080)
 - Nginx configuration (ready for `/wastewise-30/` path)
 
 ### **❌ Needs Fix:**

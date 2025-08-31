@@ -60,7 +60,7 @@ docker logs wastewise-30
 docker build -t wastewise-30:latest .
 
 # Run container manually
-docker run -d --name wastewise-30 -p 8899:8899 wastewise-30:latest
+docker run -d --name wastewise-30 -p 8080:8080 wastewise-30:latest
 
 # Check container status
 docker ps | grep wastewise-30
@@ -76,10 +76,10 @@ docker rm wastewise-30 || true
 
 # Build and run
 docker build -t wastewise-30:latest .
-docker run -d --name wastewise-30 -p 8899:8899 --restart always wastewise-30:latest
+docker run -d --name wastewise-30 -p 8080:8080 --restart always wastewise-30:latest
 
 # Verify deployment
-curl -I http://192.168.20.215:8899
+curl -I http://192.168.20.215:8080
 ```
 
 ### **Option 2: Use Polling Instead of Webhooks**
@@ -119,7 +119,7 @@ jobs:
 ### **✅ Docker:**
 - [ ] Image builds successfully
 - [ ] Container runs without errors
-- [ ] Port 8899 is accessible
+- [ ] Port 8080 is accessible
 - [ ] Health endpoint responds
 
 ### **✅ Application:**
@@ -166,13 +166,13 @@ docker restart wastewise-30
 ### **Test Application:**
 ```bash
 # Test direct access
-curl -I http://192.168.20.215:8899
+curl -I http://192.168.20.215:8080
 
 # Test health endpoint
-curl -f http://192.168.20.215:8899/health
+curl -f http://192.168.20.215:8080/health
 
 # Test API endpoint
-curl -I http://192.168.20.215:8899/api
+curl -I http://192.168.20.215:8080/api
 ```
 
 ## 🎯 **Next Steps**
@@ -221,8 +221,8 @@ Once all issues are resolved:
 
 1. **Git Push** → **GitHub Webhook** → **Jenkins Build** → **Docker Build** → **Deploy**
 2. **Application accessible at**: `http://sheerstechnologies.com/wastewise-30/`
-3. **Direct access at**: `http://192.168.20.215:8899`
-4. **Health check at**: `http://192.168.20.215:8899/health`
+3. **Direct access at**: `http://192.168.20.215:8080`
+4. **Health check at**: `http://192.168.20.215:8080/health`
 
 **🔧 The CI/CD pipeline is partially working and needs some configuration fixes to be fully operational!**
 

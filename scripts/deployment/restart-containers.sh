@@ -14,7 +14,7 @@ docker pull basyir/wastewise-30-backend:latest
 
 echo "3. Starting frontend container..."
 docker run -d --name wastewise-frontend \
-  -p 127.0.0.1:8899:8899 \
+  -p 127.0.0.1:8080:8080 \
   --restart always \
   -e VITE_SUPABASE_URL="https://your-project-url.supabase.co" \
   -e VITE_SUPABASE_ANON_KEY="your-anon-key-here" \
@@ -66,7 +66,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep wastewise
 
 echo "6. Testing connectivity..."
 echo "Frontend:"
-curl -s -I http://127.0.0.1:8899 | head -1
+curl -s -I http://127.0.0.1:8080 | head -1
 
 echo "Backend:"
 curl -s -I http://127.0.0.1:3000/health | head -1

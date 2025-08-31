@@ -2,8 +2,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install dependencies for native modules
-RUN apk add --no-cache python3 make g++
+# Install dependencies for native modules and curl for health checks
+RUN apk add --no-cache python3 make g++ curl
 
 # Copy package files from backend directory
 COPY backend/package*.json ./
@@ -11,11 +11,11 @@ COPY backend/package*.json ./
 # Install dependencies
 RUN npm ci --only=production
 
-# Remove build dependencies
+# Remove build dependencies but keep curl for health checks
 RUN apk del python3 make g++
 
 # Copy backend application code and environment configuration
-COPY backend/ ./
+COPY backend/ ./backend/
 COPY config/environment/ ./config/environment/
 
 # Create non-root user
@@ -28,12 +28,12 @@ RUN chown -R nodejs:nodejs /app
 # Switch to non-root user
 USER nodejs
 
-# Expose port 3000 (as specified in docker-compose)
+# Expose port 3000 (as specified in cloudbuild.yaml)
 EXPOSE 3000
 
-# Health check
+# Health check aligned with cloudbuild.yaml smoke tests
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" || exit 1
+  CMD curl -f http://localhost:3000/health || exit 1
 
 # Start the application
 CMD ["npm", "start"]

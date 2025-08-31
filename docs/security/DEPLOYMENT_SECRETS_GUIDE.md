@@ -148,7 +148,7 @@ docker-compose logs wastewise-frontend
 curl -f http://localhost:3000/health
 
 # Test frontend accessibility
-curl -f http://localhost:8899
+curl -f http://localhost:8080
 
 # Test internal networking
 docker exec wastewise-frontend wget -qO- http://wastewise-backend:3000/health

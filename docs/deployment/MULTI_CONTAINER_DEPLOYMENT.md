@@ -7,7 +7,7 @@
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Backend       │    │   Nginx Proxy   │
-│   (Port 3000)   │    │   (Port 3001)   │    │   (Port 8899)   │
+│   (Port 3000)   │    │   (Port 3001)   │    │   (Port 8080)   │
 │                 │    │                 │    │                 │
 │ - React/Vite    │    │ - Node.js/Exp   │    │ - Reverse Proxy │
 │ - Nginx Server  │    │ - API Services  │    │ - Load Balancer │
@@ -48,7 +48,7 @@
 
 ### **3. Nginx Reverse Proxy**
 - **Container**: `wastewise-nginx`
-- **Port**: `8899`
+- **Port**: `8080`
 - **Image**: `nginx:alpine`
 - **Features**:
   - ✅ **Load Balancing**: Route traffic
@@ -98,7 +98,7 @@ services:
     image: nginx:alpine
     container_name: wastewise-nginx
     ports:
-      - "8899:80"
+      - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -263,13 +263,13 @@ docker-compose -f docker-compose.yml ps
 ### **1. Health Check Endpoints:**
 ```bash
 # Overall health
-curl http://localhost:8899/health
+curl http://localhost:8080/health
 
 # Frontend health
-curl http://localhost:8899/health/frontend
+curl http://localhost:8080/health/frontend
 
 # Backend health
-curl http://localhost:8899/health/backend
+curl http://localhost:8080/health/backend
 
 # Direct service health
 curl http://localhost:3000/health  # Frontend
@@ -327,7 +327,7 @@ docker exec wastewise-nginx nginx -t
 docker-compose logs nginx
 
 # Test proxy routing
-curl http://localhost:8899/api/health
+curl http://localhost:8080/api/health
 ```
 
 ### **2. Debugging Commands:**
@@ -370,10 +370,10 @@ docker inspect wastewise-nginx
 ## 🎯 **URL Structure**
 
 ### **1. External Access:**
-- **Main Application**: `http://localhost:8899/`
-- **API Endpoints**: `http://localhost:8899/api/`
-- **WebSocket**: `ws://localhost:8899/ws`
-- **Health Check**: `http://localhost:8899/health`
+- **Main Application**: `http://localhost:8080/`
+- **API Endpoints**: `http://localhost:8080/api/`
+- **WebSocket**: `ws://localhost:8080/ws`
+- **Health Check**: `http://localhost:8080/health`
 
 ### **2. Direct Service Access:**
 - **Frontend**: `http://localhost:3000/`
@@ -382,9 +382,9 @@ docker inspect wastewise-nginx
 - **Backend Health**: `http://localhost:3001/health`
 
 ### **3. Proxy Health Checks:**
-- **Overall Health**: `http://localhost:8899/health`
-- **Frontend Health**: `http://localhost:8899/health/frontend`
-- **Backend Health**: `http://localhost:8899/health/backend`
+- **Overall Health**: `http://localhost:8080/health`
+- **Frontend Health**: `http://localhost:8080/health/frontend`
+- **Backend Health**: `http://localhost:8080/health/backend`
 
 ## 🔗 **Management Commands**
 

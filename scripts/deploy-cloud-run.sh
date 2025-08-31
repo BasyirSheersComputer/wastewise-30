@@ -2,12 +2,13 @@
 
 # Google Cloud Run Deployment Script for WasteWise
 # This script deploys both frontend and backend services to Google Cloud Run
+# Aligned with simplified cloudbuild.yaml approach
 
 set -e
 
-# Configuration
+# Configuration (aligned with cloudbuild.yaml)
 PROJECT_ID="wastewise-30"
-REGION="us-central1"
+REGION="asia-southeast1"
 BACKEND_SERVICE="wastewise-backend"
 FRONTEND_SERVICE="wastewise-frontend"
 
@@ -92,102 +93,94 @@ enable_apis() {
     log_success "All required APIs are enabled"
 }
 
-# Build and push Docker images
+# Build and push Docker images (aligned with cloudbuild.yaml)
 build_and_push_images() {
     log_info "Building and pushing Docker images..."
     
     # Build backend image
     log_info "Building backend image..."
-    cd backend
-    docker build -t gcr.io/$PROJECT_ID/backend:latest -f ../Dockerfile.backend .
-    docker push gcr.io/$PROJECT_ID/backend:latest
-    cd ..
+    docker build -t gcr.io/$PROJECT_ID/wastewise-backend:latest -f Dockerfile.backend .
+    docker push gcr.io/$PROJECT_ID/wastewise-backend:latest
     
-    # Build frontend image
+    # Build frontend image with build args (aligned with cloudbuild.yaml)
     log_info "Building frontend image..."
-    cd frontend
-    docker build -t gcr.io/$PROJECT_ID/frontend:latest -f ../Dockerfile.frontend .
-    docker push gcr.io/$PROJECT_ID/frontend:latest
-    cd ..
+    docker build -t gcr.io/$PROJECT_ID/wastewise-frontend:latest \
+        --build-arg VITE_SUPABASE_URL=${VITE_SUPABASE_URL} \
+        --build-arg VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY} \
+        --build-arg VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY} \
+        --build-arg VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app \
+        --build-arg VITE_TRIAL_PERIOD_DAYS=30 \
+        -f Dockerfile.frontend .
+    docker push gcr.io/$PROJECT_ID/wastewise-frontend:latest
     
     log_success "Docker images built and pushed successfully"
 }
 
-# Deploy backend service
+# Deploy backend service (aligned with cloudbuild.yaml)
 deploy_backend() {
     log_info "Deploying backend service..."
     
     gcloud run deploy $BACKEND_SERVICE \
-        --image gcr.io/$PROJECT_ID/backend:latest \
-        --platform managed \
+        --image gcr.io/$PROJECT_ID/wastewise-backend:latest \
         --region $REGION \
+        --platform managed \
         --allow-unauthenticated \
-        --port 8080 \
-        --memory 1Gi \
+        --port 3000 \
+        --memory 512Mi \
         --cpu 1 \
-        --min-instances 1 \
-        --max-instances 10 \
-        --set-env-vars NODE_ENV=production,PORT=8080 \
-        --set-secrets SUPABASE_URL=supabase-url:latest,SUPABASE_SERVICE_ROLE_KEY=supabase-service-key:latest,OPENAI_API_KEY=openai-api-key:latest,GOOGLE_GENAI_API_KEY=google-genai-key:latest,STRIPE_SECRET_KEY=stripe-secret-key:latest,STRIPE_WEBHOOK_SECRET=stripe-webhook-secret:latest,JWT_SECRET=jwt-secret:latest
+        --set-env-vars NODE_ENV=production \
+        --set-secrets BACKEND_SECRET=wastewise-30-secret-backend:latest
     
     BACKEND_URL=$(gcloud run services describe $BACKEND_SERVICE --region $REGION --format="value(status.url)")
     log_success "Backend service deployed at: $BACKEND_URL"
 }
 
-# Deploy frontend service
+# Deploy frontend service (aligned with cloudbuild.yaml)
 deploy_frontend() {
     log_info "Deploying frontend service..."
     
-    # Get backend URL for API configuration
-    BACKEND_URL=$(gcloud run services describe $BACKEND_SERVICE --region $REGION --format="value(status.url)")
-    
     gcloud run deploy $FRONTEND_SERVICE \
-        --image gcr.io/$PROJECT_ID/frontend:latest \
-        --platform managed \
+        --image gcr.io/$PROJECT_ID/wastewise-frontend:latest \
         --region $REGION \
+        --platform managed \
         --allow-unauthenticated \
         --port 8080 \
-        --memory 512Mi \
-        --cpu 500m \
-        --min-instances 1 \
-        --max-instances 5 \
-        --set-env-vars VITE_API_BASE_URL=$BACKEND_URL \
-        --set-secrets VITE_SUPABASE_URL=supabase-url:latest,VITE_SUPABASE_ANON_KEY=supabase-anon-key:latest,VITE_STRIPE_PUBLISHABLE_KEY=stripe-publishable-key:latest,VITE_TRIAL_PERIOD_DAYS=30
+        --memory 256Mi \
+        --cpu 1 \
+        --set-env-vars VITE_API_BASE_URL=https://wastewise-backend-$PROJECT_ID-as.a.run.app
     
     FRONTEND_URL=$(gcloud run services describe $FRONTEND_SERVICE --region $REGION --format="value(status.url)")
     log_success "Frontend service deployed at: $FRONTEND_URL"
 }
 
-# Update CORS configuration
+# Update CORS configuration (aligned with cloudbuild.yaml)
 update_cors() {
     log_info "Updating CORS configuration..."
     
-    FRONTEND_URL=$(gcloud run services describe $FRONTEND_SERVICE --region $REGION --format="value(status.url)")
-    
     gcloud run services update $BACKEND_SERVICE \
         --region $REGION \
-        --set-env-vars CORS_ORIGIN=$FRONTEND_URL
+        --update-env-vars CORS_ORIGIN=https://wastewise-frontend-$PROJECT_ID-as.a.run.app
     
     log_success "CORS configuration updated"
 }
 
-# Run health checks
+# Run health checks (aligned with cloudbuild.yaml smoke tests)
 health_check() {
     log_info "Running health checks..."
     
-    BACKEND_URL=$(gcloud run services describe $BACKEND_SERVICE --region $REGION --format="value(status.url)")
-    FRONTEND_URL=$(gcloud run services describe $FRONTEND_SERVICE --region $REGION --format="value(status.url)")
+    BACKEND_URL="https://wastewise-backend-$PROJECT_ID-as.a.run.app"
+    FRONTEND_URL="https://wastewise-frontend-$PROJECT_ID-as.a.run.app"
     
-    # Check backend health
-    if curl -f -s "$BACKEND_URL/health" > /dev/null; then
+    # Check backend health (aligned with cloudbuild.yaml)
+    if curl -f -s --retry 3 --retry-delay 10 "$BACKEND_URL/health" > /dev/null; then
         log_success "Backend health check passed"
     else
         log_error "Backend health check failed"
         return 1
     fi
     
-    # Check frontend health
-    if curl -f -s "$FRONTEND_URL/health" > /dev/null; then
+    # Check frontend health (aligned with cloudbuild.yaml)
+    if curl -f -s --retry 3 --retry-delay 10 "$FRONTEND_URL/" > /dev/null; then
         log_success "Frontend health check passed"
     else
         log_error "Frontend health check failed"
@@ -200,21 +193,21 @@ health_check() {
 # Display deployment information
 display_info() {
     log_info "Deployment completed successfully!"
-    echo
+    echo ""
     echo "Service URLs:"
-    echo "  Backend:  $(gcloud run services describe $BACKEND_SERVICE --region $REGION --format="value(status.url)")"
-    echo "  Frontend: $(gcloud run services describe $FRONTEND_SERVICE --region $REGION --format="value(status.url)")"
-    echo
-    echo "Next steps:"
-    echo "  1. Test the application by visiting the frontend URL"
-    echo "  2. Monitor the services in Google Cloud Console"
-    echo "  3. Set up custom domain (optional)"
-    echo "  4. Configure monitoring and alerting"
+    echo "  Backend:  https://wastewise-backend-$PROJECT_ID-as.a.run.app"
+    echo "  Frontend: https://wastewise-frontend-$PROJECT_ID-as.a.run.app"
+    echo ""
+    echo "Health Checks:"
+    echo "  Backend:  https://wastewise-backend-$PROJECT_ID-as.a.run.app/health"
+    echo "  Frontend: https://wastewise-frontend-$PROJECT_ID-as.a.run.app/"
+    echo ""
+    echo "Note: This deployment is aligned with the simplified cloudbuild.yaml approach"
 }
 
-# Main deployment function
+# Main execution
 main() {
-    log_info "Starting Google Cloud Run deployment for WasteWise..."
+    log_info "Starting WasteWise Cloud Run deployment..."
     
     check_prerequisites
     enable_apis

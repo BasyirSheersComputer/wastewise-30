@@ -62,7 +62,7 @@ docker-compose logs -f
 ## 🌐 Application URLs
 
 - **Main Application**: http://localhost
-- **Direct Container**: http://localhost:8899
+- **Direct Container**: http://localhost:8080
 - **Data Platform**: http://localhost:4000
 - **Health Check**: http://localhost/health
 
