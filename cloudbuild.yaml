@@ -1,3 +1,5 @@
+# Google Cloud Build Configuration for WasteWise-30
+# Auto-triggered on GitHub push to main branch
 steps:
   # Stage 1: Build and tag the backend Docker image
   - name: 'gcr.io/cloud-builders/docker'
@@ -23,7 +25,7 @@ steps:
         set -e
         # Write the secret content to a temporary file
         echo "$$FRONTEND_SECRET" > /tmp/secrets.env
-
+        
         # Read the variables from the file and export them
         export VITE_SUPABASE_URL=$(grep "VITE_SUPABASE_URL=" /tmp/secrets.env | cut -d'=' -f2-)
         export VITE_SUPABASE_ANON_KEY=$(grep "VITE_SUPABASE_ANON_KEY=" /tmp/secrets.env | cut -d'=' -f2-)
@@ -46,7 +48,6 @@ steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-backend'
     entrypoint: 'gcloud'
-    # Removed: secretEnv: ['BACKEND_SECRET']
     args:
       - 'run'
       - 'deploy'
@@ -121,7 +122,7 @@ steps:
       - 'https://wastewise-backend-$PROJECT_ID-as.a.run.app/health'
     waitFor: ['update-cors']
 
-  - name: 'gcr.io/cloudsdktool/cloud-sdk'
+  - name: 'gcr.io/cloud-builders/curl'
     id: 'smoke-test-frontend'
     args:
       - '--retry'
