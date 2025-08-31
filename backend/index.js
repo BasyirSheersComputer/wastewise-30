@@ -25,7 +25,25 @@ import coffeeChainRoutes from './routes/coffeeChain.js';
 
 dotenv.config();
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+// Parse backend secret if available (for Cloud Run deployment)
+let supabaseUrl = process.env.SUPABASE_URL;
+let supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+// If we have a BACKEND_SECRET, parse it for individual variables
+if (process.env.BACKEND_SECRET) {
+  const secretLines = process.env.BACKEND_SECRET.split('\n');
+  for (const line of secretLines) {
+    const [key, value] = line.split('=');
+    if (key && value) {
+      process.env[key.trim()] = value.trim();
+    }
+  }
+  // Update our variables after parsing
+  supabaseUrl = process.env.SUPABASE_URL;
+  supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -174,7 +192,8 @@ app.get('/api/test', (req, res) => {
   res.json({ 
     message: 'Backend API is working',
     timestamp: new Date().toISOString(),
-    supabaseUrl: process.env.SUPABASE_URL ? 'Configured' : 'Not configured'
+    supabaseUrl: supabaseUrl ? 'Configured' : 'Not configured',
+    backendSecret: process.env.BACKEND_SECRET ? 'Available' : 'Not available'
   });
 });
 
