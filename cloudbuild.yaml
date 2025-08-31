@@ -46,6 +46,7 @@ steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-backend'
     entrypoint: 'gcloud'
+    # Removed: secretEnv: ['BACKEND_SECRET']
     args:
       - 'run'
       - 'deploy'
@@ -120,7 +121,7 @@ steps:
       - 'https://wastewise-backend-$PROJECT_ID-as.a.run.app/health'
     waitFor: ['update-cors']
 
-  - name: 'gcr.io/cloud-builders/curl'
+  - name: 'gcr.io/cloudsdktool/cloud-sdk'
     id: 'smoke-test-frontend'
     args:
       - '--retry'
