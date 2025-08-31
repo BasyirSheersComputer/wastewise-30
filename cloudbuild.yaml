@@ -28,13 +28,33 @@ steps:
         # Extract environment variables from the frontend secret
         echo "$${_FRONTEND_SECRET}" > /tmp/frontend-secrets.env
         
-        # Parse the secret and extract individual variables
-        export VITE_SUPABASE_URL=$(grep "VITE_SUPABASE_URL=" /tmp/frontend-secrets.env | cut -d'=' -f2-)
-        export VITE_SUPABASE_ANON_KEY=$(grep "VITE_SUPABASE_ANON_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2-)
-        export VITE_STRIPE_PUBLISHABLE_KEY=$(grep "VITE_STRIPE_PUBLISHABLE_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2-)
+        # Debug: Show the secret content
+        echo "Secret content:"
+        cat /tmp/frontend-secrets.env
+        
+        # Parse the secret and extract individual variables with better error handling
+        VITE_SUPABASE_URL=$(grep "VITE_SUPABASE_URL=" /tmp/frontend-secrets.env | cut -d'=' -f2- | tr -d '\r')
+        VITE_SUPABASE_ANON_KEY=$(grep "VITE_SUPABASE_ANON_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2- | tr -d '\r')
+        VITE_STRIPE_PUBLISHABLE_KEY=$(grep "VITE_STRIPE_PUBLISHABLE_KEY=" /tmp/frontend-secrets.env | cut -d'=' -f2- | tr -d '\r')
+        
+        # Export the variables
+        export VITE_SUPABASE_URL
+        export VITE_SUPABASE_ANON_KEY
+        export VITE_STRIPE_PUBLISHABLE_KEY
         
         echo "Extracted VITE_SUPABASE_URL: $${VITE_SUPABASE_URL:0:20}..."
         echo "Extracted VITE_SUPABASE_ANON_KEY: $${VITE_SUPABASE_ANON_KEY:0:20}..."
+        echo "Extracted VITE_STRIPE_PUBLISHABLE_KEY: $${VITE_STRIPE_PUBLISHABLE_KEY:0:20}..."
+        
+        # Verify variables are not empty
+        if [ -z "$${VITE_SUPABASE_URL}" ]; then
+          echo "ERROR: VITE_SUPABASE_URL is empty!"
+          exit 1
+        fi
+        if [ -z "$${VITE_SUPABASE_ANON_KEY}" ]; then
+          echo "ERROR: VITE_SUPABASE_ANON_KEY is empty!"
+          exit 1
+        fi
         
         # Build the frontend with extracted environment variables
         docker build \
