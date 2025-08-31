@@ -132,6 +132,13 @@ images:
   - 'gcr.io/$PROJECT_ID/wastewise-backend:latest'
   - 'gcr.io/$PROJECT_ID/wastewise-frontend:latest'
 
+# Build options
+options:
+  # The machine type is still a good practice for faster builds
+  machineType: 'E2_HIGHCPU_8'
+  # The disk size is optional, 100GB is default but 50GB is fine if needed
+  diskSizeGb: '50'
+
 # Available secrets for the build
 availableSecrets:
   secretManager:
@@ -140,10 +147,5 @@ availableSecrets:
     - versionName: projects/451983642521/secrets/wastewise-30-secret-backend/versions/latest
       env: 'BACKEND_SECRET'
 
-# Global options for the build
-options:
-  # The machine type is still a good practice for faster builds
-  machineType: 'E2_HIGHCPU_8'
-  # The disk size is optional, 100GB is default but 50GB is fine if needed
-  diskSizeGb: '50'
-  timeout: '1800s'
+# Top-level timeout for the entire build
+timeout: '1800s'
