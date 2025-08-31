@@ -122,7 +122,7 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--port'
-      - '8899'
+      - '8080'
       - '--memory'
       - '256Mi'
       - '--cpu'
