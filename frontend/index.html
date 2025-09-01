@@ -4,7 +4,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Food &amp; Beverage OMS</title>
+    <title>WasteWise-30 - Coffee Chain Intelligence</title>
+    <meta name="description" content="AI-powered waste reduction and operational intelligence for coffee chains" />
+    
+    <!-- Runtime Environment Variables Injection -->
+    <script>
+      window.__ENV__ = {
+        VITE_SUPABASE_URL: 'https://fbdqrqknqphcyxbmnuaf.supabase.co',
+        VITE_SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZHFycWtucXBoY3l4Ym1udWFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0NzkwNDgsImV4cCI6MjA2ODA1NTA0OH0.ywEEaFhppnloTSLmAMxJby0bOIzCyxkT_exH6k2qxWI',
+        VITE_API_BASE_URL: 'https://wastewise-backend-451983642521.asia-southeast1.run.app',
+        VITE_TRIAL_PERIOD_DAYS: '30',
+        VITE_STRIPE_PUBLISHABLE_KEY: 'pk_test_placeholder'
+      };
+      console.log('🔧 Runtime environment variables injected:', Object.keys(window.__ENV__));
+    </script>
   </head>
   <body>
     <div id="root"></div>

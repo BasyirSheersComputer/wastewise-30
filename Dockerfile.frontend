@@ -27,6 +27,13 @@ ENV VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY}
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 ENV VITE_TRIAL_PERIOD_DAYS=${VITE_TRIAL_PERIOD_DAYS}
 
+# Debug: Print environment variables (without sensitive data)
+RUN echo "Build environment variables:" && \
+    echo "VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:0:20}..." && \
+    echo "VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY:0:20}..." && \
+    echo "VITE_API_BASE_URL: ${VITE_API_BASE_URL}" && \
+    echo "VITE_TRIAL_PERIOD_DAYS: ${VITE_TRIAL_PERIOD_DAYS}"
+
 # Build the application
 RUN npm run build
 

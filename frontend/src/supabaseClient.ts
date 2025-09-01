@@ -1,7 +1,27 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string
+// Try to get environment variables from multiple sources
+const getEnvVar = (key: string): string | undefined => {
+  // First try import.meta.env (build-time)
+  if (import.meta.env[key]) {
+    return import.meta.env[key];
+  }
+  
+  // Then try window.__ENV__ (runtime injection)
+  if (typeof window !== 'undefined' && (window as any).__ENV__ && (window as any).__ENV__[key]) {
+    return (window as any).__ENV__[key];
+  }
+  
+  // Finally try process.env (fallback)
+  if (process.env[key]) {
+    return process.env[key];
+  }
+  
+  return undefined;
+};
+
+const supabaseUrl = getEnvVar('VITE_SUPABASE_URL');
+const supabaseKey = getEnvVar('VITE_SUPABASE_ANON_KEY');
 
 // Check if environment variables are set
 if (!supabaseUrl || !supabaseKey || supabaseUrl === 'undefined' || supabaseKey === 'undefined') {
