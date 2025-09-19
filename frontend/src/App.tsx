@@ -22,10 +22,12 @@ import {
   CreditCard,
   Settings,
   Upload,
+  Brain,
 } from "lucide-react";
 import Dashboard from "./components/UI/Dashboard";
 import InventoryManager from "./components/UI/InventoryManager";
 import DemandForecasting from "./components/UI/DemandForecasting";
+import StatisticalInsights from "./components/UI/StatisticalInsights";
 import WasteTracking from "./components/UI/WasteTracking";
 import SupplierManager from "./components/UI/SupplierManager";
 import MenuOptimization from "./components/UI/MenuOptimization";
@@ -58,6 +60,7 @@ const navigationItems = [
   { id: "dashboard", label: "Operational Intelligence", icon: BarChart3 },
   { id: "inventory", label: "Recipe & Inventory", icon: Package },
   { id: "forecasting", label: "Demand Forecasting", icon: TrendingUp },
+  { id: "statistical-insights", label: "Statistical Insights", icon: Brain },
   { id: "waste", label: "Waste Tracking", icon: Trash2 },
   { id: "suppliers", label: "Suppliers", icon: Truck },
   { id: "menu", label: "Menu Optimization", icon: Menu },
@@ -324,6 +327,16 @@ function App() {
             <RequireAuth>
               <AuthenticatedLayout>
                 <DemandForecasting />
+              </AuthenticatedLayout>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/statistical-insights"
+          element={
+            <RequireAuth>
+              <AuthenticatedLayout>
+                <StatisticalInsights />
               </AuthenticatedLayout>
             </RequireAuth>
           }

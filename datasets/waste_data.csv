@@ -1,0 +1,11 @@
+waste_id,date,item_name,category,quantity,unit,waste_type,reason,cost_per_unit,total_cost,outlet_id,recorded_by
+WASTE001,2024-01-15,Coffee Beans,Ingredient,2.5,kg,expired,Over-extraction during peak hours,18.50,46.25,OUT001,John Smith
+WASTE002,2024-01-15,Fresh Milk,Dairy,3.0,L,spoiled,Power outage - milk spoiled,3.20,9.60,OUT001,Sarah Johnson
+WASTE003,2024-01-15,Vanilla Syrup,Ingredient,0.5,L,expired,Exceeded shelf life,12.00,6.00,OUT001,Mike Wilson
+WASTE004,2024-01-16,Croissant,Food,8,pieces,expired,Low customer turnout,2.50,20.00,OUT001,Emily Davis
+WASTE005,2024-01-16,Chocolate Powder,Ingredient,1.2,kg,contaminated,Storage contamination,8.50,10.20,OUT001,David Brown
+WASTE006,2024-01-17,Paper Cups,Packaging,50,pieces,damaged,Water damage,0.08,4.00,OUT001,Lisa Anderson
+WASTE007,2024-01-17,Green Tea,Ingredient,0.8,kg,expired,Seasonal demand fluctuation,15.00,12.00,OUT001,Tom Garcia
+WASTE008,2024-01-18,Coffee Beans,Ingredient,1.5,kg,overcooked,Barista training session,18.50,27.75,OUT001,Anna Martinez
+WASTE009,2024-01-18,Fresh Milk,Dairy,2.0,L,spoiled,Temperature control failure,3.20,6.40,OUT001,Chris Lee
+WASTE010,2024-01-19,Chocolate Chip Cookie,Food,12,pieces,expired,Overproduction,1.80,21.60,OUT001,Maria Rodriguez

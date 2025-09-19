@@ -1,0 +1,11 @@
+inventory_id,item_name,category,current_stock,min_stock_level,max_stock_level,unit,cost_per_unit,last_restock,supplier_id,outlet_id
+INV001,Coffee Beans,Ingredient,45.5,20,100,kg,18.50,2024-01-10,SUPP001,OUT001
+INV002,Fresh Milk,Dairy,28.0,15,50,L,3.20,2024-01-13,SUPP002,OUT001
+INV003,Vanilla Syrup,Ingredient,8.5,5,20,L,12.00,2024-01-08,SUPP003,OUT001
+INV004,Croissant,Food,25,10,50,pieces,2.50,2024-01-14,SUPP004,OUT001
+INV005,Chocolate Powder,Ingredient,15.2,8,30,kg,8.50,2024-01-12,SUPP005,OUT001
+INV006,Paper Cups,Packaging,1200,500,2000,pieces,0.08,2024-01-05,SUPP006,OUT001
+INV007,Green Tea,Ingredient,40,15,80,kg,15.00,2024-01-09,SUPP007,OUT001
+INV008,Sugar,Ingredient,25.8,10,50,kg,2.50,2024-01-11,SUPP008,OUT001
+INV009,Plastic Straws,Packaging,800,200,1000,pieces,0.05,2024-01-07,SUPP009,OUT001
+INV010,Cinnamon,Ingredient,5.2,2,10,kg,25.00,2024-01-06,SUPP010,OUT001

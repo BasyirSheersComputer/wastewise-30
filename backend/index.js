@@ -22,6 +22,9 @@ import issuesRoutes from './routes/issues.js';
 import csvUploadRoutes from './routes/csvUpload.js';
 import accessControlRoutes from './routes/accessControl.js';
 import coffeeChainRoutes from './routes/coffeeChain.js';
+import statisticalModelsRoutes from './routes/statisticalModels.js';
+import testStatisticalModelsRoutes from './routes/testStatisticalModels.js';
+import demoStatisticalModelsRoutes from './routes/demoStatisticalModels.js';
 
 dotenv.config();
 
@@ -29,7 +32,18 @@ dotenv.config();
 let supabaseUrl = process.env.SUPABASE_URL;
 let supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create Supabase client only if environment variables are available
+let supabase = null;
+try {
+  if (supabaseUrl && supabaseAnonKey) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+    logger.info('Supabase client created successfully');
+  } else {
+    logger.warn('Supabase environment variables not found, database features will be disabled');
+  }
+} catch (error) {
+  logger.error('Failed to create Supabase client:', error.message);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -193,6 +207,9 @@ app.use('/api/issues', issuesRoutes);
 app.use('/api/upload', csvUploadRoutes);
 app.use('/api/access-control', accessControlRoutes);
 app.use('/api/coffee-chain', coffeeChainRoutes);
+app.use('/api/statistical-models', statisticalModelsRoutes);
+app.use('/api/test-statistical', testStatisticalModelsRoutes);
+app.use('/api/demo-statistical', demoStatisticalModelsRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {

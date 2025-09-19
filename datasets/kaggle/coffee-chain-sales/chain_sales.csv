@@ -1,0 +1,10 @@
+date,chain_id,outlet_id,outlet_name,location,total_revenue,total_transactions,avg_order_value,staff_count
+2024-01-15,CHAIN001,OUT001,Downtown Branch,Kuala Lumpur,847.50,156,5.43,4
+2024-01-15,CHAIN001,OUT002,Mall Branch,Petaling Jaya,923.75,168,5.50,5
+2024-01-15,CHAIN001,OUT003,Airport Branch,Sepang,1123.40,203,5.53,6
+2024-01-16,CHAIN001,OUT001,Downtown Branch,Kuala Lumpur,789.25,142,5.56,4
+2024-01-16,CHAIN001,OUT002,Mall Branch,Petaling Jaya,856.30,155,5.52,5
+2024-01-16,CHAIN001,OUT003,Airport Branch,Sepang,1045.60,189,5.53,6
+2024-01-17,CHAIN001,OUT001,Downtown Branch,Kuala Lumpur,923.75,168,5.50,4
+2024-01-17,CHAIN001,OUT002,Mall Branch,Petaling Jaya,987.25,178,5.55,5
+2024-01-17,CHAIN001,OUT003,Airport Branch,Sepang,1156.80,209,5.53,6

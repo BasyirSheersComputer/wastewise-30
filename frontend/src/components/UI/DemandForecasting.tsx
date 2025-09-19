@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TrendingUp, Cloud, Calendar, BarChart3, AlertTriangle, CheckCircle, RefreshCw, Download, Settings, TrendingDown, Zap } from 'lucide-react';
 import LLMRecommendations from './LLMRecommendations';
 
@@ -8,40 +8,61 @@ const DemandForecasting: React.FC = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const forecastData = [
-    { item: 'Margherita Pizza', current: 45, forecast: 52, confidence: 85, trend: 'up', category: 'Pizza' },
-    { item: 'Caesar Salad', current: 28, forecast: 24, confidence: 78, trend: 'down', category: 'Salads' },
-    { item: 'Chicken Parmesan', current: 35, forecast: 38, confidence: 92, trend: 'up', category: 'Main Course' },
-    { item: 'Pasta Carbonara', current: 22, forecast: 26, confidence: 73, trend: 'up', category: 'Pasta' },
-    { item: 'Beef Burger', current: 58, forecast: 49, confidence: 88, trend: 'down', category: 'Burgers' },
-    { item: 'Fish & Chips', current: 32, forecast: 35, confidence: 81, trend: 'up', category: 'Seafood' },
-    { item: 'Greek Salad', current: 18, forecast: 22, confidence: 76, trend: 'up', category: 'Salads' },
-    { item: 'Pepperoni Pizza', current: 41, forecast: 47, confidence: 89, trend: 'up', category: 'Pizza' }
+    { item: 'Espresso', current: 95, forecast: 102, confidence: 88, trend: 'up', category: 'Coffee' },
+    { item: 'Latte', current: 88, forecast: 94, confidence: 85, trend: 'up', category: 'Coffee' },
+    { item: 'Cappuccino', current: 82, forecast: 78, confidence: 79, trend: 'down', category: 'Coffee' },
+    { item: 'Mocha', current: 75, forecast: 81, confidence: 83, trend: 'up', category: 'Coffee' },
+    { item: 'American Coffee', current: 78, forecast: 85, confidence: 87, trend: 'up', category: 'Coffee' },
+    { item: 'Flat White', current: 72, forecast: 68, confidence: 76, trend: 'down', category: 'Coffee' },
+    { item: 'Croissant', current: 85, forecast: 92, confidence: 91, trend: 'up', category: 'Food' },
+    { item: 'Chocolate Chip Cookie', current: 92, forecast: 89, confidence: 84, trend: 'down', category: 'Food' }
   ];
 
   const weatherImpact = {
-    temperature: 22,
+    temperature: 28,
     condition: 'Sunny',
-    humidity: 45,
-    impact: 'Positive - Expect 15% increase in cold drinks and salads',
+    humidity: 65,
+    impact: 'Positive - Expect 18% increase in iced coffee and cold beverages',
     recommendations: [
-      'Increase cold beverage inventory by 20%',
-      'Stock up on salad ingredients',
-      'Prepare for increased ice cream demand'
+      'Increase iced coffee inventory by 25%',
+      'Stock up on cold brew and iced tea',
+      'Prepare for increased demand in cold desserts'
     ]
   };
 
   const events = [
-    { date: '2024-01-20', event: 'Local Food Festival', impact: '+25% expected', type: 'positive' },
-    { date: '2024-01-22', event: 'University Exam Week', impact: '+40% coffee/snacks', type: 'positive' },
-    { date: '2024-01-25', event: 'Weekend Sports Event', impact: '+30% burgers/beer', type: 'positive' },
-    { date: '2024-01-28', event: 'Holiday Closure', impact: '-100% expected', type: 'negative' }
+    { date: '2024-01-20', event: 'Coffee Festival KL', impact: '+35% coffee sales', type: 'positive' },
+    { date: '2024-01-22', event: 'University Exam Week', impact: '+45% coffee/pastries', type: 'positive' },
+    { date: '2024-01-25', event: 'Weekend Market Day', impact: '+30% breakfast items', type: 'positive' },
+    { date: '2024-01-28', event: 'Public Holiday', impact: '+20% weekend traffic', type: 'positive' }
   ];
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsRefreshing(false);
+    try {
+      // Fetch real forecast data from statistical models API
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        const response = await fetch(`/api/statistical-models/forecast?timePeriod=${selectedPeriod}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            // Update forecast data with real API data
+            console.log('Forecast data updated:', data.data);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching forecast data:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const handleExport = () => {

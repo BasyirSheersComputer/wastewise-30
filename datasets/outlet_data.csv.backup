@@ -1,0 +1,6 @@
+outlet_id,outlet_name,chain_id,location,address,city,state,postal_code,country,phone,manager_name,seating_capacity,opening_date,status
+OUT001,Downtown Branch,CHAIN001,Kuala Lumpur,123 Jalan Bukit Bintang,Kuala Lumpur,WP Kuala Lumpur,50200,Malaysia,+60321456789,John Smith,50,2020-01-15,Active
+OUT002,Mall Branch,CHAIN001,Petaling Jaya,456 Jalan SS2/61,Petaling Jaya,Selangor,47300,Malaysia,+60378765432,Sarah Johnson,80,2020-03-20,Active
+OUT003,Airport Branch,CHAIN001,Sepang,789 Terminal 2 KLIA,Sepang,Selangor,64000,Malaysia,+60387771234,Mike Wilson,120,2020-06-10,Active
+OUT004,University Branch,CHAIN001,Bangi,321 Jalan Universiti,Bangi,Selangor,43600,Malaysia,+60389234567,Emily Davis,60,2020-09-05,Active
+OUT005,Residential Branch,CHAIN001,Shah Alam,654 Jalan Seksyen 7,Shah Alam,Selangor,40000,Malaysia,+60355123456,David Brown,40,2021-01-12,Active

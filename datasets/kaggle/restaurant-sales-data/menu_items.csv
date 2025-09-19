@@ -1,0 +1,11 @@
+item_id,item_name,category,price,cost,profit_margin,prep_time_minutes,popularity_score,seasonal
+ITEM001,Espresso,Coffee,3.50,1.20,65.7,2,95,False
+ITEM002,Latte,Coffee,5.50,1.80,67.3,4,88,False
+ITEM003,Cappuccino,Coffee,5.00,1.65,67.0,4,82,False
+ITEM004,Mocha,Coffee,6.50,2.10,67.7,5,75,False
+ITEM005,American Coffee,Coffee,4.00,1.00,75.0,3,78,False
+ITEM006,Flat White,Coffee,5.75,1.90,67.0,4,72,False
+ITEM007,Macchiato,Coffee,5.25,1.70,67.6,4,68,False
+ITEM008,Croissant,Food,4.50,2.50,44.4,1,85,False
+ITEM009,Chocolate Chip Cookie,Food,3.00,1.80,40.0,1,92,False
+ITEM010,Green Tea,Tea,3.25,1.20,63.1,2,45,False
