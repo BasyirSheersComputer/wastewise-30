@@ -83,33 +83,88 @@ export default function DetailedLandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 to-white">
-      {/* Navigation Header */}
-      <nav className="flex justify-between items-center p-6">
-        <button 
-          onClick={() => navigate('/')}
-          className="text-2xl font-bold text-purple-800 hover:text-purple-600 transition-colors"
-        >
-          WasteWise
-        </button>
-        <div className="space-x-4">
-          <button
-            onClick={() => navigate('/pricing')}
-            className="text-purple-600 hover:text-purple-800 font-medium"
-          >
-            Pricing
-          </button>
-          <button
-            onClick={() => navigate('/login')}
-            className="text-purple-600 hover:text-purple-800 font-medium"
-          >
-            Sign In
-          </button>
-          <button
-            onClick={() => navigate('/signup')}
-            className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 font-medium"
-          >
-            Start Free Trial
-          </button>
+      {/* Navigation Header - Microsoft 365 Copilot Style */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Left Side - Logo and Brand */}
+            <button 
+              onClick={() => navigate('/')}
+              className="flex items-center space-x-4 hover:opacity-80 transition-opacity"
+            >
+              {/* WasteWise Logo */}
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">W</span>
+                </div>
+                <div className="text-xl font-semibold text-gray-900">WasteWise</div>
+              </div>
+              
+              {/* Separator */}
+              <div className="w-px h-6 bg-gray-300"></div>
+              
+              {/* Product Name */}
+              <div className="text-xl font-semibold text-gray-900">WasteWise AI Platform</div>
+            </button>
+            
+            {/* Center-Left Navigation Links */}
+            <div className="hidden lg:flex items-center space-x-6">
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                Products
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                Resources
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                Templates
+              </button>
+              <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                Analytics
+              </button>
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                Support
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Center-Right and Right Actions */}
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => navigate('/pricing')}
+                className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors font-medium"
+              >
+                Buy WasteWise
+              </button>
+              
+              <div className="hidden md:flex items-center space-x-4">
+                <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                  All WasteWise
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
+                >
+                  Sign in
+                </button>
+                <button className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+                  <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
 

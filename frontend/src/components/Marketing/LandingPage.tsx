@@ -61,93 +61,154 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Header - Office.com Style */}
+      {/* Navigation Header - Microsoft 365 Copilot Style */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <div className="text-2xl font-bold text-purple-600">WasteWise</div>
+            {/* Left Side - Logo and Brand */}
+            <div className="flex items-center space-x-4">
+              {/* WasteWise Logo */}
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">W</span>
+                </div>
+                <div className="text-xl font-semibold text-gray-900">WasteWise</div>
+              </div>
+              
+              {/* Separator */}
+              <div className="w-px h-6 bg-gray-300"></div>
+              
+              {/* Product Name */}
+              <div className="text-xl font-semibold text-gray-900">WasteWise AI Platform</div>
             </div>
             
-            {/* Navigation Links */}
-            <div className="hidden md:flex items-center space-x-8">
-              <button className="text-gray-600 hover:text-gray-900 transition-colors">
+            {/* Center-Left Navigation Links */}
+            <div className="hidden lg:flex items-center space-x-6">
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
                 Products
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
-              <button className="text-gray-600 hover:text-gray-900 transition-colors">
-                Solutions
-              </button>
-              <button className="text-gray-600 hover:text-gray-900 transition-colors">
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
                 Resources
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
               <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                Templates
+              </button>
+              <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                Analytics
+              </button>
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
                 Support
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
             </div>
 
-            {/* Action Buttons - Office.com Style */}
+            {/* Center-Right and Right Actions */}
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => navigate('/login')}
-                className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
-              >
-                Sign In
-              </button>
-              <button
                 onClick={() => navigate('/landing')}
-                className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors font-medium"
               >
-                Get WasteWise
+                Buy WasteWise
               </button>
+              
+              <div className="hidden md:flex items-center space-x-4">
+                <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                  All WasteWise
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => navigate('/login')}
+                  className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
+                >
+                  Sign in
+                </button>
+                <button className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+                  <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-purple-50 to-indigo-100 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - Microsoft 365 Copilot Style */}
+      <div className="bg-gradient-to-br from-orange-50 via-white to-purple-50 py-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Transform Your F&B Operations with AI
+            {/* Central Logo/Icon */}
+            <div className="mb-8">
+              <div className="inline-flex items-center justify-center w-24 h-24 mb-4">
+                <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 via-green-400 via-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+                    <TrendingUp className="w-8 h-8 text-purple-600" />
+                  </div>
+                </div>
+              </div>
+              
+              {/* M365 Style Badge */}
+              <div className="inline-flex items-center justify-center">
+                <div className="bg-black text-white px-3 py-1 rounded text-sm font-medium">
+                  W30
+                </div>
+              </div>
+            </div>
+
+            {/* Main Headline with Color Transitions */}
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-orange-500 to-purple-600 bg-clip-text text-transparent">
+                Welcome to the
+              </span>
+              <br />
+              <span className="text-purple-600">
+                WasteWise AI Platform
+              </span>
+              <br />
+              <span className="text-blue-600">
+                app
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Reduce waste by 35-45%, optimize inventory, and save millions with Malaysia's leading AI-powered operational intelligence platform.
+
+            {/* Descriptive Paragraph */}
+            <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+              The WasteWise AI Platform lets you optimize, analyze, and collaborate all in one place with your favorite F&B operations now including AI-powered insights.*
             </p>
             
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            {/* CTA Buttons - Microsoft 365 Style */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <button
-                onClick={() => navigate('/landing')}
-                className="bg-purple-600 text-white px-8 py-4 rounded-lg hover:bg-purple-700 transition-colors text-lg font-semibold flex items-center justify-center"
+                onClick={() => navigate('/login')}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 text-lg font-medium shadow-lg"
               >
-                Get WasteWise
-                <ArrowRight className="w-5 h-5 ml-2" />
+                Sign in
               </button>
               <button
-                onClick={() => navigate('/signup')}
-                className="bg-white text-purple-600 px-8 py-4 rounded-lg hover:bg-gray-50 transition-colors text-lg font-semibold border-2 border-purple-600"
+                onClick={() => navigate('/landing')}
+                className="bg-white text-purple-600 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors text-lg font-medium border-2 border-purple-600 shadow-lg"
               >
-                Sign up for the free version of WasteWise
-                <ArrowRight className="w-5 h-5 ml-2" />
+                Get WasteWise
               </button>
             </div>
 
-            {/* Trust Indicators */}
-            <div className="flex items-center justify-center gap-8 text-sm text-gray-600 mb-8">
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-500" />
-                <span>30-day free trial</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-500" />
-                <span>35-45% waste reduction guaranteed</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-500" />
-                <span>Used by Starbucks, Secret Recipe, Urban Coffee</span>
-              </div>
+            {/* Secondary Call-to-Action Link */}
+            <div className="text-center">
+              <button
+                onClick={() => navigate('/signup')}
+                className="text-blue-600 hover:text-blue-700 transition-colors text-base font-medium"
+              >
+                Sign up for the free version of WasteWise &gt;
+              </button>
             </div>
           </div>
         </div>
