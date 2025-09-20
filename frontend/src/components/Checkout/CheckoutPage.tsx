@@ -255,9 +255,18 @@ export default function CheckoutPage() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
   const planId = searchParams.get('plan') || 'pro';
   const plan = plans[planId];
+
+  // Get billing cycle from URL params
+  useEffect(() => {
+    const billing = searchParams.get('billing');
+    if (billing === 'yearly' || billing === 'monthly') {
+      setBillingCycle(billing);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!publishableKey) {
@@ -394,6 +403,36 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
               
+              {/* Billing Cycle Selector */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-3">Billing Cycle</label>
+                <div className="bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => setBillingCycle('monthly')}
+                    className={`w-1/2 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                      billingCycle === 'monthly'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    onClick={() => setBillingCycle('yearly')}
+                    className={`w-1/2 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                      billingCycle === 'yearly'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Yearly
+                    <span className="ml-1 bg-green-100 text-green-800 text-xs px-1.5 py-0.5 rounded-full">
+                      Save 15%
+                    </span>
+                  </button>
+                </div>
+              </div>
+              
               {/* Plan Details */}
               <div className="border border-gray-200 rounded-lg p-4 mb-6">
                 <div className="flex items-center justify-between mb-2">
@@ -405,8 +444,15 @@ export default function CheckoutPage() {
                   )}
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-2">
-                  ${plan.price}
-                  <span className="text-sm font-normal text-gray-500">/{plan.interval}</span>
+                  ${billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85) : plan.price}
+                  <span className="text-sm font-normal text-gray-500">
+                    /{billingCycle === 'yearly' ? 'year' : plan.interval}
+                  </span>
+                  {billingCycle === 'yearly' && (
+                    <div className="text-sm text-green-600 font-medium">
+                      Save ${Math.round(plan.price * 12 * 0.15)} annually
+                    </div>
+                  )}
                 </div>
                 <ul className="space-y-2 text-sm text-gray-600">
                   {plan.features.slice(0, 4).map((feature, index) => (
@@ -427,15 +473,27 @@ export default function CheckoutPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${plan.price}.00</span>
+                  <span className="font-medium">
+                    ${billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85) : plan.price}.00
+                  </span>
                 </div>
+                {billingCycle === 'yearly' && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Yearly Discount (15%)</span>
+                    <span className="font-medium text-green-600">
+                      -${Math.round(plan.price * 12 * 0.15)}.00
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Tax</span>
                   <span className="font-medium">Calculated at checkout</span>
                 </div>
                 <div className="border-t pt-3 flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${plan.price}.00</span>
+                  <span>
+                    ${billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85) : plan.price}.00
+                  </span>
                 </div>
               </div>
 

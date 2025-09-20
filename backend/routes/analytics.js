@@ -5,7 +5,7 @@
 
 import express from 'express';
 import StatisticalModels from '../services/statisticalModels.js';
-import { authenticateToken } from '../middleware/auth.js';
+import { authenticateUser } from '../utils/authMiddleware.js';
 import { validateRequest } from '../middleware/validation.js';
 import { body, query, param } from 'express-validator';
 
@@ -15,7 +15,7 @@ const router = express.Router();
 let statisticalModels;
 const initializeStatisticalModels = async () => {
   try {
-    const databaseService = (await import('../services/databaseService.js')).default;
+    const { supabase: databaseService } = await import('../services/supabaseClient.js');
     const cacheService = (await import('../services/cacheService.js')).default;
     statisticalModels = new StatisticalModels(databaseService, cacheService);
   } catch (error) {
@@ -32,7 +32,7 @@ initializeStatisticalModels();
  * @access Private
  */
 router.get('/demand-forecast', 
-  authenticateToken,
+  authenticateUser,
   [
     query('outletId').isUUID().withMessage('Valid outlet ID required'),
     query('itemId').isUUID().withMessage('Valid item ID required'),
@@ -75,7 +75,7 @@ router.get('/demand-forecast',
  * @access Private
  */
 router.get('/waste-prediction',
-  authenticateToken,
+  authenticateUser,
   [
     query('outletId').isUUID().withMessage('Valid outlet ID required'),
     query('category').optional().isString().withMessage('Category must be a string'),
@@ -118,7 +118,7 @@ router.get('/waste-prediction',
  * @access Private
  */
 router.get('/inventory-optimization',
-  authenticateToken,
+  authenticateUser,
   [
     query('outletId').isUUID().withMessage('Valid outlet ID required')
   ],
@@ -158,7 +158,7 @@ router.get('/inventory-optimization',
  * @access Private
  */
 router.get('/performance-metrics',
-  authenticateToken,
+  authenticateUser,
   async (req, res) => {
     try {
       const userId = req.user.id;
@@ -188,7 +188,7 @@ router.get('/performance-metrics',
  * @access Private
  */
 router.get('/trend-analysis',
-  authenticateToken,
+  authenticateUser,
   [
     query('metric').isIn(['waste', 'sales', 'inventory', 'cost']).withMessage('Valid metric required'),
     query('period').optional().isIn(['7d', '30d', '90d', '1y']).withMessage('Valid period required'),
@@ -223,7 +223,7 @@ router.get('/trend-analysis',
  * @access Private
  */
 router.get('/comparative-analysis',
-  authenticateToken,
+  authenticateUser,
   [
     query('type').isIn(['outlets', 'periods']).withMessage('Valid comparison type required'),
     query('metric').isIn(['waste', 'sales', 'efficiency', 'cost']).withMessage('Valid metric required')
@@ -257,7 +257,7 @@ router.get('/comparative-analysis',
  * @access Private
  */
 router.post('/custom-report',
-  authenticateToken,
+  authenticateUser,
   [
     body('name').isString().isLength({ min: 1, max: 100 }).withMessage('Report name required'),
     body('metrics').isArray({ min: 1 }).withMessage('At least one metric required'),
@@ -293,7 +293,7 @@ router.post('/custom-report',
  * @access Private
  */
 router.get('/health-check',
-  authenticateToken,
+  authenticateUser,
   async (req, res) => {
     try {
       const health = await checkAnalyticsHealth();
@@ -316,7 +316,7 @@ router.get('/health-check',
 // Helper functions
 
 async function getPerformanceMetrics(userId, outletId) {
-  const databaseService = (await import('../services/databaseService.js')).default;
+  const { supabase: databaseService } = await import('../services/supabaseClient.js');
   
   try {
     // Get basic metrics
@@ -536,7 +536,7 @@ function getHealthGrade(score) {
 }
 
 async function getTrendAnalysis(userId, outletId, metric, period) {
-  const databaseService = (await import('../services/databaseService.js')).default;
+  const { supabase: databaseService } = await import('../services/supabaseClient.js');
   
   const days = getDaysFromPeriod(period);
   const startDate = new Date();
@@ -681,7 +681,7 @@ function calculateTrendSummary(data) {
 }
 
 async function getComparativeAnalysis(userId, type, metric) {
-  const databaseService = (await import('../services/databaseService.js')).default;
+  const { supabase: databaseService } = await import('../services/supabaseClient.js');
   
   if (type === 'outlets') {
     return await compareOutlets(databaseService, userId, metric);
@@ -911,7 +911,7 @@ function generatePeriodInsights(current, previous, metric) {
 }
 
 async function generateCustomReport(userId, name, metrics, filters, format) {
-  const databaseService = (await import('../services/databaseService.js')).default;
+  const { supabase: databaseService } = await import('../services/supabaseClient.js');
   
   // Generate report data based on requested metrics
   const reportData = {};
@@ -960,7 +960,7 @@ async function checkAnalyticsHealth() {
   
   try {
     // Check database connection
-    const databaseService = (await import('../services/databaseService.js')).default;
+    const { supabase: databaseService } = await import('../services/supabaseClient.js');
     const { error: dbError } = await databaseService
       .from('users')
       .select('id')

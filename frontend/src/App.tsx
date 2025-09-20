@@ -39,7 +39,8 @@ import Login from "./components/Auth/Login";
 import EmailConfirmation from "./components/Auth/EmailConfirmation";
 import WelcomeToTrial from "./components/Auth/WelcomeToTrial";
 
-import LandingPage from "./components/Marketing/LandingPage";
+import HomePage from "./components/Marketing/LandingPage";
+import DetailedLandingPage from "./components/Marketing/DetailedLandingPage";
 import GrandSlamOffer from "./components/Marketing/GrandSlamOffer";
 import PricingPage from "./components/Marketing/PricingPage";
 import CheckoutPage from "./components/Checkout/CheckoutPage";
@@ -260,7 +261,8 @@ function App() {
     <Router>
       <Routes>
         {/* Public Routes - No Sidebar */}
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/landing" element={<DetailedLandingPage />} />
         <Route path="/offer" element={<GrandSlamOffer />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
