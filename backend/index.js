@@ -25,6 +25,12 @@ import coffeeChainRoutes from './routes/coffeeChain.js';
 import statisticalModelsRoutes from './routes/statisticalModels.js';
 import testStatisticalModelsRoutes from './routes/testStatisticalModels.js';
 import demoStatisticalModelsRoutes from './routes/demoStatisticalModels.js';
+import inventoryRoutes from './routes/inventory.js';
+import wasteRoutes from './routes/waste.js';
+import suppliersRoutes from './routes/suppliers.js';
+import outletsRoutes from './routes/outlets.js';
+import aiRoutes from './routes/ai.js';
+import analyticsRoutes from './routes/analytics.js';
 
 dotenv.config();
 
@@ -210,6 +216,12 @@ app.use('/api/coffee-chain', coffeeChainRoutes);
 app.use('/api/statistical-models', statisticalModelsRoutes);
 app.use('/api/test-statistical', testStatisticalModelsRoutes);
 app.use('/api/demo-statistical', demoStatisticalModelsRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/waste', wasteRoutes);
+app.use('/api/suppliers', suppliersRoutes);
+app.use('/api/outlets', outletsRoutes);
+app.use('/api/ai', aiRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {

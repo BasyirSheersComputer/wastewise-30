@@ -10,6 +10,8 @@ Welcome to the WasteWise-30 documentation. This directory contains comprehensive
 
 ### 🏗️ Architecture & Design
 - **[Architecture Overview](../architecture/)** - System architecture and design patterns
+- **[Comprehensive Dataflow Diagram](../architecture/COMPREHENSIVE_DATAFLOW_DIAGRAM.md)** - Complete system dataflow from Kaggle data to statistical models
+- **[Visual Dataflow Diagrams](../architecture/WASTEWISE_DATAFLOW_VISUAL.md)** - Interactive Mermaid diagrams and flow sequences
 - **[Docker Architecture](../architecture/DOCKER_FOCUSED_ARCHITECTURE_SUMMARY.md)** - Container-based deployment architecture
 - **[Dockerfile Improvements](../architecture/DOCKERFILE_IMPROVEMENTS.md)** - Container optimization strategies
 
