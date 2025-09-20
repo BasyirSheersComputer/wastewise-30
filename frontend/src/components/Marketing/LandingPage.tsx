@@ -66,61 +66,61 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Left Side - Logo and Brand */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               {/* WasteWise Logo */}
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded flex items-center justify-center">
                   <span className="text-white font-bold text-sm">W</span>
                 </div>
-                <div className="text-xl font-semibold text-gray-900">WasteWise</div>
+                <div className="text-lg font-semibold text-gray-900">WasteWise</div>
               </div>
               
               {/* Separator */}
               <div className="w-px h-6 bg-gray-300"></div>
               
               {/* Product Name */}
-              <div className="text-xl font-semibold text-gray-900">WasteWise AI Platform</div>
+              <div className="text-lg font-semibold text-gray-900 hidden sm:block">WasteWise AI Platform</div>
             </div>
             
-            {/* Center-Left Navigation Links */}
-            <div className="hidden lg:flex items-center space-x-6">
-              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+            {/* Center Navigation Links - Hidden on smaller screens */}
+            <div className="hidden xl:flex items-center space-x-8">
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
                 Products
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
                 Resources
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <button className="text-gray-600 hover:text-gray-900 transition-colors">
+              <button className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
                 Templates
               </button>
-              <button className="text-gray-600 hover:text-gray-900 transition-colors">
+              <button className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
                 Analytics
               </button>
-              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
                 Support
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
             </div>
 
             {/* Center-Right and Right Actions */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               <button
-                onClick={() => navigate('/landing')}
-                className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors font-medium"
+                onClick={() => navigate('/pricing')}
+                className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
               >
                 Buy WasteWise
               </button>
               
-              <div className="hidden md:flex items-center space-x-4">
-                <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+              <div className="hidden lg:flex items-center space-x-6">
+                <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap">
                   All WasteWise
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -128,7 +128,7 @@ export default function HomePage() {
                 </button>
                 <button
                   onClick={() => navigate('/login')}
-                  className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
+                  className="text-gray-600 hover:text-gray-900 transition-colors font-medium whitespace-nowrap"
                 >
                   Sign in
                 </button>
@@ -138,6 +138,13 @@ export default function HomePage() {
                   </svg>
                 </button>
               </div>
+              
+              {/* Mobile menu button */}
+              <button className="lg:hidden w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+                <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -194,7 +201,7 @@ export default function HomePage() {
                 Sign in
               </button>
               <button
-                onClick={() => navigate('/landing')}
+                onClick={() => navigate('/pricing')}
                 className="bg-white text-purple-600 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors text-lg font-medium border-2 border-purple-600 shadow-lg"
               >
                 Get WasteWise
