@@ -53,7 +53,7 @@ export default function GrandSlamOffer() {
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
       {/* Navigation */}
       <nav className="flex justify-between items-center p-6 text-white">
-        <div className="text-2xl font-bold">WasteWise</div>
+        <div className="text-2xl font-bold">Sheerssoft</div>
         <button
           onClick={() => navigate('/')}
           className="text-white hover:text-blue-200 transition-colors"

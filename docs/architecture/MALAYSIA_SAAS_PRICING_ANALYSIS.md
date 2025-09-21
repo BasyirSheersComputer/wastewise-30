@@ -72,7 +72,7 @@
 
 ### **Updated Pricing Tiers**
 
-#### **Professional Plan - RM 1,999/month**
+#### **Professional Plan - RM 5,000/month**
 **Target**: Top 10% revenue makers (RM 2M-10M annually)
 **Locations**: 5-25 locations
 **Market Position**: Established chains, premium restaurants
@@ -100,9 +100,9 @@
 - CAC: RM 10,000
 - Monthly COGS: RM 400
 - Target: 2x (CAC + COGS) = RM 20,800
-- Set at RM 1,999/month for market positioning
+- Set at RM 5,000/month for premium market positioning
 
-#### **Enterprise Plan - RM 4,999/month**
+#### **Enterprise Plan - RM 10,000/month**
 **Target**: Top 1% revenue makers (RM 50M+ annually)
 **Locations**: 25+ locations
 **Market Position**: Major chains, luxury establishments, international brands
@@ -130,7 +130,7 @@
 - CAC: RM 15,000
 - Monthly COGS: RM 500
 - Target: 2x (CAC + COGS) = RM 31,000
-- Set at RM 4,999/month for premium positioning
+- Set at RM 10,000/month for premium positioning
 
 #### **Elite Plan - RM 9,999/month**
 **Target**: Ultra-premium segment (RM 100M+ annually)
@@ -165,8 +165,8 @@
 ### **Special Pricing for Premium Market**
 
 #### **Annual Discounts**
-- **Professional**: RM 1,999/month → RM 1,799/month (10% discount)
-- **Enterprise**: RM 4,999/month → RM 4,499/month (10% discount)
+- **Professional**: RM 5,000/month → RM 4,500/month (10% discount)
+- **Enterprise**: RM 10,000/month → RM 9,000/month (10% discount)
 - **Elite**: RM 9,999/month → RM 8,999/month (10% discount)
 
 #### **Multi-Year Commitments**
@@ -184,7 +184,7 @@
 #### **Price Comparison (Monthly)**
 | Feature | WasteWise Enterprise | Oracle Hospitality | SAP F&B | Microsoft Dynamics |
 |---------|---------------------|-------------------|---------|-------------------|
-| Enterprise Plan | RM 4,999 | RM 8,000+ | RM 12,000+ | RM 6,000+ |
+| Enterprise Plan | RM 10,000 | RM 8,000+ | RM 12,000+ | RM 6,000+ |
 | AI Features | ✅ Advanced | ❌ Limited | ❌ Basic | ❌ None |
 | Waste Tracking | ✅ Specialized | ❌ Generic | ❌ Basic | ❌ None |
 | Local Support | ✅ Malaysian | ❌ International | ❌ International | ❌ International |

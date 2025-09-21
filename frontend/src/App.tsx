@@ -135,7 +135,7 @@ function Sidebar({
     >
       <div className="flex items-center justify-between h-16 px-lg border-b border-border">
         <h1 className="text-lg font-semibold text-text-primary">
-          WasteWise
+          Sheerssoft
         </h1>
         <button
           onClick={() => setSidebarOpen(false)}
@@ -223,7 +223,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
               <Menu size={20} />
             </button>
             <h1 className="text-md font-semibold text-text-primary">
-              WasteWise
+              Sheerssoft
             </h1>
             <div className="w-5" />
           </div>

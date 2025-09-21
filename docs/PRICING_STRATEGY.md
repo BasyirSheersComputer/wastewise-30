@@ -13,7 +13,7 @@ This is the foundation of your software—the "off-the-shelf" solution that prov
 * **Point-of-Sale (POS) Integrations:** Standard API connectors for popular POS systems used in Malaysia (e.g., OMO, i-Neighbour, StoreHub).
 * **Standard Features:** Core functionalities that address common pain points across most F&B businesses, such as a customer feedback module, basic menu management, and a reporting suite.
 
-**Pricing:** The pricing for the template part should be on a tiered, per-location, or per-user subscription model. This is where you would apply the value-based pricing strategy discussed earlier (e.g., RM 5,000 to RM 10,000 per month for a chain of 10 locations). The price is predictable and directly tied to the number of locations or users.
+**Pricing:** The pricing for the template part should be on a tiered, per-10-outlets subscription model. This is where you would apply the value-based pricing strategy discussed earlier (e.g., RM 5,000 per month for Professional plan covering up to 10 outlets, RM 10,000 per month for Enterprise plan covering up to 10 outlets). The price is predictable and directly tied to the number of outlet groups, with clear scaling for larger chains.
 
 ---
 
@@ -66,7 +66,7 @@ This is the most advanced model and should be used with caution for very large, 
 
 **In summary, your pricing for a large F&B chain should be a combination of two distinct parts:**
 
-1.  **The Template Part:** A recurring **subscription fee** (e.g., RM 5,000-RM 10,000/month) that covers the use of your scalable, core software.
+1.  **The Template Part:** A recurring **subscription fee** (e.g., RM 5,000/month for Professional plan per 10 outlets, RM 10,000/month for Enterprise plan per 10 outlets) that covers the use of your scalable, core software.
 2.  **The Non-Template Part:** A **one-time project-based fee** (e.g., RM 100,000-RM 200,000+) for implementation, custom integrations, and specialized consulting.
 
 By separating these two, you provide a clear, understandable pricing structure that demonstrates the immense value of your bespoke services while maintaining the predictable revenue stream of a SaaS business.

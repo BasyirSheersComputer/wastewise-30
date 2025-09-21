@@ -132,7 +132,7 @@ export default function CheckoutSuccess() {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="text-2xl font-bold text-blue-600">WasteWise</div>
+            <div className="text-2xl font-bold text-blue-600">Sheerssoft</div>
             <div className="flex items-center space-x-2 text-sm text-green-600">
               <CheckCircle className="w-4 h-4" />
               <span>Payment Successful</span>

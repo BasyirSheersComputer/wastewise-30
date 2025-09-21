@@ -70,9 +70,9 @@ export default function HomePage() {
               {/* WasteWise Logo */}
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">W</span>
+                  <span className="text-white font-bold text-sm">S</span>
                 </div>
-                <div className="text-lg font-semibold text-gray-900">WasteWise</div>
+                <div className="text-lg font-semibold text-gray-900">Sheerssoft</div>
               </div>
               
               {/* Separator */}
@@ -466,7 +466,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="text-2xl font-bold text-purple-400 mb-4">WasteWise</div>
+              <div className="text-2xl font-bold text-purple-400 mb-4">Sheerssoft</div>
               <p className="text-gray-400">
                 AI-powered operational intelligence platform for Malaysia's F&B industry.
               </p>

@@ -30,6 +30,7 @@ interface PlanDetails {
   name: string;
   price: number;
   interval: string;
+  pricingUnit?: string;
   features: string[];
   popular?: boolean;
 }
@@ -51,8 +52,9 @@ const plans: Record<string, PlanDetails> = {
   pro: {
     id: 'pro',
     name: 'Professional Plan',
-    price: 99,
+    price: 5000,
     interval: 'month',
+    pricingUnit: 'per 10 outlets',
     features: [
       'Everything in Basic',
       'Advanced AI insights',
@@ -67,8 +69,9 @@ const plans: Record<string, PlanDetails> = {
   enterprise: {
     id: 'enterprise',
     name: 'Enterprise Plan',
-    price: 199,
+    price: 10000,
     interval: 'month',
+    pricingUnit: 'per 10 outlets',
     features: [
       'Everything in Pro',
       'Dedicated success manager',
@@ -231,7 +234,7 @@ function CheckoutForm({ planId, clientSecret }: { planId: string; clientSecret: 
         ) : (
           <>
             <Lock className="w-5 h-5 mr-2" />
-            Pay ${plan.price}/{plan.interval}
+            Pay RM {plan.price.toLocaleString()}/{plan.interval}
           </>
         )}
       </button>
@@ -365,7 +368,7 @@ export default function CheckoutPage() {
                 <ArrowLeft className="w-4 h-4 mr-1" />
                 Back to Pricing
               </button>
-              <div className="text-2xl font-bold text-blue-600">WasteWise</div>
+              <div className="text-2xl font-bold text-blue-600">Sheerssoft</div>
             </div>
             <div className="flex items-center space-x-2 text-sm text-gray-500">
               <Lock className="w-4 h-4" />
@@ -444,16 +447,21 @@ export default function CheckoutPage() {
                   )}
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-2">
-                  ${billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85) : plan.price}
+                  RM {billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85).toLocaleString() : plan.price.toLocaleString()}
                   <span className="text-sm font-normal text-gray-500">
                     /{billingCycle === 'yearly' ? 'year' : plan.interval}
                   </span>
                   {billingCycle === 'yearly' && (
                     <div className="text-sm text-green-600 font-medium">
-                      Save ${Math.round(plan.price * 12 * 0.15)} annually
+                      Save RM {Math.round(plan.price * 12 * 0.15).toLocaleString()} annually
                     </div>
                   )}
                 </div>
+                {plan.pricingUnit && (
+                  <div className="text-sm text-gray-600 text-center mb-2">
+                    {plan.pricingUnit}
+                  </div>
+                )}
                 <ul className="space-y-2 text-sm text-gray-600">
                   {plan.features.slice(0, 4).map((feature, index) => (
                     <li key={index} className="flex items-center">
@@ -474,14 +482,14 @@ export default function CheckoutPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
                   <span className="font-medium">
-                    ${billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85) : plan.price}.00
+                    RM {billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85).toLocaleString() : plan.price.toLocaleString()}
                   </span>
                 </div>
                 {billingCycle === 'yearly' && (
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Yearly Discount (15%)</span>
                     <span className="font-medium text-green-600">
-                      -${Math.round(plan.price * 12 * 0.15)}.00
+                      -RM {Math.round(plan.price * 12 * 0.15).toLocaleString()}
                     </span>
                   </div>
                 )}
@@ -492,7 +500,7 @@ export default function CheckoutPage() {
                 <div className="border-t pt-3 flex justify-between font-semibold">
                   <span>Total</span>
                   <span>
-                    ${billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85) : plan.price}.00
+                    RM {billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85).toLocaleString() : plan.price.toLocaleString()}
                   </span>
                 </div>
               </div>

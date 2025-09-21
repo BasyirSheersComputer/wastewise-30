@@ -95,9 +95,9 @@ export default function DetailedLandingPage() {
               {/* WasteWise Logo */}
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">W</span>
+                  <span className="text-white font-bold text-sm">S</span>
                 </div>
-                <div className="text-lg font-semibold text-gray-900">WasteWise</div>
+                <div className="text-lg font-semibold text-gray-900">Sheerssoft</div>
               </div>
               
               {/* Separator */}
@@ -463,7 +463,7 @@ export default function DetailedLandingPage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="text-2xl font-bold text-purple-400 mb-4">WasteWise</div>
+              <div className="text-2xl font-bold text-purple-400 mb-4">Sheerssoft</div>
               <p className="text-gray-400">
                 Premium AI platform for Malaysia's top F&B revenue generators.
               </p>

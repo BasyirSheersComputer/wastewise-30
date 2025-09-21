@@ -29,10 +29,11 @@ router.get('/plans', async (req, res) => {
       {
         id: 'professional',
         name: 'Professional',
-        price: 2499, // Increased from 1999 to include risk reversal
-        originalPrice: 2999,
+        price: 5000,
+        originalPrice: 6000,
         currency: 'MYR',
         interval: 'month',
+        pricingUnit: 'per 10 outlets',
         popular: true,
         savings: 17,
         targetMarket: 'Top 10% revenue makers (RM 2M-10M annually)',
@@ -93,12 +94,13 @@ router.get('/plans', async (req, res) => {
       {
         id: 'enterprise',
         name: 'Enterprise',
-        price: 5999, // Increased from 4999 to include risk reversal
-        originalPrice: 7499,
+        price: 10000,
+        originalPrice: 12000,
         currency: 'MYR',
         interval: 'month',
+        pricingUnit: 'per 10 outlets',
         popular: false,
-        savings: 20,
+        savings: 17,
         targetMarket: 'Top 1% revenue makers (RM 50M+ annually)',
         annualRevenue: 'RM 50M+',
         valueProposition: 'Reduce waste by 30-40% and save RM 500K-1M/month',

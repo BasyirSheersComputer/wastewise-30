@@ -67,7 +67,7 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <div className="text-2xl font-bold text-purple-600">WasteWise</div>
+              <div className="text-2xl font-bold text-purple-600">Sheerssoft</div>
             </div>
             
             {/* Navigation Links */}
@@ -398,7 +398,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="text-2xl font-bold text-purple-400 mb-4">WasteWise</div>
+              <div className="text-2xl font-bold text-purple-400 mb-4">Sheerssoft</div>
               <p className="text-gray-400">
                 AI-powered operational intelligence platform for Malaysia's F&B industry.
               </p>

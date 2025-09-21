@@ -51,12 +51,12 @@ The WasteWise application uses Stripe's pricing table component to display subsc
 
 ## Recommended Images by Plan
 
-### Professional Plan (RM 1,999/month)
+### Professional Plan (RM 5,000/month)
 - **Image**: Modern coffee shop interior
 - **Theme**: Growing business, professional environment
 - **Suggested**: Coffee shop with customers, modern equipment
 
-### Enterprise Plan (RM 4,999/month)
+### Enterprise Plan (RM 10,000/month)
 - **Image**: Coffee beans and industrial equipment
 - **Theme**: Scale, efficiency, established operations
 - **Suggested**: Coffee roastery, bulk operations, multiple locations
