@@ -1,5 +1,5 @@
 /**
- * Comprehensive Logging Service for WasteWise
+ * Comprehensive Logging Service for Servora AI
  * Provides structured logging, log aggregation, and log analysis
  */
 

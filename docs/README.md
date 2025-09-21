@@ -1,6 +1,6 @@
-# WasteWise-30 Documentation
+# Servora AI Documentation
 
-Welcome to the WasteWise-30 documentation. This directory contains comprehensive documentation for the Coffee Chain Operational Intelligence System.
+Welcome to the Servora AI documentation. This directory contains comprehensive documentation for the Coffee Chain Operational Intelligence System.
 
 ## 📚 Documentation Structure
 

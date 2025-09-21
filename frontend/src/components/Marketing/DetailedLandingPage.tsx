@@ -59,7 +59,7 @@ export default function DetailedLandingPage() {
       name: 'Sarah Chen',
       role: 'Operations Director',
       company: 'Starbucks Malaysia',
-      content: 'We were losing RM 180K monthly on expired milk and ingredients. WasteWise AI predicted our demand with 94% accuracy, reducing waste by 38% in just 30 days. The ROI was immediate.',
+      content: 'We were losing RM 180K monthly on expired milk and ingredients. Servora AI predicted our demand with 94% accuracy, reducing waste by 38% in just 30 days. The ROI was immediate.',
       rating: 5,
       savings: 'RM 180K/month saved'
     },
@@ -67,7 +67,7 @@ export default function DetailedLandingPage() {
       name: 'Michael Rodriguez',
       role: 'CEO',
       company: 'Secret Recipe Group',
-      content: 'Manual inventory tracking across 45 locations was a nightmare. WasteWise automated everything and identified RM 120K in hidden waste costs we never knew existed.',
+      content: 'Manual inventory tracking across 45 locations was a nightmare. Servora AI automated everything and identified RM 120K in hidden waste costs we never knew existed.',
       rating: 5,
       savings: 'RM 120K/month saved'
     },
@@ -75,7 +75,7 @@ export default function DetailedLandingPage() {
       name: 'Jennifer Park',
       role: 'General Manager',
       company: 'Urban Coffee Co.',
-      content: 'Our baristas were constantly running out of ingredients or throwing away expired stock. WasteWise eliminated both problems with AI-powered forecasting.',
+      content: 'Our baristas were constantly running out of ingredients or throwing away expired stock. Servora AI eliminated both problems with AI-powered forecasting.',
       rating: 5,
       savings: 'RM 85K/month saved'
     }
@@ -92,7 +92,7 @@ export default function DetailedLandingPage() {
               onClick={() => navigate('/')}
               className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
             >
-              {/* WasteWise Logo */}
+              {/* Servora AI Logo */}
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded flex items-center justify-center">
                   <span className="text-white font-bold text-sm">S</span>
@@ -104,7 +104,7 @@ export default function DetailedLandingPage() {
               <div className="w-px h-6 bg-gray-300"></div>
               
               {/* Product Name */}
-              <div className="text-lg font-semibold text-gray-900 hidden sm:block">WasteWise AI Platform</div>
+              <div className="text-lg font-semibold text-gray-900 hidden sm:block">Servora AI Platform</div>
             </button>
             
             {/* Center Navigation Links - Hidden on smaller screens */}
@@ -141,12 +141,12 @@ export default function DetailedLandingPage() {
                 onClick={() => navigate('/pricing')}
                 className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
               >
-                Buy WasteWise
+                Buy Servora AI
               </button>
               
               <div className="hidden lg:flex items-center space-x-6">
                 <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap">
-                  All WasteWise
+                  All Servora AI
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
@@ -188,7 +188,7 @@ export default function DetailedLandingPage() {
           <strong>Starbucks Malaysia loses RM 180K/month</strong> on expired ingredients. <strong>Secret Recipe wastes RM 120K/month</strong> on overstocked inventory. 
           <strong>Your multi-location chain is silently burning cash</strong> through poor demand forecasting, manual inventory management, and reactive waste tracking.
           <br /><br />
-          <span className="text-purple-600 font-semibold">WasteWise AI stops the bleeding with 35-45% waste reduction guaranteed.</span>
+          <span className="text-purple-600 font-semibold">Servora AI stops the bleeding with 35-45% waste reduction guaranteed.</span>
         </p>
         
         {/* Pain Point Statistics */}
@@ -247,7 +247,7 @@ export default function DetailedLandingPage() {
       <div className="px-6 py-16 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">
-            How WasteWise Stops Your Monthly RM 50K-200K Waste Bleeding
+            How Servora AI Stops Your Monthly RM 50K-200K Waste Bleeding
           </h2>
           <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
             Three AI-powered solutions that directly address the biggest pain points of Malaysia's top coffee chains and F&B businesses
@@ -311,7 +311,7 @@ export default function DetailedLandingPage() {
             </div>
             
             <div className="bg-white rounded-lg p-6 border-l-4 border-purple-500">
-              <h3 className="text-xl font-semibold text-purple-700 mb-3">The WasteWise Solution</h3>
+              <h3 className="text-xl font-semibold text-purple-700 mb-3">The Servora AI Solution</h3>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start">
                   <span className="text-green-500 mr-2">✓</span>
@@ -494,7 +494,7 @@ export default function DetailedLandingPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 WasteWise. All rights reserved. Premium platform for top 10% revenue makers.</p>
+            <p>&copy; 2024 Sheers Software Sdn Bhd. All rights reserved. | Servora AI - Premium platform for top 10% revenue makers.</p>
           </div>
         </div>
       </footer>

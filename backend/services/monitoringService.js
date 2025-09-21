@@ -1,5 +1,5 @@
 /**
- * Comprehensive Monitoring Service for WasteWise
+ * Comprehensive Monitoring Service for Servora AI
  * Provides system monitoring, health checks, and performance tracking
  */
 

@@ -1,8 +1,8 @@
-# 🚀 WasteWise-30 - Coffee Chain Operational Intelligence System
+# 🚀 Servora AI - Coffee Chain Operational Intelligence System
 
 ## 📋 **Project Overview**
 
-WasteWise-30 is a comprehensive coffee chain operational intelligence platform that helps coffee shops reduce waste, optimize inventory, and increase profitability through AI-powered insights and real-time monitoring.
+Servora AI is a comprehensive coffee chain operational intelligence platform that helps coffee shops reduce waste, optimize inventory, and increase profitability through AI-powered insights and real-time monitoring.
 
 ### **🎯 Key Features:**
 - **AI-Powered Recommendations**: Machine learning algorithms for waste prediction and optimization
@@ -39,8 +39,8 @@ WasteWise-30 is a comprehensive coffee chain operational intelligence platform t
 
 **1. Clone the Repository:**
 ```bash
-git clone https://github.com/BasyirSheersComputer/wastewise-30.git
-cd wastewise-30
+git clone https://github.com/BasyirSheersComputer/servora-ai.git
+cd servora-ai
 ```
 
 **2. Set Up Environment:**
@@ -97,9 +97,9 @@ git push origin main
 - **Health Check**: http://localhost:3000/health
 
 **🌏 Production URLs (Asia Southeast Region):**
-- **Frontend**: `https://wastewise-frontend-{PROJECT_ID}-as.a.run.app`
-- **Backend API**: `https://wastewise-backend-{PROJECT_ID}-as.a.run.app`
-- **Health Check**: `https://wastewise-backend-{PROJECT_ID}-as.a.run.app/health`
+- **Frontend**: `https://servora-ai-frontend-{PROJECT_ID}-as.a.run.app`
+- **Backend API**: `https://servora-ai-backend-{PROJECT_ID}-as.a.run.app`
+- **Health Check**: `https://servora-ai-backend-{PROJECT_ID}-as.a.run.app/health`
 
 ## 📁 **Project Structure**
 
@@ -113,7 +113,7 @@ This project has been organized for better maintainability and developer experie
 - 🎨 **Frontend**: `frontend/` - React application
 
 ```
-wastewise-30/
+servora-ai/
 ├── 📁 docs/                    # Documentation
 │   ├── 📁 architecture/        # Architecture documentation
 │   ├── 📁 user-guides/         # User guides and manuals

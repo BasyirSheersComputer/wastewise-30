@@ -1,4 +1,4 @@
-# WasteWise Backend API
+# Servora AI Backend API
 
 AI-powered restaurant waste management backend with real-time analytics and recommendations.
 

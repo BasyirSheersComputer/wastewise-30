@@ -1,5 +1,5 @@
 /**
- * Statistical Models Service for WasteWise
+ * Statistical Models Service for Servora AI
  * Implements demand forecasting, waste prediction, and inventory optimization models
  */
 

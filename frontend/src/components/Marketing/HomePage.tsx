@@ -37,7 +37,7 @@ export default function HomePage() {
       name: 'Sarah Chen',
       role: 'Operations Director',
       company: 'Starbucks Malaysia',
-      content: 'WasteWise helped us reduce food waste by 35% across all 50 locations. The AI insights are game-changing!',
+      content: 'Servora AI helped us reduce food waste by 35% across all 50 locations. The AI insights are game-changing!',
       rating: 5,
       savings: 'RM 250K/month saved'
     },
@@ -98,7 +98,7 @@ export default function HomePage() {
                 onClick={() => navigate('/landing')}
                 className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium"
               >
-                Get WasteWise
+                Get Servora AI
               </button>
             </div>
           </div>
@@ -122,14 +122,14 @@ export default function HomePage() {
                 onClick={() => navigate('/landing')}
                 className="bg-purple-600 text-white px-8 py-4 rounded-lg hover:bg-purple-700 transition-colors text-lg font-semibold flex items-center justify-center"
               >
-                Get WasteWise
+                Get Servora AI
                 <ArrowRight className="w-5 h-5 ml-2" />
               </button>
               <button
                 onClick={() => navigate('/signup')}
                 className="bg-white text-purple-600 px-8 py-4 rounded-lg hover:bg-gray-50 transition-colors text-lg font-semibold border-2 border-purple-600"
               >
-                Sign up for the free version of WasteWise
+                Sign up for the free version of Servora AI
                 <ArrowRight className="w-5 h-5 ml-2" />
               </button>
             </div>
@@ -158,7 +158,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose WasteWise?
+              Why Choose Servora AI?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Enterprise-grade AI platform designed for Malaysia's top F&B businesses
@@ -264,7 +264,7 @@ export default function HomePage() {
                 onClick={() => navigate('/landing')}
                 className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold"
               >
-                Get WasteWise
+                Get Servora AI
               </button>
             </div>
 
@@ -337,7 +337,7 @@ export default function HomePage() {
               Trusted by Malaysia's Top F&B Leaders
             </h2>
             <p className="text-xl text-gray-600">
-              See what our customers have to say about WasteWise
+              See what our customers have to say about Servora AI
             </p>
           </div>
 
@@ -373,14 +373,14 @@ export default function HomePage() {
             Ready to Transform Your Operations?
           </h2>
           <p className="text-xl text-purple-100 mb-8">
-            Join thousands of F&B businesses already saving millions with WasteWise AI
+            Join thousands of F&B businesses already saving millions with Servora AI
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => navigate('/landing')}
               className="bg-white text-purple-600 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors text-lg font-semibold flex items-center justify-center"
             >
-              Get WasteWise
+              Get Servora AI
               <ArrowRight className="w-5 h-5 ml-2" />
             </button>
             <button
@@ -407,7 +407,7 @@ export default function HomePage() {
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><button className="hover:text-white transition-colors">Features</button></li>
-                <li><button onClick={() => navigate('/landing')} className="hover:text-white transition-colors">Get WasteWise</button></li>
+                <li><button onClick={() => navigate('/landing')} className="hover:text-white transition-colors">Get Servora AI</button></li>
                 <li><button onClick={() => navigate('/signup')} className="hover:text-white transition-colors">Free Trial</button></li>
               </ul>
             </div>
@@ -429,7 +429,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 WasteWise. All rights reserved.</p>
+            <p>&copy; 2024 Sheers Software Sdn Bhd. All rights reserved. | Servora AI</p>
           </div>
         </div>
       </footer>

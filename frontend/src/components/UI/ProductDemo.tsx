@@ -127,7 +127,7 @@ const ProductDemo: React.FC = () => {
   const demoSteps: DemoStep[] = [
     {
       id: 'overview',
-      title: 'Welcome to WasteWise AI',
+      title: 'Welcome to Servora AI',
       description: 'See how Malaysia\'s top coffee chains save RM 50K-200K monthly with AI-powered waste reduction',
       duration: 5000,
       component: (
@@ -137,7 +137,7 @@ const ProductDemo: React.FC = () => {
               <Coffee className="w-12 h-12 text-white" />
             </div>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">WasteWise AI Platform</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Servora AI Platform</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Transform your coffee chain operations with AI-powered demand forecasting, 
             real-time waste tracking, and automated inventory management.
@@ -352,7 +352,7 @@ const ProductDemo: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white rounded-lg p-4 shadow-sm border">
-              <h4 className="font-semibold text-gray-900 mb-2">Before WasteWise</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Before Servora AI</h4>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>• RM 50K-200K monthly waste</li>
                 <li>• Manual inventory tracking</li>
@@ -361,7 +361,7 @@ const ProductDemo: React.FC = () => {
               </ul>
             </div>
             <div className="bg-white rounded-lg p-4 shadow-sm border">
-              <h4 className="font-semibold text-gray-900 mb-2">After WasteWise</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">After Servora AI</h4>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>• 35-45% waste reduction</li>
                 <li>• Automated inventory control</li>
@@ -489,7 +489,7 @@ const ProductDemo: React.FC = () => {
               <Coffee className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">WasteWise AI Demo</h1>
+              <h1 className="text-xl font-bold text-gray-900">Servora AI Demo</h1>
               <p className="text-sm text-gray-600">Interactive product demonstration</p>
             </div>
           </div>

@@ -1,8 +1,8 @@
 {
   "type": "module",
-  "name": "wastewise-backend",
+  "name": "servora-ai-backend",
   "version": "1.0.0",
-  "description": "Backend API for WasteWise - AI-powered restaurant waste management SaaS platform",
+  "description": "Backend API for Servora AI - AI-powered restaurant waste management SaaS platform",
   "main": "index.js",
   "engines": {
     "node": ">=18.0.0"
@@ -50,7 +50,7 @@
     "stripe",
     "payment"
   ],
-  "author": "WasteWise Team",
+  "author": "Sheers Software Sdn Bhd",
   "license": "MIT",
   "dependencies": {
     "@google/genai": "^1.13.0",

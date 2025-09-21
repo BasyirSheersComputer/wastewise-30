@@ -1,4 +1,4 @@
-/* Custom styling for Stripe pricing table to match WasteWise design */
+/* Custom styling for Stripe pricing table to match Servora AI design */
 
 /* Container styling */
 .stripe-pricing-table-container {
@@ -29,7 +29,7 @@ stripe-pricing-table {
   --stripe-pricing-table-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* Custom button styling to match WasteWise theme */
+/* Custom button styling to match Servora AI theme */
 stripe-pricing-table button {
   background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
   border-radius: 0.5rem;

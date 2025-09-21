@@ -1,4 +1,4 @@
--- Comprehensive RLS Policy Setup for WasteWise Database
+-- Comprehensive RLS Policy Setup for Servora AI Database
 -- Run this script in Supabase Dashboard > SQL Editor
 
 -- =====================================================

@@ -1,6 +1,6 @@
 # Integrated Database Setup Guide
 
-This guide helps you integrate your existing database tables with the new WasteWise application features.
+This guide helps you integrate your existing database tables with the new Servora AI application features.
 
 ## 🎯 **Integration Overview**
 
@@ -345,4 +345,4 @@ After successful integration:
 - `staff`
 - `training_records`
 
-The integration provides a complete, secure, and scalable database architecture for your WasteWise application! 
+The integration provides a complete, secure, and scalable database architecture for your Servora AI application! 

@@ -532,7 +532,7 @@ export default function CheckoutPage() {
                   <span className="text-sm text-gray-600 ml-2">4.9/5</span>
                 </div>
                 <p className="text-sm text-gray-600 mb-2">
-                  "WasteWise helped us reduce food waste by 35% in just 3 months!"
+                  "Servora AI helped us reduce food waste by 35% in just 3 months!"
                 </p>
                 <p className="text-xs text-gray-500">- Sarah Chen, Operations Manager</p>
               </div>

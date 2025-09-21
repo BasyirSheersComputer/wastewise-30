@@ -1,5 +1,5 @@
 /**
- * Comprehensive Validation Middleware for WasteWise
+ * Comprehensive Validation Middleware for Servora AI
  * Provides input validation, sanitization, and security checks
  */
 

@@ -1,5 +1,5 @@
--- WasteWise Database Schema
--- This file contains the complete database schema for the WasteWise SaaS platform
+-- Servora AI Database Schema
+-- This file contains the complete database schema for the Servora AI SaaS platform
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

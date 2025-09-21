@@ -190,7 +190,7 @@ export default function Signup() {
             <ArrowLeft size={20} className="mr-2" />
             Back to Home
           </button>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Join WasteWise</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Join Servora AI</h1>
           <p className="text-gray-600">Start your 30-day free trial today</p>
         </div>
 

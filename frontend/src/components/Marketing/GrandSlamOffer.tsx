@@ -37,7 +37,7 @@ export default function GrandSlamOffer() {
       name: 'Sarah Chen',
       role: 'Operations Director',
       company: 'FreshBites Chain',
-      quote: 'WasteWise helped us reduce food waste by 35% in just 3 months. The ROI was immediate!',
+      quote: 'Servora AI helped us reduce food waste by 35% in just 3 months. The ROI was immediate!',
       rating: 5
     },
     {
@@ -234,7 +234,7 @@ export default function GrandSlamOffer() {
             Don't Miss This Opportunity!
           </h2>
           <p className="text-yellow-800 text-xl mb-8">
-            Join hundreds of restaurants already saving money with WasteWise
+            Join hundreds of restaurants already saving money with Servora AI
           </p>
           <button
             onClick={handleGetStarted}

@@ -1,4 +1,4 @@
--- Integrated Database Setup Script for WasteWise Application
+-- Integrated Database Setup Script for Servora AI Application
 -- This script integrates with existing tables and adds missing components
 
 -- Enable UUID extension

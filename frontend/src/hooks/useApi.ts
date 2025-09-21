@@ -1,5 +1,5 @@
 /**
- * Comprehensive API Hook for WasteWise Frontend
+ * Comprehensive API Hook for Servora AI Frontend
  * Provides state management, caching, and error handling for API calls
  */
 

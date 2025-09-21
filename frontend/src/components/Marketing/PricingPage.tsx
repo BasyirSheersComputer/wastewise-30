@@ -186,7 +186,7 @@ export default function PricingPage() {
       name: 'Sarah Chen',
       role: 'Operations Director',
       company: 'Starbucks Malaysia',
-      content: 'WasteWise helped us reduce food waste by 35% across all 50 locations. The AI insights are game-changing for enterprise operations!',
+      content: 'Servora AI helped us reduce food waste by 35% across all 50 locations. The AI insights are game-changing for enterprise operations!',
       rating: 5,
       savings: 'RM 250K/month'
     },
@@ -621,7 +621,7 @@ export default function PricingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose WasteWise Enterprise?
+              Why Choose Servora AI Enterprise?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Premium AI platform designed exclusively for Malaysia's top F&B revenue generators
@@ -654,7 +654,7 @@ export default function PricingPage() {
               Trusted by Malaysia's Top F&B Leaders
             </h2>
             <p className="text-lg text-gray-600">
-              See what our premium customers have to say about WasteWise
+              See what our premium customers have to say about Servora AI
             </p>
           </div>
 
@@ -740,10 +740,10 @@ export default function PricingPage() {
 
             <div className="border-b border-gray-200 pb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What makes WasteWise different for enterprise customers?
+                What makes Servora AI different for enterprise customers?
               </h3>
               <p className="text-gray-600">
-                WasteWise is designed exclusively for Malaysia's top 10% revenue makers with advanced AI capabilities, custom integrations, dedicated support teams, and comprehensive risk reversal guarantees that understand enterprise-scale operations.
+                Servora AI is designed exclusively for Malaysia's top 10% revenue makers with advanced AI capabilities, custom integrations, dedicated support teams, and comprehensive risk reversal guarantees that understand enterprise-scale operations.
               </p>
             </div>
 
@@ -813,7 +813,7 @@ export default function PricingPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 WasteWise. All rights reserved. Premium platform with guaranteed results for top 10% revenue makers.</p>
+            <p>&copy; 2024 Sheers Software Sdn Bhd. All rights reserved. | Servora AI - Premium platform with guaranteed results for top 10% revenue makers.</p>
           </div>
         </div>
       </footer>

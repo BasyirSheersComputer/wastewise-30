@@ -1,5 +1,5 @@
 /**
- * Analytics Routes for WasteWise
+ * Analytics Routes for Servora AI
  * Handles statistical models, forecasting, and analytics endpoints
  */
 
