@@ -1,8 +1,8 @@
-# WasteWise SaaS Platform - Product Requirements Document (PRD)
+# WasteWise SaaS Template Platform - Product Requirements Document (PRD)
 
 ## Document Information
-- **Document Version**: 1.0
-- **Last Updated**: August 2025
+- **Document Version**: 2.0
+- **Last Updated**: December 2024
 - **Document Owner**: Product Team (Ahmad Basyir bin Azahari)
 - **Stakeholders**: Engineering, Design, Marketing, Sales, Customer Success, Operations
 
@@ -11,24 +11,31 @@
 ## 1. Executive Summary
 
 ### 1.1 Product Overview
-WasteWise is an AI-powered restaurant waste management SaaS platform designed to help coffee chains and restaurants reduce waste, optimize inventory, and improve profitability through intelligent analytics and automated recommendations.
+WasteWise is a scalable, template-based SaaS platform designed as the foundation for operational intelligence solutions. It provides standardized waste management, inventory tracking, and AI-powered analytics that can be deployed across multiple coffee chains and F&B businesses with minimal customization. This template serves as the core product that delivers consistent value while being extensible for enterprise bespoke services.
 
 ### 1.2 Target Market
-- **Primary**: Coffee chains and restaurants
-- **Secondary**: Food service businesses, cafes, quick-service restaurants
-- **Geographic Focus**: Global (with initial focus on English-speaking markets)
+- **Primary**: Coffee chains with 5+ locations seeking standardized operational intelligence
+- **Secondary**: Food service businesses requiring scalable waste management solutions
+- **Tertiary**: Independent cafes and restaurants wanting to adopt industry best practices
+- **Geographic Focus**: Malaysia and Southeast Asia (with expansion to English-speaking markets)
 
 ### 1.3 Value Proposition
-- Reduce food waste by up to 30% through AI-powered demand forecasting
-- Optimize inventory management and reduce costs
-- Improve operational efficiency with automated insights
-- Enhance sustainability credentials and customer satisfaction
-- Increase profitability through data-driven decision making
+- **Standardized Excellence**: Proven waste reduction methodologies (15-30% reduction) through AI-powered demand forecasting
+- **Scalable Operations**: Multi-location inventory management with automated insights
+- **Template Efficiency**: Rapid deployment with minimal setup time (30-day trial to full implementation)
+- **Extensibility**: Built-in integration points for custom enterprise solutions
+- **Cost Predictability**: Transparent subscription pricing tied to locations/users
 
 ### 1.4 Business Model
-- **Pricing**: Subscription-based with 30-day free trial
-- **Plans**: Free (trial), Pro ($29/month), Enterprise (custom pricing)
-- **Revenue Streams**: Monthly subscriptions, enterprise licensing, professional services
+- **Template Pricing**: Subscription-based with 30-day free trial [[memory:6072782]]
+- **Plans**: 
+  - **Starter**: RM 500/month per location (up to 3 locations)
+  - **Professional**: RM 5,000/month for chains (5-10 locations)
+  - **Enterprise**: RM 10,000/month for large chains (10+ locations)
+- **Revenue Streams**: 
+  - Monthly subscriptions for template features
+  - One-time bespoke implementation fees (separate document)
+  - Ongoing professional services retainers
 
 ---
 
@@ -61,30 +68,32 @@ WasteWise is an AI-powered restaurant waste management SaaS platform designed to
 
 ---
 
-## 3. Core Features & Requirements
+## 3. Template Core Features & Requirements
 
-### 3.1 User Authentication & Onboarding
+### 3.1 Standardized User Authentication & Onboarding
 
-#### 3.1.1 User Registration
-**Requirements:**
-- Email/password registration with email confirmation
-- Google OAuth integration
-- 30-day free trial for all new users
-- Business profile setup during onboarding
+#### 3.1.1 Template User Registration
+**Template Requirements:**
+- Standardized email/password registration with email confirmation
+- Google OAuth integration (configurable)
+- 30-day free trial for all new users [[memory:6072782]]
+- Standardized business profile setup during onboarding
+- Multi-location support with hierarchical user management
 
-**User Flow:**
-1. User visits landing page
+**Template User Flow:**
+1. User visits standardized landing page
 2. Clicks "Start Free Trial" or "Sign Up"
-3. Fills registration form with business details
+3. Fills standardized registration form with business details
 4. Receives email confirmation
-5. Confirms email and completes onboarding
-6. Access to 30-day trial begins
+5. Confirms email and completes template onboarding
+6. Access to 30-day trial begins with template features
 
 **Technical Specifications:**
-- Supabase Auth integration
-- Email confirmation flow with redirect handling
-- User profile creation in `users` table
+- Supabase Auth integration (template configuration)
+- Standardized email confirmation flow
+- Template user profile creation in `users` table
 - Trial period tracking with start/end dates
+- **Extensibility Points**: Custom OAuth providers, additional profile fields, custom onboarding flows
 
 #### 3.1.2 User Onboarding
 **Requirements:**
@@ -103,36 +112,48 @@ WasteWise is an AI-powered restaurant waste management SaaS platform designed to
 - Team size
 - Timezone preferences
 
-### 3.2 Dashboard & Analytics
+### 3.2 Template Dashboard & Analytics
 
-#### 3.2.1 Main Dashboard
-**Requirements:**
-- Real-time overview of key metrics
-- Waste reduction progress tracking
-- Cost savings visualization
-- Recent activity feed
-- Quick action buttons
+#### 3.2.1 Standardized Main Dashboard
+**Template Requirements:**
+- Standardized real-time overview of key metrics
+- Template waste reduction progress tracking
+- Standardized cost savings visualization
+- Template recent activity feed
+- Quick action buttons for common tasks
 
-**Key Metrics Displayed:**
-- Total waste reduced (kg/lbs)
-- Cost savings achieved
-- Inventory optimization score
-- AI recommendations count
-- Recent alerts and notifications
+**Template Key Metrics Displayed:**
+- Total waste reduced (kg/lbs) with standardized calculations
+- Cost savings achieved using template formulas
+- Template inventory optimization score
+- AI recommendations count (template algorithms)
+- Recent alerts and notifications (standardized thresholds)
 
-#### 3.2.2 Analytics & Reporting
-**Requirements:**
-- Historical data visualization
-- Trend analysis and forecasting
-- Custom date range selection
-- Export functionality (PDF, CSV)
+**Extensibility Points:**
+- Custom KPI definitions and calculations
+- Additional chart types and visualizations
+- Custom alert thresholds and notification rules
+- Integration with external business intelligence tools
+
+#### 3.2.2 Template Analytics & Reporting
+**Template Requirements:**
+- Standardized historical data visualization
+- Template trend analysis and forecasting models
+- Standardized date range selection
+- Template export functionality (PDF, CSV)
 - Comparative analysis (period-over-period)
 
-**Chart Types:**
-- Line charts for trends
-- Bar charts for comparisons
-- Pie charts for waste composition
-- Heat maps for time-based patterns
+**Template Chart Types:**
+- Line charts for trends (standardized templates)
+- Bar charts for comparisons (template layouts)
+- Pie charts for waste composition (standardized categories)
+- Heat maps for time-based patterns (template configurations)
+
+**Extensibility Points:**
+- Custom report templates and layouts
+- Additional data sources and integrations
+- Custom calculation formulas and metrics
+- Advanced filtering and segmentation options
 
 ### 3.3 Inventory Management
 
@@ -310,31 +331,118 @@ WasteWise is an AI-powered restaurant waste management SaaS platform designed to
 - Resolution tracking
 - User notification system
 
-### 3.11 Subscription Management
+### 3.11 Template Subscription Management
 
-#### 3.11.1 Billing System
-**Requirements:**
-- Stripe integration for payments
-- Subscription plan management
-- Trial period handling
-- Billing cycle management
-- Payment method management
+#### 3.11.1 Template Billing System
+**Template Requirements:**
+- Stripe integration for standardized payments
+- Template subscription plan management
+- Standardized trial period handling (30 days) [[memory:6072782]]
+- Template billing cycle management
+- Standardized payment method management
 
-**Subscription Plans:**
-- **Free Trial**: 30 days with full feature access
-- **Pro Plan**: $29/month with advanced features
-- **Enterprise**: Custom pricing for large organizations
+**Template Subscription Plans:**
+- **Starter Plan**: RM 500/month per location (up to 3 locations)
+  - Core waste tracking and inventory management
+  - Basic analytics and reporting
+  - Standard AI recommendations
+  - Email support
+- **Professional Plan**: RM 5,000/month for chains (5-10 locations)
+  - All Starter features
+  - Multi-location management
+  - Advanced analytics and forecasting
+  - Custom reporting templates
+  - Priority support
+- **Enterprise Plan**: RM 10,000/month for large chains (10+ locations)
+  - All Professional features
+  - Unlimited locations
+  - Advanced integrations
+  - Custom workflows
+  - Dedicated account manager
 
-**Features:**
-- Automatic billing
-- Payment failure handling
-- Subscription upgrades/downgrades
-- Cancellation management
-- Invoice generation
+**Template Features:**
+- Automatic billing with standardized cycles
+- Payment failure handling with template workflows
+- Subscription upgrades/downgrades with standardized processes
+- Cancellation management with template procedures
+- Standardized invoice generation
+
+**Bespoke Services Integration:**
+- Separate billing for custom integrations and professional services
+- Project-based fees for implementation and custom development
+- Retainer-based fees for ongoing strategic support
+- Value-based success fees for high-impact customizations
 
 ---
 
-## 4. User Experience Requirements
+## 4. Template Extensibility & Integration Framework
+
+### 4.1 Template Architecture Principles
+
+#### 4.1.1 Modular Design
+**Core Principle**: The WasteWise template is built with modularity in mind, allowing for seamless integration of bespoke services without disrupting core functionality.
+
+**Template Components:**
+- **Core Engine**: Standardized waste tracking, inventory management, and basic analytics
+- **API Gateway**: Extensible API layer for custom integrations
+- **Plugin System**: Modular architecture for custom features and workflows
+- **Configuration Layer**: Template settings that can be customized per client
+
+#### 4.1.2 Integration Points
+**Standardized Integration Interfaces:**
+- **Data Import/Export APIs**: For custom data sources and legacy systems
+- **Webhook System**: Real-time data synchronization with external systems
+- **Custom Field Framework**: Additional data fields without core modifications
+- **Workflow Engine**: Custom business logic and process automation
+- **Reporting Engine**: Custom report templates and data aggregation
+
+#### 4.1.3 Agent Integration Guidelines
+**For AI Agents and Implementation Teams:**
+
+**Template Customization Process:**
+1. **Assessment Phase**: Analyze client requirements against template capabilities
+2. **Gap Analysis**: Identify features requiring bespoke development
+3. **Integration Planning**: Map bespoke services to template extensibility points
+4. **Configuration Management**: Set up template parameters for client-specific needs
+5. **Testing Framework**: Validate template-bespoke integration
+
+**Key Integration Patterns:**
+- **Configuration-Driven Customization**: Use template settings for client variations
+- **API-First Integration**: Connect bespoke services through standardized APIs
+- **Data Harmonization**: Ensure seamless data flow between template and custom components
+- **User Experience Continuity**: Maintain consistent UI/UX while adding custom features
+
+### 4.2 Template-Bespoke Service Integration
+
+#### 4.2.1 Seamless Data Flow
+**Template Data Standards:**
+- Standardized data schemas for waste tracking, inventory, and analytics
+- Consistent API endpoints for data exchange
+- Template data validation and quality assurance
+- Standardized error handling and logging
+
+**Bespoke Integration Requirements:**
+- Custom data transformations to match template schemas
+- Legacy system integration through template APIs
+- Real-time data synchronization protocols
+- Custom business logic integration points
+
+#### 4.2.2 User Experience Integration
+**Template UI Framework:**
+- Consistent design system and component library
+- Standardized navigation and user flows
+- Template responsive design patterns
+- Accessibility compliance (WCAG 2.1 AA)
+
+**Custom Feature Integration:**
+- Seamless embedding of bespoke features within template UI
+- Consistent styling and branding across template and custom components
+- Unified user authentication and authorization
+- Integrated help and support systems
+
+---
+
+## 5. User Experience Requirements
 
 ### 4.1 Design Principles
 - **Simplicity**: Clean, intuitive interface
@@ -492,7 +600,75 @@ WasteWise is an AI-powered restaurant waste management SaaS platform designed to
 
 ---
 
-## 10. Future Roadmap
+## 10. Template-Bespoke Pricing Strategy
+
+### 10.1 Dual Pricing Model
+**Core Philosophy**: The WasteWise platform operates on a dual pricing model that separates scalable template features from custom bespoke services, providing clear value proposition and pricing transparency.
+
+**Template Pricing**: Predictable subscription fees for standardized features
+**Bespoke Pricing**: Custom pricing for specialized services and integrations
+
+### 10.2 Template Subscription Pricing
+**Starter Plan**: RM 500/month per location (up to 3 locations)
+- Core waste tracking and inventory management
+- Basic analytics and reporting
+- Standard AI recommendations
+- Email support
+- **Target**: Small independent cafes and restaurants
+
+**Professional Plan**: RM 5,000/month for chains (5-10 locations)
+- All Starter features
+- Multi-location management
+- Advanced analytics and forecasting
+- Custom reporting templates
+- Priority support
+- **Target**: Regional coffee chains and F&B groups
+
+**Enterprise Plan**: RM 10,000/month for large chains (10+ locations)
+- All Professional features
+- Unlimited locations
+- Advanced integrations
+- Custom workflows
+- Dedicated account manager
+- **Target**: Large national chains and enterprise clients
+
+### 10.3 Bespoke Services Pricing
+**Implementation Projects**: RM 100,000 - RM 500,000 (one-time)
+- Custom system integrations
+- Legacy system connections
+- Advanced analytics development
+- Custom reporting solutions
+- Training and change management
+
+**Strategic Partnership Retainer**: RM 15,000 - RM 35,000 per month
+- Dedicated account management
+- Ongoing strategic advisory
+- Priority technical support
+- Regular optimization reviews
+- Continuous improvement services
+
+**Success-Based Pricing**: 1-3% of measurable value delivered
+- ROI-based pricing for high-impact projects
+- Minimum fee: RM 50,000 per project
+- Maximum fee: RM 500,000 per project
+- 12-month measurement period
+
+### 10.4 Pricing Strategy Benefits
+**For Clients**:
+- Clear separation of standard vs. custom services
+- Predictable recurring costs for core functionality
+- Transparent pricing for bespoke development
+- Value-based pricing for high-impact projects
+
+**For WasteWise**:
+- Predictable recurring revenue from template subscriptions
+- Premium pricing for custom services
+- Scalable business model
+- Clear value demonstration for bespoke services
+
+---
+
+## 11. Future Roadmap
 
 ### 10.1 Short-term (3-6 months)
 - **Mobile App**: Native iOS and Android applications
@@ -517,7 +693,166 @@ WasteWise is an AI-powered restaurant waste management SaaS platform designed to
 
 ---
 
-## 11. Appendix
+## 12. AI Agent Implementation Guidelines
+
+### 12.1 Agent Configuration Framework
+**Purpose**: Provide AI agents with comprehensive guidelines for configuring and integrating the WasteWise template with bespoke services.
+
+**Agent Responsibilities**:
+- **Template Configuration**: Configure template settings and feature flags
+- **Bespoke Integration**: Set up custom service integrations
+- **Data Harmonization**: Ensure seamless data flow between systems
+- **Testing & Validation**: Validate all integrations and configurations
+- **Monitoring Setup**: Configure monitoring and alerting systems
+
+### 12.2 Template Customization Process
+**Step 1: Client Assessment**
+```javascript
+// Agent assessment workflow
+async function assessClient(clientData) {
+  const assessment = {
+    template_fit: analyzeTemplateCapabilities(clientData),
+    bespoke_needs: identifyCustomRequirements(clientData),
+    integration_points: mapIntegrationRequirements(clientData),
+    configuration_needs: determineConfigurationRequirements(clientData)
+  };
+  return assessment;
+}
+```
+
+**Step 2: Template Configuration**
+```javascript
+// Agent template configuration
+async function configureTemplate(clientAssessment) {
+  const config = {
+    feature_flags: setFeatureFlags(clientAssessment),
+    data_schemas: configureDataSchemas(clientAssessment),
+    ui_customization: setupUICustomization(clientAssessment),
+    integration_settings: configureIntegrationSettings(clientAssessment)
+  };
+  return config;
+}
+```
+
+**Step 3: Bespoke Service Integration**
+```javascript
+// Agent bespoke service integration
+async function integrateBespokeServices(config, bespokeRequirements) {
+  const integration = {
+    api_endpoints: configureAPIEndpoints(bespokeRequirements),
+    data_transformation: setupDataTransformation(bespokeRequirements),
+    authentication: configureAuthentication(bespokeRequirements),
+    monitoring: setupMonitoring(bespokeRequirements)
+  };
+  return integration;
+}
+```
+
+### 12.3 Agent Decision Trees
+**Template vs. Bespoke Decision Matrix**:
+
+| Requirement | Template Solution | Bespoke Solution | Agent Action |
+|-------------|------------------|------------------|--------------|
+| Standard waste tracking | ✅ Template | ❌ | Configure template settings |
+| Basic inventory management | ✅ Template | ❌ | Configure template settings |
+| Standard reporting | ✅ Template | ❌ | Configure template settings |
+| Legacy system integration | ❌ | ✅ Bespoke | Set up custom integration |
+| Custom ML models | ❌ | ✅ Bespoke | Configure bespoke analytics |
+| Advanced workflows | ❌ | ✅ Bespoke | Set up custom workflows |
+
+### 12.4 Agent Configuration Templates
+**Standard Template Configuration**:
+```json
+{
+  "template_config": {
+    "client_id": "{{CLIENT_ID}}",
+    "features": {
+      "waste_tracking": true,
+      "inventory_management": true,
+      "basic_analytics": true,
+      "standard_reporting": true
+    },
+    "pricing_plan": "{{PLAN_TYPE}}",
+    "trial_period": 30
+  }
+}
+```
+
+**Bespoke Integration Configuration**:
+```json
+{
+  "bespoke_integration": {
+    "services": [
+      {
+        "name": "{{SERVICE_NAME}}",
+        "type": "{{SERVICE_TYPE}}",
+        "endpoint": "{{SERVICE_ENDPOINT}}",
+        "authentication": "{{AUTH_METHOD}}",
+        "data_mapping": "{{DATA_MAPPING_CONFIG}}"
+      }
+    ],
+    "monitoring": {
+      "health_checks": true,
+      "performance_monitoring": true,
+      "error_tracking": true
+    }
+  }
+}
+```
+
+### 12.5 Agent Validation Checklist
+**Pre-Deployment Validation**:
+- [ ] Template configuration validated
+- [ ] Bespoke services configured and tested
+- [ ] Data integration validated
+- [ ] Authentication flow tested
+- [ ] API endpoints verified
+- [ ] Performance benchmarks met
+- [ ] Security requirements satisfied
+- [ ] Monitoring systems configured
+- [ ] Documentation completed
+- [ ] User training materials prepared
+
+**Post-Deployment Validation**:
+- [ ] System health checks passed
+- [ ] Performance metrics within targets
+- [ ] User acceptance testing completed
+- [ ] Integration monitoring active
+- [ ] Error rates within acceptable limits
+- [ ] Client satisfaction confirmed
+- [ ] Support procedures established
+- [ ] Maintenance schedule confirmed
+
+### 12.6 Agent Troubleshooting Protocols
+**Common Issues and Solutions**:
+
+**Issue**: Template-bespoke data synchronization failures
+**Agent Response**:
+1. Check data transformation rules
+2. Validate schema compliance
+3. Test API endpoints
+4. Review error logs
+5. Implement fixes and retest
+
+**Issue**: Authentication integration problems
+**Agent Response**:
+1. Verify SSO configuration
+2. Test token validation
+3. Check user role mappings
+4. Validate session management
+5. Update configuration as needed
+
+**Issue**: Performance degradation
+**Agent Response**:
+1. Analyze performance metrics
+2. Identify bottlenecks
+3. Optimize queries and APIs
+4. Scale resources if needed
+5. Monitor improvements
+
+---
+
+## 13. Appendix
 
 ### 11.1 Glossary
 - **SaaS**: Software as a Service

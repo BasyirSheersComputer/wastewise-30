@@ -1,7 +1,7 @@
 # RLS (Row Level Security) Setup Guide
 
 ## 🎯 Objective
-Fix the profiles table RLS infinite recursion issue and enable RLS policies for all tables in the WasteWise database.
+Fix the profiles table RLS infinite recursion issue and enable RLS policies for all tables in the Servora AI database.
 
 ## 📋 Current Status
 - ✅ 13/13 new tables created

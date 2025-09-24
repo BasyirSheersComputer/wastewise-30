@@ -248,7 +248,7 @@ export default function OnboardingForm() {
               <Coffee className="w-12 h-12 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome to WasteWise AI!</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome to Servora AI!</h1>
           <p className="text-xl text-gray-600 mb-4">Let's set up your account for maximum waste reduction</p>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
             <Shield className="w-4 h-4" />

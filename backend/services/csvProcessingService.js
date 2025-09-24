@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { getRecommendations } from '../ai/recommendations.js';
 import logger from '../utils/logger.js';
+import cacheService from './cacheService.js';
 
 // Create Supabase client only if environment variables are available
 let supabase = null;
@@ -18,20 +19,322 @@ try {
 export class CSVProcessingService {
   constructor() {
     this.supabase = supabase;
+    this.cacheService = cacheService;
+    
+    // Define CSV schemas for validation
+    this.schemas = {
+      inventory: {
+        required: ['item_name', 'category', 'unit', 'current_stock'],
+        optional: ['outlet_id', 'supplier_id', 'min_stock', 'max_stock', 'cost_per_unit', 'expiry_date'],
+        types: {
+          current_stock: 'number',
+          min_stock: 'number',
+          max_stock: 'number',
+          cost_per_unit: 'number'
+        }
+      },
+      waste: {
+        required: ['date', 'waste_type', 'quantity', 'unit'],
+        optional: ['outlet_id', 'cost', 'reason', 'notes'],
+        types: {
+          quantity: 'number',
+          cost: 'number'
+        }
+      },
+      suppliers: {
+        required: ['supplier_name'],
+        optional: ['contact_person', 'email', 'phone', 'address', 'city', 'state', 'country', 'postal_code', 'payment_terms'],
+        types: {}
+      },
+      outlets: {
+        required: ['outlet_name'],
+        optional: ['address', 'city', 'state', 'country', 'postal_code', 'phone', 'email', 'manager_name', 'capacity'],
+        types: {
+          capacity: 'number'
+        }
+      },
+      sales: {
+        required: ['transaction_date', 'product_name', 'quantity', 'unit_price', 'total_amount'],
+        optional: ['outlet_id', 'transaction_time', 'category', 'customer_id', 'payment_method'],
+        types: {
+          quantity: 'number',
+          unit_price: 'number',
+          total_amount: 'number'
+        }
+      }
+    };
+  }
+
+  /**
+   * Validate CSV data against schema
+   */
+  validateCSVData(data, dataType) {
+    const schema = this.schemas[dataType];
+    if (!schema) {
+      throw new Error(`Unknown data type: ${dataType}`);
+    }
+
+    const errors = [];
+    const warnings = [];
+    const validRecords = [];
+
+    data.forEach((record, index) => {
+      const recordErrors = [];
+      const recordWarnings = [];
+      const processedRecord = {};
+
+      // Check required fields
+      for (const field of schema.required) {
+        if (!record[field] || record[field].toString().trim() === '') {
+          recordErrors.push(`Missing required field: ${field}`);
+        } else {
+          processedRecord[field] = record[field];
+        }
+      }
+
+      // Process optional fields
+      for (const field of schema.optional) {
+        if (record[field] !== undefined && record[field] !== null && record[field].toString().trim() !== '') {
+          processedRecord[field] = record[field];
+        }
+      }
+
+      // Type validation and conversion
+      for (const [field, expectedType] of Object.entries(schema.types)) {
+        if (processedRecord[field] !== undefined) {
+          try {
+            if (expectedType === 'number') {
+              const numValue = parseFloat(processedRecord[field]);
+              if (isNaN(numValue)) {
+                recordErrors.push(`Invalid number format for ${field}: ${processedRecord[field]}`);
+              } else {
+                processedRecord[field] = numValue;
+              }
+            }
+          } catch (error) {
+            recordErrors.push(`Type conversion error for ${field}: ${error.message}`);
+          }
+        }
+      }
+
+      // Additional validations based on data type
+      this.performDataSpecificValidations(processedRecord, dataType, recordErrors, recordWarnings);
+
+      if (recordErrors.length > 0) {
+        errors.push({
+          row: index + 1,
+          errors: recordErrors,
+          record: record
+        });
+      } else {
+        validRecords.push(processedRecord);
+        if (recordWarnings.length > 0) {
+          warnings.push({
+            row: index + 1,
+            warnings: recordWarnings,
+            record: record
+          });
+        }
+      }
+    });
+
+    return {
+      valid: errors.length === 0,
+      validRecords,
+      errors,
+      warnings,
+      summary: {
+        total: data.length,
+        valid: validRecords.length,
+        errors: errors.length,
+        warnings: warnings.length
+      }
+    };
+  }
+
+  /**
+   * Perform data-specific validations
+   */
+  performDataSpecificValidations(record, dataType, errors, warnings) {
+    switch (dataType) {
+      case 'inventory':
+        if (record.current_stock < 0) {
+          errors.push('Current stock cannot be negative');
+        }
+        if (record.min_stock && record.min_stock < 0) {
+          errors.push('Minimum stock cannot be negative');
+        }
+        if (record.max_stock && record.max_stock < 0) {
+          errors.push('Maximum stock cannot be negative');
+        }
+        if (record.min_stock && record.max_stock && record.min_stock > record.max_stock) {
+          errors.push('Minimum stock cannot be greater than maximum stock');
+        }
+        if (record.expiry_date) {
+          const expiryDate = new Date(record.expiry_date);
+          if (isNaN(expiryDate.getTime())) {
+            errors.push('Invalid expiry date format');
+          } else if (expiryDate < new Date()) {
+            warnings.push('Item has already expired');
+          }
+        }
+        break;
+
+      case 'waste':
+        if (record.quantity <= 0) {
+          errors.push('Waste quantity must be greater than 0');
+        }
+        if (record.cost && record.cost < 0) {
+          errors.push('Waste cost cannot be negative');
+        }
+        if (record.date) {
+          const wasteDate = new Date(record.date);
+          if (isNaN(wasteDate.getTime())) {
+            errors.push('Invalid date format');
+          } else if (wasteDate > new Date()) {
+            warnings.push('Waste date is in the future');
+          }
+        }
+        break;
+
+      case 'sales':
+        if (record.quantity <= 0) {
+          errors.push('Sale quantity must be greater than 0');
+        }
+        if (record.unit_price <= 0) {
+          errors.push('Unit price must be greater than 0');
+        }
+        if (record.total_amount <= 0) {
+          errors.push('Total amount must be greater than 0');
+        }
+        if (record.unit_price && record.quantity && record.total_amount) {
+          const expectedTotal = record.unit_price * record.quantity;
+          const difference = Math.abs(expectedTotal - record.total_amount);
+          if (difference > 0.01) { // Allow for small rounding differences
+            warnings.push(`Total amount (${record.total_amount}) doesn't match calculated total (${expectedTotal})`);
+          }
+        }
+        break;
+
+      case 'suppliers':
+        if (record.email && !this.isValidEmail(record.email)) {
+          errors.push('Invalid email format');
+        }
+        break;
+
+      case 'outlets':
+        if (record.email && !this.isValidEmail(record.email)) {
+          errors.push('Invalid email format');
+        }
+        if (record.capacity && record.capacity <= 0) {
+          errors.push('Capacity must be greater than 0');
+        }
+        break;
+    }
+  }
+
+  /**
+   * Validate email format
+   */
+  isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  /**
+   * Transform and enrich CSV data
+   */
+  async transformCSVData(records, dataType, userId) {
+    const transformedRecords = [];
+
+    for (const record of records) {
+      const transformedRecord = { ...record };
+      transformedRecord.user_id = userId;
+
+      // Add timestamps
+      transformedRecord.created_at = new Date().toISOString();
+      transformedRecord.updated_at = new Date().toISOString();
+
+      // Data-specific transformations
+      switch (dataType) {
+        case 'inventory':
+          transformedRecord.is_active = true;
+          if (!transformedRecord.min_stock) {
+            transformedRecord.min_stock = 0;
+          }
+          if (!transformedRecord.max_stock) {
+            transformedRecord.max_stock = transformedRecord.current_stock * 2;
+          }
+          break;
+
+        case 'waste':
+          // Ensure date is properly formatted
+          if (transformedRecord.date) {
+            transformedRecord.date = new Date(transformedRecord.date).toISOString().split('T')[0];
+          }
+          break;
+
+        case 'sales':
+          transformedRecord.transaction_date = new Date(transformedRecord.transaction_date).toISOString().split('T')[0];
+          if (transformedRecord.transaction_time) {
+            // Ensure time is properly formatted
+            transformedRecord.transaction_time = transformedRecord.transaction_time.toString();
+          }
+          break;
+
+        case 'suppliers':
+        case 'outlets':
+          transformedRecord.is_active = true;
+          if (!transformedRecord.country) {
+            transformedRecord.country = 'Malaysia';
+          }
+          break;
+      }
+
+      transformedRecords.push(transformedRecord);
+    }
+
+    return transformedRecords;
   }
 
   /**
    * Process uploaded CSV data and generate AI insights
    */
-  async processUploadedData(userId, dataType, recordCount) {
+  async processUploadedData(userId, dataType, csvData) {
     try {
-      console.log(`Processing ${recordCount} ${dataType} records for user ${userId}`);
+      logger.info(`Processing ${csvData.length} ${dataType} records for user ${userId}`);
+
+      // Validate CSV data
+      const validation = this.validateCSVData(csvData, dataType);
+      
+      if (!validation.valid) {
+        return {
+          success: false,
+          errors: validation.errors,
+          warnings: validation.warnings,
+          summary: validation.summary,
+          message: `Validation failed: ${validation.errors.length} errors found`
+        };
+      }
+
+      // Transform data
+      const transformedData = await this.transformCSVData(validation.validRecords, dataType, userId);
+
+      // Insert data into database
+      const insertResult = await this.insertDataToDatabase(transformedData, dataType);
+      
+      if (!insertResult.success) {
+        return insertResult;
+      }
+
+      // Invalidate relevant cache
+      await this.invalidateRelevantCache(userId, dataType);
 
       // Generate immediate insights based on the uploaded data
       const insights = await this.generateImmediateInsights(userId, dataType);
       
-      // Store insights in the database
-      await this.storeInsights(userId, dataType, insights);
+      // Store insights in cache
+      await this.cacheService.cacheAnalytics(userId, dataType, insights);
       
       // Trigger AI recommendations
       await this.triggerAIRecommendations(userId, dataType);
@@ -39,11 +342,103 @@ export class CSVProcessingService {
       return {
         success: true,
         insights: insights,
-        message: `Successfully processed ${recordCount} ${dataType} records and generated insights`
+        summary: validation.summary,
+        warnings: validation.warnings,
+        message: `Successfully processed ${validation.summary.valid} ${dataType} records and generated insights`
       };
     } catch (error) {
-      console.error('Error processing uploaded data:', error);
+      logger.error('Error processing uploaded data:', error);
       throw error;
+    }
+  }
+
+  /**
+   * Insert transformed data into database
+   */
+  async insertDataToDatabase(data, dataType) {
+    try {
+      if (!this.supabase) {
+        throw new Error('Database connection not available');
+      }
+
+      const tableMap = {
+        inventory: 'inventory',
+        waste: 'waste_logs',
+        suppliers: 'suppliers',
+        outlets: 'outlets',
+        sales: 'sales_pos_data'
+      };
+
+      const tableName = tableMap[dataType];
+      if (!tableName) {
+        throw new Error(`Unknown table for data type: ${dataType}`);
+      }
+
+      const { data: insertedData, error } = await this.supabase
+        .from(tableName)
+        .insert(data)
+        .select();
+
+      if (error) {
+        logger.error(`Error inserting ${dataType} data:`, error);
+        return {
+          success: false,
+          error: error.message,
+          message: `Failed to insert ${dataType} data into database`
+        };
+      }
+
+      logger.info(`Successfully inserted ${insertedData.length} ${dataType} records`);
+      return {
+        success: true,
+        data: insertedData,
+        message: `Successfully inserted ${insertedData.length} records`
+      };
+    } catch (error) {
+      logger.error(`Error inserting ${dataType} data:`, error);
+      return {
+        success: false,
+        error: error.message,
+        message: `Failed to insert ${dataType} data`
+      };
+    }
+  }
+
+  /**
+   * Invalidate relevant cache entries
+   */
+  async invalidateRelevantCache(userId, dataType) {
+    try {
+      const cacheKeys = [];
+      
+      switch (dataType) {
+        case 'inventory':
+          cacheKeys.push(`inventory:${userId}`, `analytics:${userId}:inventory`);
+          break;
+        case 'waste':
+          cacheKeys.push(`waste:${userId}`, `analytics:${userId}:waste`);
+          break;
+        case 'suppliers':
+          cacheKeys.push(`suppliers:${userId}`, `analytics:${userId}:suppliers`);
+          break;
+        case 'outlets':
+          cacheKeys.push(`outlets:${userId}`, `analytics:${userId}:outlets`);
+          break;
+        case 'sales':
+          cacheKeys.push(`analytics:${userId}:sales`);
+          break;
+      }
+
+      // Also invalidate AI recommendations cache
+      cacheKeys.push(`ai:${userId}:*`);
+
+      for (const key of cacheKeys) {
+        await this.cacheService.del(key);
+      }
+
+      logger.info(`Invalidated cache for user ${userId} and data type ${dataType}`);
+    } catch (error) {
+      logger.error('Error invalidating cache:', error);
     }
   }
 

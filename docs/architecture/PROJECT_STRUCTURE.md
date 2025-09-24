@@ -23,6 +23,8 @@ wastewise-30/
 │   │   ├── JENKINS_NPM_CACHE_FIX.md
 │   │   └── WEBHOOK_ISSUE_SUMMARY.md
 │   ├── 📁 architecture/             # Architecture documentation
+│   │   ├── COMPREHENSIVE_DATAFLOW_DIAGRAM.md
+│   │   ├── WASTEWISE_DATAFLOW_VISUAL.md
 │   │   ├── DOCKER_DEPLOYMENT_GUIDE.md
 │   │   ├── DOCKER_FOCUSED_ARCHITECTURE_SUMMARY.md
 │   │   ├── DOCKERFILE_IMPROVEMENTS.md

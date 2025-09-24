@@ -30,6 +30,7 @@ interface PlanDetails {
   name: string;
   price: number;
   interval: string;
+  pricingUnit?: string;
   features: string[];
   popular?: boolean;
 }
@@ -51,8 +52,9 @@ const plans: Record<string, PlanDetails> = {
   pro: {
     id: 'pro',
     name: 'Professional Plan',
-    price: 99,
+    price: 5000,
     interval: 'month',
+    pricingUnit: 'per 10 outlets',
     features: [
       'Everything in Basic',
       'Advanced AI insights',
@@ -67,8 +69,9 @@ const plans: Record<string, PlanDetails> = {
   enterprise: {
     id: 'enterprise',
     name: 'Enterprise Plan',
-    price: 199,
+    price: 10000,
     interval: 'month',
+    pricingUnit: 'per 10 outlets',
     features: [
       'Everything in Pro',
       'Dedicated success manager',
@@ -231,7 +234,7 @@ function CheckoutForm({ planId, clientSecret }: { planId: string; clientSecret: 
         ) : (
           <>
             <Lock className="w-5 h-5 mr-2" />
-            Pay ${plan.price}/{plan.interval}
+            Pay RM {plan.price.toLocaleString()}/{plan.interval}
           </>
         )}
       </button>
@@ -255,9 +258,18 @@ export default function CheckoutPage() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
   const planId = searchParams.get('plan') || 'pro';
   const plan = plans[planId];
+
+  // Get billing cycle from URL params
+  useEffect(() => {
+    const billing = searchParams.get('billing');
+    if (billing === 'yearly' || billing === 'monthly') {
+      setBillingCycle(billing);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!publishableKey) {
@@ -356,7 +368,7 @@ export default function CheckoutPage() {
                 <ArrowLeft className="w-4 h-4 mr-1" />
                 Back to Pricing
               </button>
-              <div className="text-2xl font-bold text-blue-600">WasteWise</div>
+              <div className="text-2xl font-bold text-blue-600">Sheerssoft</div>
             </div>
             <div className="flex items-center space-x-2 text-sm text-gray-500">
               <Lock className="w-4 h-4" />
@@ -394,6 +406,36 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
               
+              {/* Billing Cycle Selector */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-3">Billing Cycle</label>
+                <div className="bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => setBillingCycle('monthly')}
+                    className={`w-1/2 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                      billingCycle === 'monthly'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    onClick={() => setBillingCycle('yearly')}
+                    className={`w-1/2 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                      billingCycle === 'yearly'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Yearly
+                    <span className="ml-1 bg-green-100 text-green-800 text-xs px-1.5 py-0.5 rounded-full">
+                      Save 15%
+                    </span>
+                  </button>
+                </div>
+              </div>
+              
               {/* Plan Details */}
               <div className="border border-gray-200 rounded-lg p-4 mb-6">
                 <div className="flex items-center justify-between mb-2">
@@ -405,9 +447,21 @@ export default function CheckoutPage() {
                   )}
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-2">
-                  ${plan.price}
-                  <span className="text-sm font-normal text-gray-500">/{plan.interval}</span>
+                  RM {billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85).toLocaleString() : plan.price.toLocaleString()}
+                  <span className="text-sm font-normal text-gray-500">
+                    /{billingCycle === 'yearly' ? 'year' : plan.interval}
+                  </span>
+                  {billingCycle === 'yearly' && (
+                    <div className="text-sm text-green-600 font-medium">
+                      Save RM {Math.round(plan.price * 12 * 0.15).toLocaleString()} annually
+                    </div>
+                  )}
                 </div>
+                {plan.pricingUnit && (
+                  <div className="text-sm text-gray-600 text-center mb-2">
+                    {plan.pricingUnit}
+                  </div>
+                )}
                 <ul className="space-y-2 text-sm text-gray-600">
                   {plan.features.slice(0, 4).map((feature, index) => (
                     <li key={index} className="flex items-center">
@@ -427,15 +481,27 @@ export default function CheckoutPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${plan.price}.00</span>
+                  <span className="font-medium">
+                    RM {billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85).toLocaleString() : plan.price.toLocaleString()}
+                  </span>
                 </div>
+                {billingCycle === 'yearly' && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Yearly Discount (15%)</span>
+                    <span className="font-medium text-green-600">
+                      -RM {Math.round(plan.price * 12 * 0.15).toLocaleString()}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Tax</span>
                   <span className="font-medium">Calculated at checkout</span>
                 </div>
                 <div className="border-t pt-3 flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${plan.price}.00</span>
+                  <span>
+                    RM {billingCycle === 'yearly' ? Math.round(plan.price * 12 * 0.85).toLocaleString() : plan.price.toLocaleString()}
+                  </span>
                 </div>
               </div>
 
@@ -466,7 +532,7 @@ export default function CheckoutPage() {
                   <span className="text-sm text-gray-600 ml-2">4.9/5</span>
                 </div>
                 <p className="text-sm text-gray-600 mb-2">
-                  "WasteWise helped us reduce food waste by 35% in just 3 months!"
+                  "Servora AI helped us reduce food waste by 35% in just 3 months!"
                 </p>
                 <p className="text-xs text-gray-500">- Sarah Chen, Operations Manager</p>
               </div>

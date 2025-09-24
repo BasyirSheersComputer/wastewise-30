@@ -1,4 +1,4 @@
-// Advanced Analytics Models for WasteWise
+// Advanced Analytics Models for Servora AI
 // Based on PRD Implementation Methodology
 
 import { getTopSellingItems, getWasteStats } from '../database/db.js';

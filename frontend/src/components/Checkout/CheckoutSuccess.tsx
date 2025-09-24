@@ -132,7 +132,7 @@ export default function CheckoutSuccess() {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="text-2xl font-bold text-blue-600">WasteWise</div>
+            <div className="text-2xl font-bold text-blue-600">Sheerssoft</div>
             <div className="flex items-center space-x-2 text-sm text-green-600">
               <CheckCircle className="w-4 h-4" />
               <span>Payment Successful</span>
@@ -148,7 +148,7 @@ export default function CheckoutSuccess() {
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Welcome to WasteWise!
+            Welcome to Servora AI!
           </h1>
           <p className="text-xl text-gray-600 mb-6">
             Your {plan.name} subscription has been activated successfully.
@@ -268,7 +268,7 @@ export default function CheckoutSuccess() {
             onClick={() => navigate('/dashboard')}
             className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold text-lg flex items-center mx-auto"
           >
-            Start Using WasteWise
+            Start Using Servora AI
             <ArrowRight className="w-5 h-5 ml-2" />
           </button>
           <p className="text-gray-600 mt-4">

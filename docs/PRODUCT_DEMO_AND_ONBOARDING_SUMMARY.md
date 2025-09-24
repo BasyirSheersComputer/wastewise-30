@@ -161,8 +161,8 @@ This document summarizes the comprehensive implementation of a high-quality prod
 - Premium pricing for top revenue generators
 
 **Business Model**:
-- Professional: RM 1,999/month (RM 2M-10M revenue)
-- Enterprise: RM 4,999/month (RM 50M+ revenue)
+- Professional: RM 5,000/month (RM 2M-10M revenue)
+- Enterprise: RM 10,000/month (RM 50M+ revenue)
 - Elite: RM 9,999/month (RM 100M+ revenue)
 
 ## 5. Onboarding Guide

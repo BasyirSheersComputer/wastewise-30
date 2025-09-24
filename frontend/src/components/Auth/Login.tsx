@@ -119,7 +119,7 @@ export default function Login() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Welcome Back</h1>
-          <p className="text-gray-600 text-lg">Sign in to your WasteWise account</p>
+          <p className="text-gray-600 text-lg">Sign in to your Servora AI account</p>
         </div>
 
         {/* Error Message */}

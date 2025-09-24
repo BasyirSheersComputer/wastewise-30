@@ -8,6 +8,7 @@ interface Plan {
   name: string;
   price: number;
   originalPrice: number;
+  pricingUnit?: string;
   features: string[];
   popular?: boolean;
   savings?: number;
@@ -31,8 +32,9 @@ const plans: Plan[] = [
   {
     id: 'pro',
     name: 'Professional',
-    price: 99,
-    originalPrice: 199,
+    price: 5000,
+    originalPrice: 6000,
+    pricingUnit: 'per 10 outlets',
     features: [
       'Everything in Basic',
       'Advanced AI insights',
@@ -43,13 +45,14 @@ const plans: Plan[] = [
       'Multi-user access'
     ],
     popular: true,
-    savings: 50
+    savings: 17
   },
   {
     id: 'enterprise',
     name: 'Enterprise',
-    price: 199,
-    originalPrice: 399,
+    price: 10000,
+    originalPrice: 12000,
+    pricingUnit: 'per 10 outlets',
     features: [
       'Everything in Pro',
       'Dedicated success manager',
@@ -59,7 +62,7 @@ const plans: Plan[] = [
       'Advanced compliance',
       '24/7 phone support'
     ],
-    savings: 50
+    savings: 17
   }
 ];
 
@@ -213,11 +216,16 @@ export default function TrialEnded() {
                 <div className="text-center mb-6">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
                   <div className="flex items-center justify-center mb-2">
-                    <span className="text-4xl font-bold text-blue-600">${plan.price}</span>
+                    <span className="text-4xl font-bold text-blue-600">RM {plan.price.toLocaleString()}</span>
                     <span className="text-gray-500 ml-2">/month</span>
                   </div>
+                  {plan.pricingUnit && (
+                    <div className="text-sm text-gray-600 text-center mb-2">
+                      {plan.pricingUnit}
+                    </div>
+                  )}
                   <div className="flex items-center justify-center">
-                    <span className="text-lg text-gray-400 line-through">${plan.originalPrice}</span>
+                    <span className="text-lg text-gray-400 line-through">RM {plan.originalPrice.toLocaleString()}</span>
                     <span className="text-green-600 font-semibold ml-2">Save {plan.savings}%</span>
                   </div>
                 </div>

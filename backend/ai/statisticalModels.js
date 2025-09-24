@@ -1,4 +1,4 @@
-// Statistical Models Implementation for WasteWise
+// Statistical Models Implementation for Servora AI
 // Based on PRD Implementation Methodology
 
 import { getTopSellingItems, getWasteStats } from '../database/db.js';

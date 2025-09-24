@@ -132,7 +132,7 @@ const WelcomeToTrial: React.FC = () => {
             Welcome to Your 30-Day Trial!
           </h1>
           <p className="text-lg text-text-secondary mb-4">
-            Let's get you started with WasteWise. Choose how you'd like to begin:
+            Let's get you started with Servora AI. Choose how you'd like to begin:
           </p>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
             <Zap className="w-4 h-4 text-primary" />

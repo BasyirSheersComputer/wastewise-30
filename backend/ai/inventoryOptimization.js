@@ -1,4 +1,4 @@
-// Inventory Optimization Models for WasteWise
+// Inventory Optimization Models for Servora AI
 // Based on PRD Implementation Methodology
 
 import { getTopSellingItems, getWasteStats } from '../database/db.js';

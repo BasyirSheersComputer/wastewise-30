@@ -1,6 +1,6 @@
 # Database Setup Guide
 
-This guide will help you set up the complete database schema for the WasteWise application.
+This guide will help you set up the complete database schema for the Servora AI application.
 
 ## 🚀 Quick Setup Options
 

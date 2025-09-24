@@ -47,7 +47,25 @@
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 1.2 Technology Stack Details
+### 1.2 Data Flow Architecture
+
+#### Comprehensive Data Flow
+The WasteWise system processes data through multiple layers from external sources to final outputs:
+
+**Data Sources → Processing → Database → AI/ML → Statistical Models → Outputs**
+
+For detailed dataflow documentation, see:
+- **[Comprehensive Dataflow Diagram](COMPREHENSIVE_DATAFLOW_DIAGRAM.md)** - Complete system dataflow with all components
+- **[Visual Dataflow Diagram](WASTEWISE_DATAFLOW_VISUAL.md)** - Interactive Mermaid diagrams and flow sequences
+
+#### Key Data Flow Components
+1. **Kaggle Data Integration**: Realistic sample data creation and replacement
+2. **CSV Upload Processing**: File validation, transformation, and database insertion
+3. **AI/ML Processing**: Real-time insights generation and pattern recognition
+4. **Statistical Models**: Demand forecasting, waste prediction, inventory optimization
+5. **Output Generation**: Dashboards, reports, insights, and alerts
+
+### 1.3 Technology Stack Details
 
 #### Frontend Stack
 - **Framework**: React 18 with TypeScript
