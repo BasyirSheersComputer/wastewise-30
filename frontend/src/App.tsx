@@ -55,6 +55,7 @@ import IdleWarning from "./components/UI/IdleWarning";
 import useIdleLogout from "./hooks/useIdleLogout";
 import IssueReporting from "./components/UI/IssueReporting";
 import ProductDemo from "./components/UI/ProductDemo";
+import Navbar from "./components/UI/Navbar";
 
 const navigationItems = [
   { id: "dashboard", label: "Operational Intelligence", icon: BarChart3 },
@@ -132,17 +133,12 @@ function Sidebar({
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       } transition-default lg:translate-x-0 lg:static lg:inset-0`}
     >
-      <div className="flex items-center justify-between h-16 px-lg border-b border-border">
-        <h1 className="text-lg font-semibold text-text-primary">
-          WasteWise
-        </h1>
-        <button
-          onClick={() => setSidebarOpen(false)}
-          className="lg:hidden text-text-secondary hover:text-text-primary transition-default"
-        >
-          <X size={20} />
-        </button>
-      </div>
+      <Navbar 
+        variant="sidebar" 
+        showAuthButtons={true}
+        onMenuClick={() => setSidebarOpen(false)}
+        className="lg:hidden"
+      />
       <nav className="mt-lg px-sm">
         {navigationItems.map((item) => {
           const Icon = item.icon;
@@ -214,18 +210,11 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col lg:ml-0">
         {/* Header */}
         <header className="glass-card border-b border-border lg:hidden">
-          <div className="flex items-center justify-between h-16 px-lg">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="text-text-secondary hover:text-text-primary transition-default"
-            >
-              <Menu size={20} />
-            </button>
-            <h1 className="text-md font-semibold text-text-primary">
-              WasteWise
-            </h1>
-            <div className="w-5" />
-          </div>
+          <Navbar 
+            variant="sidebar" 
+            showAuthButtons={true}
+            onMenuClick={() => setSidebarOpen(true)}
+          />
         </header>
 
         {/* Page Content */}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Star, Clock, ArrowRight, Shield, Zap, TrendingUp } from 'lucide-react';
+import Navbar from '../UI/Navbar';
 
 export default function GrandSlamOffer() {
   const navigate = useNavigate();
@@ -52,15 +53,7 @@ export default function GrandSlamOffer() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
       {/* Navigation */}
-      <nav className="flex justify-between items-center p-6 text-white">
-        <div className="text-2xl font-bold">WasteWise</div>
-        <button
-          onClick={() => navigate('/')}
-          className="text-white hover:text-blue-200 transition-colors"
-        >
-          Back to Home
-        </button>
-      </nav>
+      <Navbar variant="dark" />
 
       {/* Hero Section */}
       <div className="text-center px-6 py-20">

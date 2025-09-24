@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Star, TrendingUp, Users, Shield, Coffee, Award, Crown } from 'lucide-react';
+import Navbar from '../UI/Navbar';
+import Footer from '../UI/Footer';
 
 export default function LandingPage() {
   console.log('LandingPage component is rendering'); // Debug log
@@ -84,29 +86,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 to-white">
       {/* Navigation Header */}
-      <nav className="flex justify-between items-center p-6">
-        <div className="text-2xl font-bold text-purple-800">WasteWise</div>
-        <div className="space-x-4">
-          <button
-            onClick={() => navigate('/pricing')}
-            className="text-purple-600 hover:text-purple-800 font-medium"
-          >
-            Pricing
-          </button>
-          <button
-            onClick={() => navigate('/login')}
-            className="text-purple-600 hover:text-purple-800 font-medium"
-          >
-            Login
-          </button>
-          <button
-            onClick={() => navigate('/signup')}
-            className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 font-medium"
-          >
-            Get Started
-          </button>
-        </div>
-      </nav>
+      <Navbar variant="landing" />
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center text-center px-6 py-20">
@@ -392,45 +372,7 @@ export default function LandingPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-2xl font-bold text-purple-400 mb-4">WasteWise</div>
-              <p className="text-gray-400">
-                Premium AI platform for Malaysia's top F&B revenue generators.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">Features</button></li>
-                <li><button onClick={() => navigate('/pricing')} className="hover:text-white transition-colors">Pricing</button></li>
-                <li><button onClick={() => navigate('/signup')} className="hover:text-white transition-colors">Free Trial</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">Help Center</button></li>
-                <li><button className="hover:text-white transition-colors">Contact Us</button></li>
-                <li><button className="hover:text-white transition-colors">API Documentation</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">About</button></li>
-                <li><button className="hover:text-white transition-colors">Blog</button></li>
-                <li><button className="hover:text-white transition-colors">Careers</button></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 WasteWise. All rights reserved. Premium platform for top 10% revenue makers.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer variant="dark" />
     </div>
   );
 }

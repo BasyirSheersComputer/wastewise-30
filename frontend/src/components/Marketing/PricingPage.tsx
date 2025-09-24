@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Star, ArrowRight, Coffee, TrendingUp, Users, Shield, Zap, Award, Clock, Globe, ShieldCheck, Target, Zap as ZapIcon } from 'lucide-react';
 import './PricingPage.css';
+import Navbar from '../UI/Navbar';
+import Footer from '../UI/Footer';
 
 // TypeScript declarations for Stripe pricing table
 declare global {
@@ -219,35 +221,7 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="text-2xl font-bold text-purple-600">WasteWise</div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => navigate('/')}
-                className="text-gray-600 hover:text-purple-600 transition-colors"
-              >
-                Home
-              </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="text-gray-600 hover:text-purple-600 transition-colors"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => navigate('/signup')}
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-              >
-                Start Free Trial
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar variant="pricing" />
 
       {/* Hero Section */}
       <div className="text-center px-6 py-16">
@@ -778,45 +752,7 @@ export default function PricingPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-2xl font-bold text-purple-400 mb-4">WasteWise</div>
-              <p className="text-gray-400">
-                Premium AI platform for Malaysia's top F&B revenue generators with guaranteed results.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button onClick={() => navigate('/')} className="hover:text-white transition-colors">Features</button></li>
-                <li><button onClick={() => navigate('/pricing')} className="hover:text-white transition-colors">Pricing</button></li>
-                <li><button onClick={() => navigate('/signup')} className="hover:text-white transition-colors">Free Trial</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">Help Center</button></li>
-                <li><button className="hover:text-white transition-colors">Contact Us</button></li>
-                <li><button className="hover:text-white transition-colors">API Documentation</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">About</button></li>
-                <li><button className="hover:text-white transition-colors">Blog</button></li>
-                <li><button className="hover:text-white transition-colors">Careers</button></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 WasteWise. All rights reserved. Premium platform with guaranteed results for top 10% revenue makers.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer variant="dark" />
     </div>
   );
 }
