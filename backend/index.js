@@ -32,6 +32,7 @@ import outletsRoutes from './routes/outlets.js';
 import aiRoutes from './routes/ai.js';
 import analyticsRoutes from './routes/analytics.js';
 import integrationsRoutes from './routes/integrations.js';
+import aiUfeRoutes from './routes/aiUfe.js';
 
 dotenv.config();
 
@@ -224,6 +225,7 @@ app.use('/api/outlets', outletsRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/integrations', integrationsRoutes);
+app.use('/api/ai-ufe', aiUfeRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
