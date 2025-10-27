@@ -1,5 +1,12 @@
 # WasteWise 30 - Product Requirements Document (PRD)
 
+**Document Version**: 3.0  
+**Last Updated**: October 2025  
+**Status**: Active Development  
+**Changes**: Added Chat/FAQ System, Integration Simulators, AI-UFE enhancements
+
+---
+
 ## 1. Executive Summary
 
 ### 1.1 Product Overview
@@ -215,6 +222,84 @@ WasteWise 30 is a comprehensive operational intelligence platform designed speci
 - Cost comparison tools
 - Contract management
 - Quality metrics
+
+#### 4.2.4 Chat/FAQ Support System
+**Priority**: High
+**Description**: Internal keyword-based FAQ system with natural language responses and customer rep escalation
+
+**Requirements**:
+- Keyword-based FAQ article matching
+- Natural language response generation using LLM
+- Multi-turn conversation support
+- Session management
+- Customer satisfaction tracking
+- Automatic escalation to customer rep when user is unsatisfied
+- FAQ article management and categorization
+- Search functionality for FAQ articles
+
+**User Stories**:
+- As a user, I want to ask questions in natural language so I can quickly find answers
+- As a user, I want relevant FAQ suggestions when my question isn't fully answered
+- As a user, I want to escalate to a customer rep when I need more help
+- As an admin, I want to manage FAQ articles so users can find answers independently
+
+**Technical Details**:
+- Keyword extraction and relevance scoring
+- Confidence threshold (≥0.3) for FAQ matches
+- Escalation after 2+ unsatisfied responses
+- Integration with LLM (Gemini/ChatGPT) for natural responses
+- Session persistence and message history
+
+#### 4.2.5 Integration Simulators & Testing
+**Priority**: High
+**Description**: Mock simulators for POS, ERP, CRM, and WFM systems for testing and development
+
+**Requirements**:
+- StoreHub (POS) simulator with realistic sales data
+- ERP simulator for purchase orders and suppliers
+- Klaviyo (CRM) simulator for customer data
+- Lark (WFM) simulator for staff scheduling
+- Realistic data generation based on Zus Coffee patterns
+- Integration testing infrastructure
+- Data sync simulation
+
+**User Stories**:
+- As a developer, I want to test integrations without external APIs
+- As a tester, I want realistic test data that matches production patterns
+- As a QA engineer, I want to verify integration flows end-to-end
+
+**Technical Details**:
+- Peak hour simulation (7-9am, 12-2pm, 5-7pm)
+- Transaction volume patterns (10-25/hour peak, 3-11/hour off-peak)
+- Mock service architecture with graceful fallback
+- Integration Manager routes to mock or real services
+
+#### 4.2.6 AI Unified Forecasting Engine (AI-UFE)
+**Priority**: Critical
+**Description**: Centralized prescriptive AI engine for QSR operations intelligence
+
+**Requirements**:
+- Prescriptive Flow: Anomaly Detection → Root Cause Analysis → Mitigation
+- Hyper-granular demand forecasting (15-minute intervals, SKU level)
+- Prescriptive ingredient ordering with perpetual suggestions
+- Labor scheduling optimization with AI-driven schedules
+- Staff competency measurement (ATT, waste variance)
+- Supplier Risk Index (SRI) with automated scenario modeling
+- Cash flow forecasting with <5% variance target
+- System health monitoring with automatic recovery recommendations
+
+**User Stories**:
+- As a manager, I want automated anomaly detection so I can catch issues early
+- As a manager, I want prescriptive ordering suggestions so I can optimize inventory
+- As an owner, I want cash flow forecasts so I can plan finances
+- As an admin, I want system health monitoring so I can ensure uptime
+
+**Technical Details**:
+- Integrates POS, ERP, CRM, and WFM data
+- Statistical models: ARIMA, Exponential Smoothing, Ensemble
+- Anomaly detection: Z-score, Isolation Forest
+- LLM integration for root cause analysis
+- System health checks for database, APIs, integrations, AI services
 
 ## 5. Non-Functional Requirements
 
@@ -444,6 +529,38 @@ POST /api/ai/analyze           # Analyze data for insights
 GET /api/ai/forecast           # Get demand forecast
 ```
 
+### 8.5 Chat/FAQ Endpoints
+```
+POST /api/chat/session                    # Create chat session
+GET  /api/chat/session/:id/messages       # Get chat messages
+POST /api/chat/message                   # Send message and get FAQ response
+POST /api/chat/escalate                  # Escalate to customer rep
+POST /api/chat/satisfaction              # Record user satisfaction
+GET  /api/chat/faq/search                # Search FAQ articles
+GET  /api/chat/faq/categories            # Get FAQ categories
+GET  /api/chat/faq/:id                   # Get FAQ article by ID
+```
+
+### 8.6 Integration Testing Endpoints
+```
+POST /api/integration-test/:type/initialize    # Initialize integration
+POST /api/integration-test/:type/sync/:dataType # Sync data
+POST /api/integration-test/:type/test          # Run full integration test
+GET  /api/integration-test/:type/status        # Get integration status
+GET  /api/integration-test/logs                # Get sync logs
+GET  /api/integration-test/test-results         # Get test results
+```
+
+### 8.7 AI-UFE Endpoints
+```
+POST /api/ai-ufe/prescriptive/flow                    # Run prescriptive flow
+POST /api/ai-ufe/labor/schedule                        # Generate labor schedule
+GET  /api/ai-ufe/supplier/risk/:supplierId           # Get supplier risk metrics
+POST /api/ai-ufe/cashflow/forecast                    # Cash flow forecast
+GET  /api/ai-ufe/system/health                        # System health check
+GET  /api/ai-ufe/system/health/recommendations        # Health recommendations
+```
+
 ## 9. User Interface Design
 
 ### 9.1 Design Principles
@@ -497,6 +614,34 @@ GET /api/ai/forecast           # Get demand forecast
 - **Requirements**: Privacy-compliant tracking, custom events
 
 ### 10.2 API Integrations
+
+#### 10.2.1 POS Systems
+- **StoreHub**: Primary POS for Malaysian market
+- **Square**: International POS support
+- **Lightspeed**: Multi-location management
+- **Requirements**: Real-time sales data sync, inventory updates
+
+#### 10.2.2 ERP Systems
+- **NetSuite**: Enterprise resource planning
+- **SAP Business One**: Enterprise ERP
+- **Microsoft Dynamics**: Business management
+- **Requirements**: Purchase order sync, supplier data, inventory levels
+
+#### 10.2.3 CRM Systems
+- **Klaviyo**: Customer relationship management
+- **Requirements**: Customer data sync, segment management, loyalty tracking
+
+#### 10.2.4 WFM Systems
+- **Lark/Feishu**: Workforce management
+- **Requirements**: Staff scheduling, attendance tracking, performance metrics
+
+#### 10.2.5 Integration Testing Infrastructure
+- **Mock Simulators**: StoreHub, ERP, Klaviyo, Lark simulators
+- **Integration Manager**: Routes to mock or real services
+- **Test Scripts**: Automated integration testing
+- **Requirements**: Realistic test data, graceful fallback, development-friendly
+
+#### 10.2.6 External APIs
 - **Weather API**: Demand forecasting
 - **Calendar API**: Event-based planning
 - **Requirements**: Real-time data, reliable uptime
@@ -525,21 +670,55 @@ Code Commit → Automated Testing → Build → Deploy to Staging → Manual Rev
 - **Disaster Recovery**: Multi-region deployment
 - **Data Retention**: 30-day backup retention
 
-## 12. Testing Strategy
+## 12. Database Schema
 
-### 12.1 Testing Levels
+### 12.1 Core Tables
+- `users` - User accounts and profiles
+- `outlets` - Business locations
+- `waste_logs` - Waste tracking records
+- `inventory_data` - Inventory levels
+- `sales_pos_data` - Sales transactions
+- `customers` - Customer data
+- `staff` - Staff management
+- `suppliers` - Supplier information
 
-#### 12.1.1 Unit Testing
+### 12.2 Integration Tables
+- `integrations` - External system integration configurations
+- `integration_sync_logs` - Data synchronization history
+- `integration_test_results` - Integration test results
+- `inventory_data` - Synced inventory from ERP/POS
+- `staff_schedules` - Synced schedules from WFM
+- `staff_attendance` - Synced attendance records
+
+### 12.3 FAQ/Chat Tables
+- `faq_categories` - FAQ article categories
+- `faq_articles` - FAQ articles with keywords
+- `faq_keywords` - Keywords and synonyms for matching
+- `chat_sessions` - Chat session management
+- `chat_messages` - Individual chat messages
+- `chat_escalations` - Escalation requests to customer rep
+
+### 12.4 AI-UFE Tables
+- System health monitoring data
+- Prescriptive flow results
+- Anomaly detection records
+- Cash flow forecasts
+
+## 13. Testing Strategy
+
+### 13.1 Testing Levels
+
+#### 13.1.1 Unit Testing
 - **Coverage**: 80% minimum code coverage
 - **Framework**: Jest for JavaScript/TypeScript
 - **Scope**: Individual functions and components
 
-#### 12.1.2 Integration Testing
+#### 13.1.2 Integration Testing
 - **Framework**: Supertest for API testing
 - **Scope**: API endpoints and database interactions
 - **Coverage**: All critical user flows
 
-#### 12.1.3 End-to-End Testing
+#### 13.1.3 End-to-End Testing
 - **Framework**: Playwright or Cypress
 - **Scope**: Complete user journeys
 - **Coverage**: Core user workflows
@@ -554,7 +733,7 @@ Code Commit → Automated Testing → Build → Deploy to Staging → Manual Rev
 - **Data Seeding**: Automated test data creation
 - **Cleanup**: Automated test data cleanup
 
-## 13. Security & Compliance
+## 14. Security & Compliance
 
 ### 13.1 Security Measures
 - **Authentication**: Multi-factor authentication
@@ -563,39 +742,39 @@ Code Commit → Automated Testing → Build → Deploy to Staging → Manual Rev
 - **Input Validation**: Server-side validation
 - **Rate Limiting**: API abuse prevention
 
-### 13.2 Compliance Requirements
+### 14.2 Compliance Requirements
 - **GDPR**: European data protection
 - **CCPA**: California privacy protection
 - **SOC 2**: Security and availability controls
 - **PCI DSS**: Payment card security (if applicable)
 
-### 13.3 Privacy Protection
+### 14.3 Privacy Protection
 - **Data Minimization**: Collect only necessary data
 - **User Consent**: Explicit consent for data collection
 - **Data Retention**: Limited data retention periods
 - **User Rights**: Data access, correction, deletion
 
-## 14. Performance & Scalability
+## 15. Performance & Scalability
 
-### 14.1 Performance Targets
+### 15.1 Performance Targets
 - **Page Load Time**: < 3 seconds
 - **API Response Time**: < 2 seconds
 - **Database Query Time**: < 1 second
 - **Concurrent Users**: 1000+ users
 
-### 14.2 Scalability Strategy
+### 15.2 Scalability Strategy
 - **Horizontal Scaling**: Multiple server instances
 - **Database Scaling**: Read replicas and connection pooling
 - **CDN**: Global content distribution
 - **Caching**: Redis for session and data caching
 
-### 14.3 Optimization Techniques
+### 15.3 Optimization Techniques
 - **Code Splitting**: Lazy loading of components
 - **Image Optimization**: WebP format and compression
 - **Database Indexing**: Optimized query performance
 - **API Caching**: Response caching for static data
 
-## 15. Risk Assessment & Mitigation
+## 16. Risk Assessment & Mitigation
 
 ### 15.1 Technical Risks
 
