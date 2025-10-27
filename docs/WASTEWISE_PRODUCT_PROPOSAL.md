@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-**WasteWise AI** is a premium AI-powered platform designed exclusively for Malaysia's top F&B revenue generators, addressing the critical issue of RM 3.2B annual waste in the industry. Our platform delivers 35-45% waste reduction with guaranteed ROI in 30 days.
+**WasteWise AI** is a premium AI-powered platform designed exclusively for Malaysia's top F&B revenue generators, addressing the critical issue of RM 3.2B annual waste in the industry. Our platform delivers 15-35% waste reduction potential (20-30% typical, up to 35% for enterprise) with measurable ROI within 45-60 days.
 
 ## Market Opportunity
 
@@ -20,25 +20,25 @@
 ## Solution Overview
 
 ### Core Value Proposition
-**AI-powered waste reduction with guaranteed results:**
-- 94% accurate demand forecasting
+**AI-powered waste reduction with realistic, measurable results:**
+- 75-85% accurate demand forecasting (with 30+ days data)
 - Real-time waste tracking across all locations
-- Automated inventory management
-- 35-45% waste reduction guaranteed
+- AI-powered inventory recommendations
+- 15-35% waste reduction potential (varies by segment and usage)
 
 ### Key Features
 
 #### 1. AI Demand Forecasting
-- **94% accuracy** in predicting ingredient needs 7 days ahead
-- Machine learning algorithms trained on Malaysian F&B patterns
-- Automated inventory adjustments and reordering
-- Staff scheduling optimization
+- **75-85% accuracy** in predicting ingredient needs 7 days ahead (requires 30+ days historical data)
+- Statistical models (ARIMA, Exponential Smoothing, Ensemble) trained on Malaysian F&B patterns
+- AI-powered inventory recommendations (manual action required)
+- Staff scheduling insights (for enterprise)
 
 #### 2. Real-Time Waste Tracking
-- **Gram-level precision** waste monitoring
+- **Precise waste logging** with categorization
 - Automated alerts and notifications
-- Root cause analysis and prevention
-- Cross-location waste optimization
+- AI-powered root cause analysis and recommendations
+- Cross-location waste comparison and insights
 
 #### 3. Operational Intelligence Dashboard
 - Real-time KPI monitoring
@@ -55,10 +55,10 @@
 ## Competitive Advantage
 
 ### Unique Differentiators
-1. **Malaysia-Specific AI Models**: Trained on local F&B patterns and regulations
-2. **Guaranteed ROI**: 30-day money-back guarantee
-3. **Premium Positioning**: Enterprise-grade pricing for top revenue generators
-4. **Proven Results**: Used by Starbucks Malaysia, Secret Recipe, Urban Coffee Co.
+1. **Malaysia-Specific Models**: Statistical models optimized for local F&B patterns
+2. **Beta Pilot Program**: 60-day free trial with lifetime early adopter pricing
+3. **Modular Architecture**: Features tailored to business size and needs
+4. **Realistic Expectations**: Honest outcomes based on actual usage patterns
 
 ### Competitive Landscape
 - **Traditional Systems**: Manual tracking, poor accuracy, no AI
@@ -123,10 +123,10 @@
 4. **Digital Marketing**: LinkedIn, industry publications
 
 ### Customer Acquisition
-- **Free Trial**: 30-day full-feature trial
+- **Beta Pilot**: 60-day free trial with lifetime early adopter pricing
 - **Demo Program**: Interactive product demonstrations
-- **Case Studies**: Proven ROI documentation
-- **Referral Program**: Customer success incentives
+- **Segmented Onboarding**: ICP-based feature modules
+- **Realistic Outcomes**: Clear expectations by segment
 
 ## Risk Assessment
 
