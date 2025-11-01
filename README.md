@@ -103,7 +103,7 @@ git push origin main
 
 ## 📁 **Project Structure**
 
-This project has been organized for better maintainability and developer experience. See [PROJECT_ORGANIZATION.md](./PROJECT_ORGANIZATION.md) for detailed structure information.
+This project has been organized for better maintainability and developer experience. See [PROJECT_ORGANIZATION.md](./docs/PROJECT_ORGANIZATION.md) for detailed structure information.
 
 ### Quick Navigation
 - 📚 **Documentation**: `docs/` - Architecture, user guides, development docs

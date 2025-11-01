@@ -1,107 +1,99 @@
-# Servora AI Documentation
+# 📚 WasteWise Documentation Hub
 
-Welcome to the Servora AI documentation. This directory contains comprehensive documentation for the Coffee Chain Operational Intelligence System.
+Welcome to the WasteWise documentation hub. All project documentation is organized by category for easy navigation.
 
-## 📚 Documentation Structure
+> **📑 For comprehensive navigation, see [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)**
 
-### 🚀 Getting Started
-- **[Quick Start Guide](QUICK_START.md)** - Get up and running quickly
-- **[Project Structure](PROJECT_STRUCTURE.md)** - Understanding the codebase organization
+## 🗂️ **Documentation Categories**
 
-### 🏗️ Architecture & Design
-- **[Architecture Overview](../architecture/)** - System architecture and design patterns
-- **[Comprehensive Dataflow Diagram](../architecture/COMPREHENSIVE_DATAFLOW_DIAGRAM.md)** - Complete system dataflow from Kaggle data to statistical models
-- **[Visual Dataflow Diagrams](../architecture/WASTEWISE_DATAFLOW_VISUAL.md)** - Interactive Mermaid diagrams and flow sequences
-- **[Docker Architecture](../architecture/DOCKER_FOCUSED_ARCHITECTURE_SUMMARY.md)** - Container-based deployment architecture
-- **[Dockerfile Improvements](../architecture/DOCKERFILE_IMPROVEMENTS.md)** - Container optimization strategies
+### **🏗️ Architecture** (`docs/architecture/`)
+- Product requirements and technical specifications
+- Feature matrices and pricing analysis
+- System architecture documentation
 
-### 🚀 Deployment & Operations
-- **[Deployment Guide](../deployment/)** - Complete deployment instructions
-- **[Docker Deployment](../deployment/DOCKER_DEPLOYMENT_GUIDE.md)** - Container deployment guide
-- **[Multi-Container Deployment](../deployment/MULTI_CONTAINER_DEPLOYMENT.md)** - Complex deployment scenarios
-- **[Nginx Integration](../deployment/DEPLOYMENT_WITH_NGINX.md)** - Web server configuration
-- **[Quick Deployment](../deployment/QUICK_DEPLOYMENT.md)** - Fast deployment options
+### **👥 User Guides** (`docs/user-guides/`)
+- User experience and flow documentation
+- Issue reporting system guides
+- Checkout system guides
 
-### 🔧 CI/CD & Automation
-- **[CI/CD Overview](../cicd/)** - Continuous Integration/Deployment
-- **[Jenkins Setup](../cicd/CICD_INITIALIZATION_SUMMARY.md)** - Jenkins pipeline configuration
-- **[Webhook Troubleshooting](../cicd/WEBHOOK_ISSUE_SUMMARY.md)** - Common webhook issues
+### **🔧 Development** (`docs/development/`)
+- CSV upload implementation
+- Rich text parsing implementation
+- Data integration summaries
 
-### 🐛 Troubleshooting & Support
-- **[Troubleshooting Guide](../troubleshooting/)** - Common issues and solutions
-- **[Jenkins Node.js Fix](../troubleshooting/JENKINS_NODEJS_FIX_SUMMARY.md)** - Jenkins environment issues
-- **[NPM Cache Fix](../troubleshooting/JENKINS_NPM_CACHE_FIX.md)** - Package management issues
-- **[Webhook Quick Fix](../troubleshooting/WEBHOOK_QUICK_FIX.md)** - Rapid webhook resolution
+### **🚀 Deployment** (`docs/deployment/`)
+- Cloud Run deployment guides
+- Docker deployment guides
+- Production readiness checks
+- Secret management guides
 
-### 🔐 Security & Configuration
-- **[Secret Management](../DEPLOYMENT_SECRETS_GUIDE.md)** - Environment variables and secrets
-- **[Secret Passing Fix](../SECRET_PASSING_FIX_SUMMARY.md)** - Container secret injection
-- **[Environment Setup](../setup-env.sh)** - Environment configuration script
+### **🛠️ Maintenance** (`docs/maintenance/`)
+- Authentication fixes
+- User creation fixes
+- Patch applications
+- Troubleshooting guides
 
-### 🤖 AI & Machine Learning
-- **[AI Recommendation Engine](../AI_RECOMMENDATION_OPTIMIZATION.md)** - AI-powered recommendations
-- **[LLM Integration](../LLM_INTEGRATION_SUMMARY.md)** - Large Language Model integration
-- **[Coffee Chain Features](../FNB_CHAIN_EXPANSION_FEATURES.md)** - Business intelligence features
+### **🔒 Security** (`docs/security/`)
+- Secrets management
+- OAuth setup guides
+- Security policies
 
-### 📊 Testing & Quality Assurance
-- **[Testing Guide](../DEVELOPMENT_VS_PRODUCTION_TESTING.md)** - Testing strategies
-- **[Coffee Chain Test Results](../COFFEE_CHAIN_TEST_RESULTS.md)** - Test execution results
-- **[Test Scripts](../scripts/)** - Automated testing tools
+### **🧪 Testing** (`docs/testing/`)
+- Test results and summaries
+- Testing environment guides
+- Connection test results
 
-### 🔄 Maintenance & Updates
-- **[Housekeeping Summary](../HOUSEKEEPING_SUMMARY.md)** - System maintenance procedures
-- **[Cleanup Summary](../CLEANUP_SUMMARY.md)** - Code cleanup and optimization
-- **[Idle Logout Optimization](../IDLE_LOGOUT_AND_LLM_OPTIMIZATION.md)** - Session management
-- **[Logout Redirect Summary](../LOGOUT_REDIRECT_SUMMARY.md)** - User session handling
+### **🤖 AI** (`docs/ai/`)
+- AI recommendation optimization
+- LLM integration
+- Industry research
 
-## 📋 Quick Reference
+### **🐛 Troubleshooting** (`docs/troubleshooting/`)
+- Jenkins fixes
+- Webhook troubleshooting
+- Common issues and solutions
 
-### Essential Commands
-```bash
-# Start the application
-docker-compose up -d
+## 📋 **Quick Reference**
 
-# Check status
-docker-compose ps
+### **Getting Started**
+- [QUICK_START.md](QUICK_START.md) - Quick start guide
+- [ONBOARDING_GUIDE.md](ONBOARDING_GUIDE.md) - Complete onboarding guide
 
-# View logs
-docker-compose logs -f
+### **Project Organization**
+- [PROJECT_ORGANIZATION.md](PROJECT_ORGANIZATION.md) - Project structure overview
 
-# Update images
-docker-compose pull && docker-compose up -d
+## 🔍 **Search Tips**
 
-# Run tests
-node test-coffee-chain-features.js
-```
-
-### Key Files
-- `docker-compose.yml` - Container orchestration
-- `Jenkinsfile` - CI/CD pipeline
-- `env.example` - Environment template
-- `scripts/` - Utility scripts
-
-### Important URLs
-- **Frontend**: http://localhost:8080
-- **Backend**: http://localhost:3000
-- **Health Check**: http://localhost:3000/health
-
-## 🆘 Getting Help
-
-1. **Check the troubleshooting guides** in the troubleshooting directory
-2. **Review deployment logs** using `docker-compose logs`
-3. **Verify environment variables** using the secret verification script
-4. **Run health checks** to identify issues
-
-## 📝 Contributing
-
-When adding new documentation:
-1. Place files in the appropriate subdirectory
-2. Update this README with new links
-3. Follow the existing naming conventions
-4. Include clear examples and troubleshooting steps
+- **Authentication Issues**: Check `maintenance/` and `security/`
+- **Deployment Problems**: Check `deployment/` and `troubleshooting/`
+- **AI Features**: Check `ai/` directory
+- **Testing**: Check `testing/` directory
 
 ---
 
-**Last Updated**: $(date)
-**Version**: 2.0
-**Status**: ✅ Organized and Maintained
+---
+
+## 🚀 **Quick Access**
+
+**New Users:**
+- [QUICK_START.md](QUICK_START.md) - Get started in 5 minutes
+- [ONBOARDING_GUIDE.md](ONBOARDING_GUIDE.md) - Complete onboarding
+- [WASTEWISE_PRODUCT_PROPOSAL.md](WASTEWISE_PRODUCT_PROPOSAL.md) - Product overview
+
+**Sales & Marketing:**
+- [LINKEDIN_OUTREACH_STRATEGY.md](LINKEDIN_OUTREACH_STRATEGY.md) - Complete LinkedIn strategy
+- [LeadGen.md](LeadGen.md) - Lead generation guide
+- [PRODUCT_ALIGNMENT_SUMMARY.md](PRODUCT_ALIGNMENT_SUMMARY.md) - Product alignment
+
+**Developers:**
+- [architecture/WASTEWISE_PRODUCT_REQUIREMENTS_DOCUMENT.md](architecture/WASTEWISE_PRODUCT_REQUIREMENTS_DOCUMENT.md) - PRD
+- [architecture/WASTEWISE_TECHNICAL_SPECIFICATION.md](architecture/WASTEWISE_TECHNICAL_SPECIFICATION.md) - Tech specs
+- [deployment/QUICK_DEPLOYMENT.md](deployment/QUICK_DEPLOYMENT.md) - Deployment guide
+
+**Complete Index:** [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)
+
+---
+
+**Last Updated**: December 2024  
+**Status**: ✅ Current and Complete  
+**Index Version**: 2.0
