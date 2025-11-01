@@ -25,6 +25,18 @@ import {
   Brain,
 } from "lucide-react";
 import Dashboard from "./components/UI/Dashboard";
+import DashboardLayout from "./components/UI/DashboardLayout";
+import DashboardHome from "./components/UI/DashboardHome";
+import WasteAnalytics from "./components/UI/WasteAnalytics";
+import InventoryDashboard from "./components/UI/InventoryDashboard";
+import ForecastDashboard from "./components/UI/ForecastDashboard";
+import StaffDashboard from "./components/UI/StaffDashboard";
+import ReportsDashboard from "./components/UI/ReportsDashboard";
+import SupplierDashboard from "./components/UI/SupplierDashboard";
+import SettingsDashboard from "./components/UI/SettingsDashboard";
+import BillingDashboard from "./components/Billing/BillingDashboard";
+import CheckoutFlow from "./components/Billing/CheckoutFlow";
+import CheckoutSuccessNew from "./components/Billing/CheckoutSuccess";
 import InventoryManager from "./components/UI/InventoryManager";
 import DemandForecasting from "./components/UI/DemandForecasting";
 import StatisticalInsights from "./components/UI/StatisticalInsights";
@@ -260,17 +272,21 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Routes - No Sidebar */}
+        {/* ==================== PUBLIC ROUTES ==================== */}
+        {/* Marketing & Auth - Asana-style /home for public pages */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/landing" element={<DetailedLandingPage />} />
         <Route path="/offer" element={<GrandSlamOffer />} />
         <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/checkout/success" element={<CheckoutSuccess />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />
         <Route path="/demo" element={<ProductDemo />} />
+        
+        {/* Checkout Flow - Asana-style /checkout/* */}
+        <Route path="/checkout" element={<CheckoutFlow />} />
+        <Route path="/checkout/success" element={<CheckoutSuccessNew />} />
 
         {/* Onboarding/Trial - With Sidebar */}
         <Route
@@ -302,37 +318,54 @@ function App() {
           }
         />
 
-        {/* Protected Routes - With Sidebar */}
+        {/* ==================== PROTECTED DASHBOARD ROUTES ==================== */}
+        {/* Asana-style /dashboard/* for authenticated app */}
+        
+        {/* Dashboard Home - Overview */}
         <Route
           path="/dashboard"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <Dashboard />
-              </AuthenticatedLayout>
+              <DashboardLayout>
+                <DashboardHome />
+              </DashboardLayout>
+            </RequireAuth>
+          }
+        />
+        
+        {/* Waste Management */}
+        <Route
+          path="/dashboard/waste"
+          element={
+            <RequireAuth>
+              <DashboardLayout>
+                <WasteAnalytics />
+              </DashboardLayout>
             </RequireAuth>
           }
         />
         <Route
-          path="/inventory"
+          path="/dashboard/inventory"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <InventoryManager />
-              </AuthenticatedLayout>
+              <DashboardLayout>
+                <InventoryDashboard />
+              </DashboardLayout>
             </RequireAuth>
           }
         />
+        <Route path="/inventory" element={<Navigate to="/dashboard/inventory" replace />} />
         <Route
-          path="/forecasting"
+          path="/dashboard/forecast"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <DemandForecasting />
-              </AuthenticatedLayout>
+              <DashboardLayout>
+                <ForecastDashboard />
+              </DashboardLayout>
             </RequireAuth>
           }
         />
+        <Route path="/forecasting" element={<Navigate to="/dashboard/forecast" replace />} />
         <Route
           path="/statistical-insights"
           element={
@@ -354,15 +387,16 @@ function App() {
           }
         />
         <Route
-          path="/suppliers"
+          path="/dashboard/suppliers"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <SupplierManager />
-              </AuthenticatedLayout>
+              <DashboardLayout>
+                <SupplierDashboard />
+              </DashboardLayout>
             </RequireAuth>
           }
         />
+        <Route path="/suppliers" element={<Navigate to="/dashboard/suppliers" replace />} />
         <Route
           path="/menu"
           element={
@@ -374,25 +408,27 @@ function App() {
           }
         />
         <Route
-          path="/staff"
+          path="/dashboard/staff"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <StaffTraining />
-              </AuthenticatedLayout>
+              <DashboardLayout>
+                <StaffDashboard />
+              </DashboardLayout>
             </RequireAuth>
           }
         />
+        <Route path="/staff" element={<Navigate to="/dashboard/staff" replace />} />
         <Route
-          path="/reports"
+          path="/dashboard/reports"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <ReportsCompliance />
-              </AuthenticatedLayout>
+              <DashboardLayout>
+                <ReportsDashboard />
+              </DashboardLayout>
             </RequireAuth>
           }
         />
+        <Route path="/reports" element={<Navigate to="/dashboard/reports" replace />} />
         <Route
           path="/csv-upload"
           element={
@@ -413,16 +449,30 @@ function App() {
             </RequireAuth>
           }
         />
+        {/* Settings & Billing */}
         <Route
-          path="/settings"
+          path="/dashboard/settings"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <UserSettings />
-              </AuthenticatedLayout>
+              <DashboardLayout>
+                <SettingsDashboard />
+              </DashboardLayout>
             </RequireAuth>
           }
         />
+        <Route
+          path="/dashboard/billing"
+          element={
+            <RequireAuth>
+              <DashboardLayout>
+                <BillingDashboard />
+              </DashboardLayout>
+            </RequireAuth>
+          }
+        />
+        
+        {/* Legacy Route Redirects */}
+        <Route path="/settings" element={<Navigate to="/dashboard/settings" replace />} />
         <Route
           path="/subscription"
           element={
@@ -447,3 +497,4 @@ function App() {
 }
 
 export default App;
+

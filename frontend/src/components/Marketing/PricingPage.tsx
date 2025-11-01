@@ -1,246 +1,219 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Star, ArrowRight, Coffee, TrendingUp, Users, Shield, Zap, Award, Clock, Globe, ShieldCheck, Target, Zap as ZapIcon } from 'lucide-react';
-import './PricingPage.css';
-
-// TypeScript declarations for Stripe pricing table
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'stripe-pricing-table': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-        'pricing-table-id': string;
-        'publishable-key': string;
-      };
-    }
-  }
-}
-
-interface Plan {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  currency: string;
-  interval: string;
-  popular?: boolean;
-  savings?: number;
-  targetMarket?: string;
-  annualRevenue?: string;
-  valueProposition?: string;
-  riskReversal?: {
-    guarantee: string;
-    description: string;
-    terms: string[];
-    coverage: string;
-    confidence: string;
-  };
-  features?: {
-    core: string[];
-    modules: Record<string, string>;
-    limitations: string[];
-  };
-  stripePriceId?: string;
-}
+import { Check, Star, TrendingUp, Shield, Zap, Crown, ArrowRight, X, DollarSign, Clock, Users, Award } from 'lucide-react';
 
 export default function PricingPage() {
   const navigate = useNavigate();
-  const [billingCycle, setBillingCycle] = useState('monthly');
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showStripeTable, setShowStripeTable] = useState(true);
-  const [stripeTableLoading, setStripeTableLoading] = useState(true);
-  const [stripeTableError, setStripeTableError] = useState(false);
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
 
-  useEffect(() => {
-    fetchPlans();
-    loadStripePricingTable();
-  }, []);
-
-  const loadStripePricingTable = () => {
-    try {
-      // Load Stripe pricing table script
-      const script = document.createElement('script');
-      script.src = 'https://js.stripe.com/v3/pricing-table.js';
-      script.async = true;
-      script.onload = () => {
-        setStripeTableLoading(false);
-      };
-      script.onerror = () => {
-        setStripeTableError(true);
-        setStripeTableLoading(false);
-      };
-      document.head.appendChild(script);
-
-      return () => {
-        // Cleanup script on unmount
-        const existingScript = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
-        if (existingScript) {
-          document.head.removeChild(existingScript);
-        }
-      };
-    } catch (error) {
-      console.error('Error loading Stripe pricing table:', error);
-      setStripeTableError(true);
-      setStripeTableLoading(false);
-    }
-  };
-
-  const fetchPlans = async () => {
-    try {
-      const response = await fetch('/api/billing/plans');
-      if (response.ok) {
-        const data = await response.json();
-        setPlans(data.plans);
+  const packages = [
+    {
+      id: 'quick-win',
+      name: 'Quick Win Solution',
+      price: 2997,
+      setup: 0,
+      setupNote: 'Waived',
+      commitment: '90-day minimum, cancel anytime after',
+      popular: false,
+      icon: Zap,
+      color: 'primary',
+      included: [
+        'One solution of your choice (AI Forecasting, Waste Logging, OR Compliance)',
+        'Complete setup and integration',
+        'Staff training (up to 10 employees)',
+        'Daily waste tracking and reporting',
+        'Monthly optimization review',
+        'Email and phone support'
+      ],
+      outcomes: {
+        wasteReduction: '20-30%',
+        timeSaved: '10-15 hours/week',
+        monthlySavings: 'RM 15,000-25,000',
+        roi: '500-800%'
+      },
+      guarantees: [
+        '30-Day Money-Back Guarantee - See measurable improvement or full refund',
+        'Zero Long-Term Lock-in - Cancel after 90 days, no penalties',
+        'Free Implementation - We set it up for you (RM 8,000 value)'
+      ],
+      idealFor: 'Single-location or small chains (2-5 outlets) wanting to solve one specific problem fast',
+      valueEquation: {
+        cost: 'RM 2,997/month',
+        savings: 'RM 15,000-25,000/month',
+        roi: '5-8x return'
       }
-    } catch (error) {
-      console.error('Error fetching plans:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getFilteredPlans = () => {
-    return plans.filter(plan => 
-      billingCycle === 'monthly' ? !plan.id.includes('_annual') : plan.id.includes('_annual')
-    );
-  };
-
-  const modules = [
-    {
-      name: 'Operational Intelligence',
-      description: 'AI-powered dashboard with real-time insights',
-      icon: TrendingUp
     },
     {
-      name: 'Recipe & Inventory',
-      description: 'Smart inventory management with AI predictions',
-      icon: Coffee
+      id: 'growth-system',
+      name: 'Growth System',
+      price: 5997,
+      setup: 4997,
+      setupNote: 'One-time',
+      commitment: '6-month minimum for guaranteed results',
+      popular: true,
+      icon: TrendingUp,
+      color: 'cta',
+      included: [
+        'Full Servora AI platform access',
+        'AI demand forecasting',
+        'Automated waste logging',
+        'Real-time inventory tracking',
+        'Supplier integration and auto-ordering',
+        'Compliance automation with alerts',
+        'Unlimited staff training',
+        'Dedicated success manager',
+        'Weekly optimization calls',
+        'Priority support (4-hour response)'
+      ],
+      outcomes: {
+        wasteReduction: '35-45%',
+        timeSaved: '20-30 hours/week',
+        monthlySavings: 'RM 35,000-50,000',
+        profitMargin: '10-15%',
+        roi: '600-1000%'
+      },
+      guarantees: [
+        '60-Day Savings Guarantee - Save minimum RM 30,000 monthly or pay nothing',
+        '6-Month Performance Lock - If system doesn\'t perform, we work for free until it does',
+        '99.9% Uptime Guarantee - Or monthly fee waived'
+      ],
+      idealFor: 'Multi-location chains (6-20 outlets) serious about maximizing profitability and operational excellence',
+      valueEquation: {
+        cost: 'RM 5,997/month + RM 4,997 setup',
+        savings: 'RM 35,000-50,000/month',
+        roi: '6-10x return',
+        payback: 'Setup recovered in first month'
+      }
     },
     {
-      name: 'Demand Forecasting',
-      description: 'Predict demand with machine learning',
-      icon: Clock
-    },
-    {
-      name: 'Waste Tracking',
-      description: 'Comprehensive waste analytics and reduction',
-      icon: Shield
-    },
-    {
-      name: 'Suppliers',
-      description: 'Supplier management and performance tracking',
-      icon: Users
-    },
-    {
-      name: 'Menu Optimization',
-      description: 'AI-powered menu analysis and optimization',
-      icon: Award
-    },
-    {
-      name: 'Staff Training',
-      description: 'Comprehensive training and development platform',
-      icon: Users
-    },
-    {
-      name: 'Reports & Compliance',
-      description: 'Advanced reporting and compliance management',
-      icon: TrendingUp
-    },
-    {
-      name: 'CSV Upload',
-      description: 'Easy data import and processing',
-      icon: Globe
-    },
-    {
-      name: 'Issue Reporting',
-      description: 'Track and resolve operational issues',
-      icon: Shield
-    }
-  ];
-
-  const features = [
-    {
-      title: 'AI-Powered Waste Reduction',
-      description: 'Reduce waste by 25-45% with advanced machine learning insights',
-      icon: TrendingUp
-    },
-    {
-      title: 'Multi-Location Management',
-      description: 'Manage all your locations from a single enterprise dashboard',
-      icon: Users
-    },
-    {
-      title: 'Enterprise Analytics',
-      description: 'Get instant insights into your operations with real-time data',
-      icon: Coffee
-    },
-    {
-      title: 'Premium Market Focus',
-      description: 'Built exclusively for Malaysia\'s top 10% revenue makers',
-      icon: Shield
+      id: 'enterprise',
+      name: 'Enterprise Transformation',
+      price: null,
+      setup: null,
+      setupNote: 'Custom',
+      commitment: '12-month partnership',
+      popular: false,
+      icon: Crown,
+      color: 'primary',
+      included: [
+        'Everything in Growth System',
+        'Custom integrations with existing POS/ERP',
+        'Advanced analytics and predictive modeling',
+        'Multi-location centralized dashboard',
+        'Custom reporting and KPI tracking',
+        'Quarterly strategic planning sessions',
+        'On-site training and implementation',
+        'Dedicated technical account manager',
+        '24/7 priority support',
+        'Annual system optimization reviews'
+      ],
+      outcomes: {
+        wasteReduction: '40-50%',
+        operationalEfficiency: '50-70% improvement',
+        monthlySavings: 'RM 100,000-300,000+',
+        profitMargin: '12-18%',
+        scalability: 'Unlimited outlets'
+      },
+      guarantees: [
+        '90-Day Transformation Guarantee - Complete digital transformation or extended support at no cost',
+        'Profit Increase Guarantee - Minimum 8% profit margin increase in 6 months',
+        'Results or We Work For Free - Continue at no cost until goals achieved'
+      ],
+      idealFor: 'Large chains (20+ outlets) and franchise operations ready to dominate their market',
+      valueEquation: {
+        cost: 'Custom pricing',
+        savings: 'RM 100,000-300,000+/month',
+        roi: '10-20x return at scale'
+      }
     }
   ];
 
-  const testimonials = [
+  const bonuses = [
     {
-      name: 'Sarah Chen',
-      role: 'Operations Director',
-      company: 'Starbucks Malaysia',
-      content: 'Servora AI helped us reduce food waste by 35% across all 50 locations. The AI insights are game-changing for enterprise operations!',
-      rating: 5,
-      savings: 'RM 250K/month'
+      name: 'Waste Audit Report',
+      value: 'RM 5,000',
+      description: 'Comprehensive audit of current waste patterns with customized reduction roadmap'
     },
     {
-      name: 'Michael Rodriguez',
-      role: 'CEO',
-      company: 'Secret Recipe Group',
-      content: 'The multi-location dashboard gives us complete visibility across all our stores. The enterprise features are exactly what we needed.',
-      rating: 5,
-      savings: 'RM 180K/month'
+      name: 'Staff Training Program',
+      value: 'RM 8,000',
+      description: 'Complete training for entire team on waste reduction best practices'
     },
     {
-      name: 'Jennifer Park',
-      role: 'General Manager',
-      company: 'Urban Coffee Co.',
-      content: 'Easy to use, powerful analytics, and excellent local support. This platform pays for itself with our enterprise operations.',
-      rating: 5,
-      savings: 'RM 320K/month'
+      name: 'Monthly Optimization Reviews',
+      value: 'RM 3,000/month',
+      description: 'Dedicated success manager identifies new optimization opportunities'
+    },
+    {
+      name: 'Compliance Checklist Templates',
+      value: 'RM 2,500',
+      description: 'Pre-built templates for Malaysian regulations, avoid RM 50,000-250,000 in fines'
     }
   ];
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-      </div>
-    );
-  }
+  const totalBonusValue = bonuses.reduce((sum, bonus) => {
+    const value = parseInt(bonus.value.replace(/[^0-9]/g, ''));
+    return sum + value;
+  }, 0);
+
+  const faqs = [
+    {
+      question: 'How quickly will I see results?',
+      answer: 'Results typically appear within 30 days. Full optimization in 60-90 days. With our Quick Win Solution, you\'ll see measurable improvements in waste tracking within the first week.'
+    },
+    {
+      question: 'What if it doesn\'t work for my business?',
+      answer: 'That\'s why we have the 30-day money-back guarantee. You don\'t have to be sure - just willing to test it. If you don\'t see measurable results in 30 days, full refund. Zero risk on your side.'
+    },
+    {
+      question: 'Is this suitable for single-location restaurants?',
+      answer: 'Absolutely! Our Quick Win Solution is designed specifically for 1-5 outlets. Small operations actually see faster results because changes happen quickly. Start small, scale when you\'re ready.'
+    },
+    {
+      question: 'How does the 60-Day Savings Guarantee work?',
+      answer: 'We guarantee minimum RM 30,000 monthly savings within 60 days with our Growth System. If you don\'t hit this, you pay nothing until you do. We only win when you win.'
+    },
+    {
+      question: 'Can I upgrade or downgrade my plan?',
+      answer: 'Yes! You can upgrade anytime. Downgrading is available after your initial commitment period. We want you on the plan that makes the most sense for your business.'
+    },
+    {
+      question: 'What happens after the minimum commitment period?',
+      answer: 'You can cancel anytime with 30 days notice. No penalties, no hassle. Most clients stay because the system works and continues delivering value.'
+    }
+  ];
+
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="border-b border-neutral-200 bg-white sticky top-0 z-40">
+        <div className="container">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="text-2xl font-bold text-purple-600">Sheerssoft</div>
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-primary-500 rounded flex items-center justify-center">
+                <span className="text-white font-bold text-lg">S</span>
+              </div>
+              <span className="text-xl font-bold text-neutral-900">Servora AI</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <button
+            
+            <div className="hidden md:flex items-center space-x-8">
+              <button 
                 onClick={() => navigate('/')}
-                className="text-gray-600 hover:text-purple-600 transition-colors"
+                className="text-neutral-600 hover:text-neutral-900 font-medium"
               >
                 Home
               </button>
-              <button
+              <button 
                 onClick={() => navigate('/login')}
-                className="text-gray-600 hover:text-purple-600 transition-colors"
+                className="btn-ghost text-sm"
               >
-                Login
+                Sign In
               </button>
-              <button
+              <button 
                 onClick={() => navigate('/signup')}
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                className="btn-cta text-sm"
               >
                 Start Free Trial
               </button>
@@ -250,570 +223,268 @@ export default function PricingPage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="text-center px-6 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium mb-6">
-            <ShieldCheck className="w-4 h-4" />
-            Risk-Free Guaranteed Results
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Enterprise-Grade AI Platform with Guaranteed ROI
+      <section className="section-hero bg-neutral-50">
+        <div className="container text-center">
+          <h1 className="text-display font-bold text-neutral-900 mb-6">
+            Transparent Pricing, Guaranteed Results
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Premium AI-powered waste reduction platform with comprehensive risk reversal guarantees. 
-            Target only the top 10% of revenue makers with proven ROI and guaranteed results.
+          <p className="text-body-lg text-neutral-600 max-w-3xl mx-auto mb-8">
+            RM 5,997/month. Saves RM 35,000-50,000/month. 6x ROI. 60-day guarantee.
           </p>
           
-          {/* Billing Cycle Toggle */}
-          <div className="flex items-center justify-center mb-8">
-            <div className="bg-white rounded-lg p-1 shadow-sm">
-              <button
-                onClick={() => setBillingCycle('monthly')}
-                className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                  billingCycle === 'monthly'
-                    ? 'bg-purple-600 text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setBillingCycle('annual')}
-                className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                  billingCycle === 'annual'
-                    ? 'bg-purple-600 text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Annual
-                <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                  Save 15%
-                </span>
-              </button>
+          <div className="inline-flex items-center gap-6 text-sm text-neutral-600 mb-12">
+            <div className="flex items-center gap-2">
+              <Check className="w-5 h-5 text-success-500" />
+              <span>30-day money-back</span>
             </div>
-          </div>
-
-          {/* Pricing Table Toggle */}
-          <div className="flex items-center justify-center mb-4">
-            <div className="bg-white rounded-lg p-1 shadow-sm">
-              <button
-                onClick={() => setShowStripeTable(true)}
-                className={`px-4 py-2 rounded-md font-medium transition-colors text-sm ${
-                  showStripeTable
-                    ? 'bg-purple-600 text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Interactive Pricing
-              </button>
-              <button
-                onClick={() => setShowStripeTable(false)}
-                className={`px-4 py-2 rounded-md font-medium transition-colors text-sm ${
-                  !showStripeTable
-                    ? 'bg-purple-600 text-white'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Detailed Plans
-              </button>
+            <div className="flex items-center gap-2">
+              <Check className="w-5 h-5 text-success-500" />
+              <span>No long-term lock-in</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Check className="w-5 h-5 text-success-500" />
+              <span>Cancel anytime</span>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Stripe Pricing Table */}
-      {showStripeTable && (
-        <div className="px-6 py-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-white rounded-xl shadow-lg p-8 border-2 border-purple-200">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Choose Your Enterprise Plan
-                </h2>
-                <p className="text-lg text-gray-600">
-                  All plans include our comprehensive risk reversal guarantees
-                </p>
-              </div>
+      {/* Pricing Packages */}
+      <section className="section">
+        <div className="container">
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {packages.map((pkg) => {
+              const Icon = pkg.icon;
+              const isPopular = pkg.popular;
               
-              {/* Stripe Pricing Table Container */}
-              <div className="flex justify-center">
-                <div className="w-full max-w-4xl">
-                  {stripeTableLoading && (
-                    <div className="stripe-pricing-table-loading">
-                      <div className="text-center">
-                        <p className="text-gray-600 mb-4">Loading pricing plans...</p>
+              return (
+                <div 
+                  key={pkg.id}
+                  className={`card-elevated relative ${isPopular ? 'border-2 border-cta-500' : ''}`}
+                >
+                  {isPopular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <div className="bg-cta-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                        MOST POPULAR
                       </div>
                     </div>
                   )}
-                  
-                  {stripeTableError && (
-                    <div className="stripe-pricing-table-error">
-                      <h3>Unable to Load Pricing Table</h3>
-                      <p>We're experiencing technical difficulties. Please try again or contact support.</p>
-                      <button onClick={() => {
-                        setStripeTableError(false);
-                        setStripeTableLoading(true);
-                        loadStripePricingTable();
-                      }}>
-                        Retry
-                      </button>
-                    </div>
-                  )}
-                  
-                  {!stripeTableLoading && !stripeTableError && (
-                    <stripe-pricing-table 
-                      pricing-table-id={import.meta.env.VITE_STRIPE_PRICING_TABLE_ID || "prctbl_1RwcWE1awWwGP4dI3uDwUQGp"}
-                      publishable-key={import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_live_51Rqms71awWwGP4dIrms0QUcKCCvsUU3m6KaWcjrHi6FkeoJD41tW8EM7m7fvvxyMds0M7HAgHz8Rn5q9az7s7SVp00EKbZehYr"}
-                    ></stripe-pricing-table>
-                  )}
-                </div>
-              </div>
-              
-              {/* Additional Info */}
-              <div className="mt-8 text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                  <ShieldCheck className="w-4 h-4" />
-                  30-Day Money-Back Guarantee
-                </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  All plans include comprehensive risk reversal guarantees and dedicated support
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Legacy Pricing Cards (Hidden by default) */}
-      {!showStripeTable && (
-        <div className="px-6 py-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              {getFilteredPlans().map((plan) => (
-                <div
-                  key={plan.id}
-                  className={`bg-white rounded-xl shadow-lg p-8 border-2 ${
-                    plan.popular ? 'border-purple-500 relative' : 'border-gray-200'
-                  }`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                        Most Popular
-                      </span>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-12 h-12 bg-${pkg.color}-500 rounded-lg flex items-center justify-center`}>
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
-                  )}
-                  
-                  <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                    <div className="mb-4">
-                      <span className="text-4xl font-bold text-purple-600">RM {plan.price.toLocaleString()}</span>
-                      <span className="text-gray-500 ml-2">
-                        /{billingCycle === 'monthly' ? 'month' : 'year'}
-                      </span>
-                    </div>
-                    {plan.originalPrice && (
-                      <div className="flex items-center justify-center">
-                        <span className="text-lg text-gray-400 line-through">RM {plan.originalPrice.toLocaleString()}</span>
-                        <span className="text-green-600 font-semibold ml-2">Save {plan.savings}%</span>
+                    <h3 className="text-subtitle">{pkg.name}</h3>
+                  </div>
+
+                  {/* Pricing */}
+                  <div className="mb-6 pb-6 border-b border-neutral-200">
+                    {pkg.price ? (
+                      <>
+                        <div className="flex items-baseline gap-2 mb-2">
+                          <span className="text-4xl font-bold text-neutral-900">
+                            RM {pkg.price.toLocaleString()}
+                          </span>
+                          <span className="text-neutral-600">/month</span>
+                        </div>
+                        <div className="text-sm text-neutral-600">
+                          Setup: <span className="font-medium">
+                            {pkg.setup === 0 ? 'RM 0 (Waived)' : `RM ${pkg.setup?.toLocaleString()} (${pkg.setupNote})`}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-3xl font-bold text-neutral-900 mb-2">
+                        Custom Pricing
                       </div>
                     )}
-                    <p className="text-sm text-gray-600 mt-2">{plan.targetMarket}</p>
-                    <p className="text-sm text-gray-500">{plan.annualRevenue}</p>
-                  </div>
-
-                  {/* Risk Reversal Guarantee */}
-                  {plan.riskReversal && (
-                    <div className="mb-6">
-                      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
-                        <div className="flex items-center mb-2">
-                          <ShieldCheck className="w-5 h-5 text-green-600 mr-2" />
-                          <h4 className="font-semibold text-green-800">{plan.riskReversal.guarantee}</h4>
-                        </div>
-                        <p className="text-sm text-green-700 mb-3">{plan.riskReversal.description}</p>
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="text-green-600 font-medium">Coverage: {plan.riskReversal.coverage}</span>
-                          <span className="text-blue-600 font-medium">{plan.riskReversal.confidence}</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="mb-6">
-                    <div className="bg-purple-50 rounded-lg p-4 mb-4">
-                      <p className="text-sm font-medium text-purple-900">{plan.valueProposition}</p>
+                    <div className="text-sm text-neutral-600 mt-2">
+                      {pkg.commitment}
                     </div>
                   </div>
 
+                  {/* Expected Outcomes */}
                   <div className="mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-3">Core Features</h4>
-                    <ul className="space-y-2">
-                      {plan.features?.core.slice(0, 6).map((feature, index) => (
-                        <li key={index} className="flex items-center text-sm text-gray-600">
-                          <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                          {feature}
-                        </li>
+                    <h4 className="font-bold text-neutral-900 mb-3">Expected Outcomes</h4>
+                    <div className="space-y-2 text-sm">
+                      {Object.entries(pkg.outcomes).map(([key, value]) => (
+                        <div key={key} className="flex justify-between">
+                          <span className="text-neutral-600 capitalize">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}:
+                          </span>
+                          <span className="font-bold text-success-500">{value}</span>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
 
-                  <button
-                    onClick={() => navigate('/signup')}
-                    className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
-                      plan.popular
-                        ? 'bg-purple-600 text-white hover:bg-purple-700'
-                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                    }`}
+                  {/* What's Included */}
+                  <div className="mb-6">
+                    <h4 className="font-bold text-neutral-900 mb-3">What's Included</h4>
+                    <div className="space-y-2">
+                      {pkg.included.map((feature, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-sm">
+                          <Check className="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-neutral-700">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Guarantees */}
+                  <div className="mb-6">
+                    <h4 className="font-bold text-neutral-900 mb-3">Guarantees</h4>
+                    <div className="space-y-2">
+                      {pkg.guarantees.map((guarantee, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-sm">
+                          <Shield className="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-neutral-700">{guarantee}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Ideal For */}
+                  <div className="mb-6 p-4 bg-neutral-50 rounded-lg">
+                    <div className="text-xs font-bold text-neutral-600 mb-1">IDEAL FOR</div>
+                    <div className="text-sm text-neutral-700">{pkg.idealFor}</div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <button 
+                    onClick={() => pkg.price ? navigate('/signup') : window.location.href = 'mailto:a.basyir@sheerssoft.com?subject=Enterprise%20Inquiry'}
+                    className={isPopular ? 'btn-cta w-full' : 'btn-primary w-full'}
                   >
-                    Start Free Trial
+                    {pkg.price ? 'Start Now' : 'Contact Sales'}
+                    <ArrowRight className="w-5 h-5 ml-2 inline" />
                   </button>
+
+                  {/* Value Equation */}
+                  <div className="mt-6 pt-6 border-t border-neutral-200">
+                    <div className="text-xs font-bold text-neutral-600 mb-2">VALUE EQUATION</div>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-neutral-600">Cost:</span>
+                        <span className="font-medium">{pkg.valueEquation.cost}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-600">Savings:</span>
+                        <span className="font-bold text-success-500">{pkg.valueEquation.savings}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-600">ROI:</span>
+                        <span className="font-bold text-primary-500">{pkg.valueEquation.roi}</span>
+                      </div>
+                      {pkg.valueEquation.payback && (
+                        <div className="flex justify-between">
+                          <span className="text-neutral-600">Payback:</span>
+                          <span className="font-medium">{pkg.valueEquation.payback}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Bonuses Section */}
+      <section className="section bg-primary-50">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-headline mb-4">Included FREE with Any Package</h2>
+            <p className="text-body-lg text-neutral-600">
+              Total bonus value: <span className="font-bold text-primary-500">RM {totalBonusValue.toLocaleString()}</span>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {bonuses.map((bonus, idx) => (
+              <div key={idx} className="card">
+                <div className="flex items-start justify-between mb-3">
+                  <h4 className="font-bold text-neutral-900">{bonus.name}</h4>
+                  <div className="bg-success-500 text-white px-2 py-1 rounded text-xs font-bold">
+                    {bonus.value}
+                  </div>
+                </div>
+                <p className="text-sm text-neutral-600">{bonus.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="section-faq">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-headline text-center mb-12">Frequently Asked Questions</h2>
+            
+            <div className="space-y-4">
+              {faqs.map((faq, idx) => (
+                <div key={idx} className="card cursor-pointer" onClick={() => setOpenFaq(openFaq === idx ? null : idx)}>
+                  <div className="flex justify-between items-start gap-4">
+                    <h4 className="font-bold text-neutral-900">{faq.question}</h4>
+                    <div className={`transform transition-transform ${openFaq === idx ? 'rotate-180' : ''}`}>
+                      <ArrowRight className="w-5 h-5 text-neutral-400 rotate-90" />
+                    </div>
+                  </div>
+                  {openFaq === idx && (
+                    <p className="text-neutral-600 mt-4 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         </div>
-      )}
+      </section>
 
-      {/* Risk Reversal Guarantees Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Comprehensive Risk Reversal Guarantees
+      {/* Final CTA */}
+      <section className="section bg-neutral-900">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-headline text-white mb-6">
+              Stop Losing Money. Start Saving Today.
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We're so confident in our results that we offer industry-leading guarantees on every plan
+            <p className="text-body-lg text-neutral-300 mb-8">
+              Every month you delay = RM 15,000-25,000 lost to preventable waste. That's RM 180,000-300,000 per year.
             </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
-              <div className="flex items-center mb-4">
-                <div className="bg-green-100 p-2 rounded-lg mr-3">
-                  <Target className="w-6 h-6 text-green-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-green-800">Professional</h3>
-              </div>
-              <h4 className="text-lg font-semibold text-green-700 mb-2">30-Day Money-Back Guarantee</h4>
-              <p className="text-green-600 mb-4">15% waste reduction target or full refund</p>
-              <ul className="space-y-2 text-sm text-green-700">
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  Full refund within 30 days
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  No questions asked policy
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  Keep all data and insights
-                </li>
-              </ul>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => navigate('/signup')}
+                className="btn-cta"
+              >
+                Start Saving Now
+                <ArrowRight className="w-5 h-5 ml-2 inline" />
+              </button>
+              <button 
+                onClick={() => navigate('/')}
+                className="btn-secondary"
+              >
+                Learn More
+              </button>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 p-2 rounded-lg mr-3">
-                  <ZapIcon className="w-6 h-6 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-blue-800">Enterprise</h3>
-              </div>
-              <h4 className="text-lg font-semibold text-blue-700 mb-2">60-Day Performance Guarantee</h4>
-              <p className="text-blue-600 mb-4">25% waste reduction or 3 months free + refund</p>
-              <ul className="space-y-2 text-sm text-blue-700">
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  3 months free if target not met
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  Implementation cost refund
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  Dedicated success manager
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
-              <div className="flex items-center mb-4">
-                <div className="bg-purple-100 p-2 rounded-lg mr-3">
-                  <Award className="w-6 h-6 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-purple-800">Elite</h3>
-              </div>
-              <h4 className="text-lg font-semibold text-purple-700 mb-2">90-Day ROI Guarantee</h4>
-              <p className="text-purple-600 mb-4">3x ROI or full refund + penalty payment</p>
-              <ul className="space-y-2 text-sm text-purple-700">
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  Full refund + 50% penalty
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  Dedicated engineering team
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-4 h-4 mr-2" />
-                  Custom AI development
-                </li>
-              </ul>
+            <div className="mt-8 text-sm text-neutral-400">
+              Questions? Email us at <a href="mailto:a.basyir@sheerssoft.com" className="text-primary-400 hover:text-primary-300">a.basyir@sheerssoft.com</a>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Module Comparison */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Enterprise Module Comparison
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Advanced AI-powered modules designed for enterprise-scale operations
-            </p>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-4 px-4 font-semibold text-gray-900">Module</th>
-                  <th className="text-center py-4 px-4 font-semibold text-gray-900">Professional</th>
-                  <th className="text-center py-4 px-4 font-semibold text-gray-900">Enterprise</th>
-                  <th className="text-center py-4 px-4 font-semibold text-gray-900">Elite</th>
-                </tr>
-              </thead>
-              <tbody>
-                {modules.map((module, index) => (
-                  <tr key={index} className="border-b border-gray-100">
-                    <td className="py-4 px-4">
-                      <div className="flex items-center">
-                        <module.icon className="w-5 h-5 text-purple-600 mr-3" />
-                        <div>
-                          <div className="font-medium text-gray-900">{module.name}</div>
-                          <div className="text-sm text-gray-500">{module.description}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="text-center py-4 px-4">
-                      <span className="text-sm text-gray-600">Advanced</span>
-                    </td>
-                    <td className="text-center py-4 px-4">
-                      <span className="text-sm text-green-600 font-medium">Enterprise</span>
-                    </td>
-                    <td className="text-center py-4 px-4">
-                      <span className="text-sm text-purple-600 font-medium">Custom</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose Servora AI Enterprise?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Premium AI platform designed exclusively for Malaysia's top F&B revenue generators
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mb-4">
-                  <feature.icon className="w-6 h-6 text-purple-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Testimonials Section */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Trusted by Malaysia's Top F&B Leaders
-            </h2>
-            <p className="text-lg text-gray-600">
-              See what our premium customers have to say about Servora AI
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">"{testimonial.content}"</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}, {testimonial.company}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-green-600">Monthly Savings</p>
-                    <p className="text-lg font-bold text-green-600">{testimonial.savings}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Special Offers */}
-      <div className="py-16 bg-purple-600">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Enterprise Solutions with Guaranteed Results
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-white/10 rounded-lg p-6">
-              <ShieldCheck className="w-8 h-8 text-yellow-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">Risk-Free Guarantees</h3>
-              <p className="text-purple-100">Comprehensive risk reversal guarantees on all plans with 95-99% success rates</p>
-            </div>
-            <div className="bg-white/10 rounded-lg p-6">
-              <TrendingUp className="w-8 h-8 text-yellow-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">Guaranteed ROI</h3>
-              <p className="text-purple-100">Proven results with guaranteed waste reduction and cost savings across all tiers</p>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate('/signup')}
-              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center"
-            >
-              Start Free Trial
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </button>
-            <button
-              onClick={() => navigate('/')}
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
-            >
-              Learn More
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
-            </h2>
-          </div>
-
-          <div className="space-y-6">
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                How do the risk reversal guarantees work?
-              </h3>
-              <p className="text-gray-600">
-                Each plan comes with a specific guarantee period and target. If we don't meet the target within the guarantee period, you get the specified refund or compensation. The process is simple: submit a claim, provide metrics, and receive your refund within 5 business days.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What makes Servora AI different for enterprise customers?
-              </h3>
-              <p className="text-gray-600">
-                Servora AI is designed exclusively for Malaysia's top 10% revenue makers with advanced AI capabilities, custom integrations, dedicated support teams, and comprehensive risk reversal guarantees that understand enterprise-scale operations.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What's included in the enterprise trial?
-              </h3>
-              <p className="text-gray-600">
-                The 30-day enterprise trial includes full access to all features, custom integrations, dedicated account manager, implementation support, and the full guarantee period to demonstrate ROI within the trial period.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Do you offer custom enterprise agreements?
-              </h3>
-              <p className="text-gray-600">
-                Yes, we offer custom enterprise agreements with negotiated pricing, multi-year contracts, volume discounts, strategic partnership opportunities, and enhanced guarantee terms for large deployments.
-              </p>
-            </div>
-
-            <div className="pb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Can you integrate with our existing enterprise systems?
-              </h3>
-              <p className="text-gray-600">
-                Absolutely. Our enterprise platform offers custom integrations with existing ERP, POS, and inventory systems, along with API development and white-label options for seamless integration, all covered by our performance guarantees.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-2xl font-bold text-purple-400 mb-4">Sheerssoft</div>
-              <p className="text-gray-400">
-                Premium AI platform for Malaysia's top F&B revenue generators with guaranteed results.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button onClick={() => navigate('/')} className="hover:text-white transition-colors">Features</button></li>
-                <li><button onClick={() => navigate('/pricing')} className="hover:text-white transition-colors">Pricing</button></li>
-                <li><button onClick={() => navigate('/signup')} className="hover:text-white transition-colors">Free Trial</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">Help Center</button></li>
-                <li><button className="hover:text-white transition-colors">Contact Us</button></li>
-                <li><button className="hover:text-white transition-colors">API Documentation</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">About</button></li>
-                <li><button className="hover:text-white transition-colors">Blog</button></li>
-                <li><button className="hover:text-white transition-colors">Careers</button></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Sheers Software Sdn Bhd. All rights reserved. | Servora AI - Premium platform with guaranteed results for top 10% revenue makers.</p>
+      <footer className="border-t border-neutral-200 py-8">
+        <div className="container">
+          <div className="text-center text-sm text-neutral-600">
+            <p className="mb-2">© 2025 Servora AI by Sheerssoft. All rights reserved.</p>
+            <p className="text-xs text-neutral-500">
+              Professional F&B waste management SaaS platform serving Malaysian restaurants
+            </p>
           </div>
         </div>
       </footer>

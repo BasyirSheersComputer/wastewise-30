@@ -1,503 +1,492 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Star, TrendingUp, Users, Shield, Coffee, Award, Crown, ArrowRight, Globe, Zap } from 'lucide-react';
+import { Check, TrendingUp, Clock, DollarSign, Shield, ArrowRight, AlertCircle } from 'lucide-react';
 
-export default function HomePage() {
+export default function LandingPage() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: ''
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formError, setFormError] = useState('');
 
-  const features = [
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError('');
+
+    try {
+      const response = await fetch('/api/leads/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          source: 'landing_page_hero',
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      if (response.ok) {
+        setFormSubmitted(true);
+        // Send email notification
+        await fetch('/api/leads/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: 'a.basyir@sheerssoft.com',
+            subject: `New Lead: Landing Page - ${formData.company}`,
+            lead: formData
+          })
+        });
+      } else {
+        setFormError('Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setFormError('Unable to submit form. Please try again.');
+    }
+  };
+
+  const valueProps = [
+    { value: '30-40%', label: 'waste reduced' },
+    { value: '60 days', label: 'to results' },
+    { value: '50+', label: 'active clients' },
+    { value: 'RM 15-25k', label: 'monthly savings per outlet' }
+  ];
+
+  const solutions = [
     {
-      title: 'AI-Powered Waste Reduction',
-      description: 'Reduce waste by 35-45% with advanced machine learning insights',
-      icon: TrendingUp,
-      benefit: 'Save RM 50K-200K monthly'
+      title: 'AI Forecasting',
+      outcome: '85-95% demand prediction accuracy',
+      result: 'Reduce overproduction by 30-40%',
+      savings: 'RM 10,000-20,000 monthly',
+      timeline: '30 days'
     },
     {
-      title: 'Multi-Location Management',
-      description: 'Manage all your locations from a single enterprise dashboard',
-      icon: Users,
-      benefit: 'Scale efficiently'
+      title: 'Waste Logging Automation',
+      outcome: 'Track 100% of waste automatically',
+      result: 'Identify waste sources, reduce by 25-40%',
+      savings: 'RM 15,000-25,000 monthly',
+      timeline: '60 days'
     },
     {
-      title: 'Real-Time Analytics',
-      description: 'Get instant insights into your operations with live data',
-      icon: Coffee,
-      benefit: 'Make data-driven decisions'
-    },
-    {
-      title: 'Enterprise Security',
-      description: 'Built with enterprise-grade security and compliance',
-      icon: Shield,
-      benefit: 'Trusted by top brands'
+      title: 'Compliance Automation',
+      outcome: '95-100% regulatory compliance',
+      result: 'Zero violations, 60-75% time saved',
+      savings: '20-30 hours weekly',
+      timeline: 'Immediate'
     }
   ];
 
-  const testimonials = [
+  const industryData = [
     {
-      name: 'Sarah Chen',
-      role: 'Operations Director',
-      company: 'Starbucks Malaysia',
-      content: 'Servora AI helped us reduce food waste by 35% across all 50 locations. The AI insights are game-changing!',
-      rating: 5,
-      savings: 'RM 250K/month saved'
+      stat: '25-40%',
+      description: 'Restaurants using automated waste tracking achieve reduction',
+      source: 'World Resources Institute, 2023',
+      link: 'https://www.wri.org'
     },
     {
-      name: 'Michael Rodriguez',
-      role: 'CEO',
-      company: 'Secret Recipe Group',
-      content: 'The multi-location dashboard gives us complete visibility across all our stores. Exactly what we needed.',
-      rating: 5,
-      savings: 'RM 180K/month saved'
+      stat: '85-95%',
+      description: 'AI forecasting accuracy in food service operations',
+      source: 'McKinsey & Company, 2024',
+      link: 'https://www.mckinsey.com'
     },
     {
-      name: 'Jennifer Park',
-      role: 'General Manager',
-      company: 'Urban Coffee Co.',
-      content: 'Easy to use, powerful analytics, and excellent local support. This platform pays for itself.',
-      rating: 5,
-      savings: 'RM 320K/month saved'
+      stat: 'RM 50.8B',
+      description: 'Malaysian F&B market size with 15-20% average waste',
+      source: 'MATRADE, 2023',
+      link: 'https://www.matrade.gov.my'
     }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Header - Microsoft 365 Copilot Style */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Navigation */}
+      <nav className="border-b border-neutral-200 bg-white sticky top-0 z-40">
+        <div className="container">
           <div className="flex justify-between items-center h-16">
-            {/* Left Side - Logo and Brand */}
             <div className="flex items-center space-x-3">
-              {/* Servora AI Logo */}
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">S</span>
-                </div>
-                <div className="text-lg font-semibold text-gray-900">Sheerssoft</div>
+              <div className="w-10 h-10 bg-primary-500 rounded flex items-center justify-center">
+                <span className="text-white font-bold text-lg">S</span>
               </div>
-              
-              {/* Separator */}
-              <div className="w-px h-6 bg-gray-300"></div>
-              
-              {/* Product Name */}
-              <div className="text-lg font-semibold text-gray-900 hidden sm:block">Servora AI Platform</div>
+              <span className="text-xl font-bold text-neutral-900">Servora AI</span>
             </div>
             
-            {/* Center Navigation Links - Hidden on smaller screens */}
-            <div className="hidden xl:flex items-center space-x-8">
-              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
-                Products
-                <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
-                Resources
-                <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <button className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
-                Templates
-              </button>
-              <button className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
-                Analytics
-              </button>
-              <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium">
-                Support
-                <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Center-Right and Right Actions */}
-            <div className="flex items-center space-x-6">
-              <button
+            <div className="hidden md:flex items-center space-x-8">
+              <button 
                 onClick={() => navigate('/pricing')}
-                className="border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors font-medium whitespace-nowrap"
+                className="text-neutral-600 hover:text-neutral-900 font-medium"
               >
-                Buy Servora AI
+                Pricing
               </button>
-              
-              <div className="hidden lg:flex items-center space-x-6">
-                <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap">
-                  All Servora AI
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => navigate('/login')}
-                  className="text-gray-600 hover:text-gray-900 transition-colors font-medium whitespace-nowrap"
-                >
-                  Sign in
-                </button>
-                <button className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
-                  <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                  </svg>
-                </button>
-              </div>
-              
-              {/* Mobile menu button */}
-              <button className="lg:hidden w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
-                <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
+              <button 
+                onClick={() => navigate('/login')}
+                className="btn-ghost text-sm"
+              >
+                Sign In
+              </button>
+              <button 
+                onClick={() => navigate('/signup')}
+                className="btn-cta text-sm"
+              >
+                Start Free Trial
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section - Microsoft 365 Copilot Style */}
-      <div className="bg-gradient-to-br from-orange-50 via-white to-purple-50 py-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            {/* Central Logo/Icon */}
-            <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 mb-4">
-                <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 via-green-400 via-blue-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                    <TrendingUp className="w-8 h-8 text-purple-600" />
-                  </div>
-                </div>
-              </div>
+      {/* Hero Section */}
+      <section className="section-hero bg-neutral-50">
+        <div className="container">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left: Headline & Value Props */}
+            <div>
+              <h1 className="text-headline md:text-display font-bold text-neutral-900 mb-6">
+                Reduce Food Waste by 30-40% in 60 Days
+              </h1>
               
-              {/* M365 Style Badge */}
-              <div className="inline-flex items-center justify-center">
-                <div className="bg-black text-white px-3 py-1 rounded text-sm font-medium">
-                  W30
+              <p className="text-body-lg text-neutral-600 mb-8 leading-relaxed">
+                Stop losing RM 15,000-25,000 monthly to preventable waste. Our proven system helps F&B businesses increase profit margins by 10-15% through smart inventory management and waste reduction.
+              </p>
+
+              {/* Value Props Grid */}
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                {valueProps.map((prop, idx) => (
+                  <div key={idx} className="stat-card border-l-4 border-primary-500 bg-white rounded pl-4">
+                    <div className="stat-value text-2xl">{prop.value}</div>
+                    <div className="stat-label">{prop.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap gap-4 text-sm text-neutral-600">
+                <div className="trust-badge">
+                  <Check className="w-4 h-4 text-success-500" />
+                  <span>30-day money-back guarantee</span>
+                </div>
+                <div className="trust-badge">
+                  <Check className="w-4 h-4 text-success-500" />
+                  <span>Setup in 5 days</span>
+                </div>
+                <div className="trust-badge">
+                  <Check className="w-4 h-4 text-success-500" />
+                  <span>No credit card required</span>
                 </div>
               </div>
             </div>
 
-            {/* Main Headline with Color Transitions */}
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-orange-500 to-purple-600 bg-clip-text text-transparent">
-                Welcome to the
-              </span>
-              <br />
-              <span className="text-purple-600">
-                Servora AI Platform
-              </span>
-              <br />
-              <span className="text-blue-600">
-                app
-              </span>
-            </h1>
+            {/* Right: Lead Form */}
+            <div className="card-elevated">
+              {!formSubmitted ? (
+                <>
+                  <h3 className="text-title mb-2">Get Your Free Waste Audit</h3>
+                  <p className="text-neutral-600 mb-6">
+                    See exactly where you're losing RM 15,000-25,000 monthly
+                  </p>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <label className="label">Full Name</label>
+                      <input
+                        type="text"
+                        required
+                        className="input-field w-full"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        placeholder="John Tan"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="label">Email Address</label>
+                      <input
+                        type="email"
+                        required
+                        className="input-field w-full"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        placeholder="john@restaurant.com"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="label">Phone Number</label>
+                      <input
+                        type="tel"
+                        required
+                        className="input-field w-full"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        placeholder="+60 12-345-6789"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="label">Restaurant/Company Name</label>
+                      <input
+                        type="text"
+                        required
+                        className="input-field w-full"
+                        value={formData.company}
+                        onChange={(e) => setFormData({...formData, company: e.target.value})}
+                        placeholder="My Restaurant Chain"
+                      />
+                    </div>
 
-            {/* Descriptive Paragraph */}
-            <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-              The Servora AI Platform lets you optimize, analyze, and collaborate all in one place with your favorite F&B operations now including AI-powered insights.*
-            </p>
-            
-            {/* CTA Buttons - Microsoft 365 Style */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button
-                onClick={() => navigate('/login')}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 text-lg font-medium shadow-lg"
-              >
-                Sign in
-              </button>
-              <button
-                onClick={() => navigate('/pricing')}
-                className="bg-white text-purple-600 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors text-lg font-medium border-2 border-purple-600 shadow-lg"
-              >
-                Get Servora AI
-              </button>
-            </div>
-
-            {/* Secondary Call-to-Action Link */}
-            <div className="text-center">
-              <button
-                onClick={() => navigate('/signup')}
-                className="text-blue-600 hover:text-blue-700 transition-colors text-base font-medium"
-              >
-                Sign up for the free version of Servora AI &gt;
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose Servora AI?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Enterprise-grade AI platform designed for Malaysia's top F&B businesses
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center group">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4 group-hover:bg-purple-200 transition-colors">
-                  <feature.icon className="w-8 h-8 text-purple-600" />
+                    {formError && (
+                      <div className="flex items-center gap-2 text-error text-sm">
+                        <AlertCircle className="w-4 h-4" />
+                        {formError}
+                      </div>
+                    )}
+                    
+                    <button type="submit" className="btn-cta w-full">
+                      Get Your Free Audit
+                      <ArrowRight className="w-5 h-5 ml-2 inline" />
+                    </button>
+                    
+                    <div className="text-xs text-neutral-500 text-center space-y-1">
+                      <div className="flex items-center justify-center gap-2">
+                        <Check className="w-3 h-3 text-success-500" />
+                        <span>No credit card required</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <Check className="w-3 h-3 text-success-500" />
+                        <span>30-day money-back guarantee</span>
+                      </div>
+                    </div>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-success-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Check className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-title mb-2">We'll Call You Soon</h3>
+                  <p className="text-neutral-600 mb-4">
+                    Your information has been received. Our team will contact you within 24 hours to discuss how we can help reduce your waste by 30-40% and increase profits.
+                  </p>
+                  <p className="text-sm text-neutral-500">
+                    Check your email at <span className="font-medium text-primary-500">{formData.email}</span> for confirmation.
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 mb-3">
-                  {feature.description}
-                </p>
-                <div className="text-sm font-medium text-purple-600">
-                  {feature.benefit}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Pricing Preview Section */}
-      <div className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Choose Your Plan
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Flexible pricing options for businesses of all sizes
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Starter Plan */}
-            <div className="bg-white rounded-xl shadow-lg p-8 border-2 border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Starter</h3>
-              <div className="mb-4">
-                <span className="text-4xl font-bold text-gray-900">RM 500</span>
-                <span className="text-gray-500 ml-2">/month per location</span>
-              </div>
-              <p className="text-gray-600 mb-6">Perfect for small cafes and restaurants</p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Core waste tracking</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Basic analytics</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Email support</span>
-                </li>
-              </ul>
-              <button
-                onClick={() => navigate('/signup')}
-                className="w-full bg-gray-100 text-gray-900 py-3 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
-              >
-                Start Free Trial
-              </button>
-            </div>
-
-            {/* Professional Plan */}
-            <div className="bg-white rounded-xl shadow-lg p-8 border-2 border-purple-500 relative">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                  Most Popular
-                </span>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Professional</h3>
-              <div className="mb-4">
-                <span className="text-4xl font-bold text-purple-600">RM 5,000</span>
-                <span className="text-gray-500 ml-2">/month</span>
-              </div>
-              <p className="text-gray-600 mb-6">For growing coffee chains (5-10 locations)</p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>All Starter features</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Multi-location management</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Advanced analytics</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Priority support</span>
-                </li>
-              </ul>
-              <button
-                onClick={() => navigate('/landing')}
-                className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold"
-              >
-                Get Servora AI
-              </button>
-            </div>
-
-            {/* Enterprise Plan */}
-            <div className="bg-white rounded-xl shadow-lg p-8 border-2 border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
-              <div className="mb-4">
-                <span className="text-4xl font-bold text-gray-900">RM 10,000</span>
-                <span className="text-gray-500 ml-2">/month</span>
-              </div>
-              <p className="text-gray-600 mb-6">For large chains (10+ locations)</p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>All Professional features</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Unlimited locations</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Custom integrations</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Dedicated account manager</span>
-                </li>
-              </ul>
-              <button
-                onClick={() => navigate('/landing')}
-                className="w-full bg-gray-100 text-gray-900 py-3 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
-              >
-                Contact Sales
-              </button>
-            </div>
-          </div>
-
-          {/* Pricing Options */}
-          <div className="text-center mt-12">
-            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 inline-block">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Options</h3>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => navigate('/checkout?billing=monthly')}
-                  className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
-                >
-                  Paid monthly
-                </button>
-                <button
-                  onClick={() => navigate('/checkout?billing=yearly')}
-                  className="bg-white text-purple-600 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium border-2 border-purple-600"
-                >
-                  Paid yearly
-                  <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                    Save 15%
-                  </span>
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Testimonials Section */}
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Urgency Message */}
+      <section className="bg-cta-500 py-4">
+        <div className="container">
+          <p className="text-center text-white font-medium">
+            Every month you wait costs you RM 15,000-25,000 in preventable waste.
+          </p>
+        </div>
+      </section>
+
+      {/* Solutions - Outcome Focused */}
+      <section className="section">
+        <div className="container">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Trusted by Malaysia's Top F&B Leaders
-            </h2>
-            <p className="text-xl text-gray-600">
-              See what our customers have to say about Servora AI
+            <h2 className="text-headline mb-4">Proven Solutions, Measurable Results</h2>
+            <p className="text-body-lg text-neutral-600 max-w-3xl mx-auto">
+              Each solution delivers specific, measurable outcomes. No fluff, just real savings.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-6">
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">"{testimonial.content}"</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}, {testimonial.company}</p>
+            {solutions.map((solution, idx) => (
+              <div key={idx} className="card hover-lift">
+                <h3 className="text-subtitle mb-3 text-primary-500">{solution.title}</h3>
+                
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-start gap-2">
+                    <Check className="w-5 h-5 text-success-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-medium text-neutral-900">Outcome</div>
+                      <div className="text-sm text-neutral-600">{solution.outcome}</div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-green-600">Monthly Savings</p>
-                    <p className="text-lg font-bold text-green-600">{testimonial.savings}</p>
+                  
+                  <div className="flex items-start gap-2">
+                    <TrendingUp className="w-5 h-5 text-success-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-medium text-neutral-900">Result</div>
+                      <div className="text-sm text-neutral-600">{solution.result}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-2">
+                    <DollarSign className="w-5 h-5 text-success-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-medium text-neutral-900">Savings</div>
+                      <div className="text-sm text-neutral-600">{solution.savings}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-2">
+                    <Clock className="w-5 h-5 text-success-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-medium text-neutral-900">Timeline</div>
+                      <div className="text-sm text-neutral-600">{solution.timeline}</div>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* CTA Section */}
-      <div className="py-20 bg-purple-600">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Transform Your Operations?
-          </h2>
-          <p className="text-xl text-purple-100 mb-8">
-            Join thousands of F&B businesses already saving millions with Servora AI
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate('/landing')}
-              className="bg-white text-purple-600 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors text-lg font-semibold flex items-center justify-center"
+          <div className="text-center mt-12">
+            <button 
+              onClick={() => navigate('/pricing')}
+              className="btn-cta"
             >
-              Get Servora AI
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </button>
-            <button
-              onClick={() => navigate('/signup')}
-              className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-purple-600 transition-colors text-lg font-semibold"
-            >
-              Start Free Trial
+              See Pricing & Packages
+              <ArrowRight className="w-5 h-5 ml-2 inline" />
             </button>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Industry Data - Proof Over Claims */}
+      <section className="section bg-neutral-50">
+        <div className="container">
+          <div className="text-center mb-16">
+            <h2 className="text-headline mb-4">Backed by Industry Data</h2>
+            <p className="text-body-lg text-neutral-600 max-w-3xl mx-auto">
+              We don't make claims. We show you verified data from reputable sources.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {industryData.map((data, idx) => (
+              <div key={idx} className="card-elevated text-center">
+                <div className="text-5xl font-bold text-primary-500 mb-4">
+                  {data.stat}
+                </div>
+                <p className="text-neutral-700 mb-4">
+                  {data.description}
+                </p>
+                <a 
+                  href={data.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary-500 hover:text-primary-700 font-medium"
+                >
+                  Source: {data.source} →
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ROI Calculator */}
+      <section className="section">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="card-elevated bg-gradient-to-br from-primary-50 to-white border-2 border-primary-500">
+              <div className="text-center mb-8">
+                <h2 className="text-headline mb-4">The Cost of Doing Nothing</h2>
+                <p className="text-body-lg text-neutral-600">
+                  Simple math shows why waiting is expensive
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8 mb-8">
+                <div className="text-center p-6 bg-white rounded-lg shadow-sm">
+                  <div className="text-sm text-neutral-600 mb-2">Monthly Waste Loss</div>
+                  <div className="text-3xl font-bold text-error">RM 20,000-50,000</div>
+                </div>
+                
+                <div className="text-center p-6 bg-white rounded-lg shadow-sm">
+                  <div className="text-sm text-neutral-600 mb-2">Investment in Solution</div>
+                  <div className="text-3xl font-bold text-neutral-900">RM 3,000-6,000</div>
+                </div>
+                
+                <div className="text-center p-6 bg-white rounded-lg shadow-sm">
+                  <div className="text-sm text-neutral-600 mb-2">Return on Investment</div>
+                  <div className="text-3xl font-bold text-success-500">5-10x</div>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <button 
+                  onClick={() => {
+                    const formSection = document.querySelector('.card-elevated');
+                    formSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="btn-cta"
+                >
+                  Calculate My Savings
+                  <ArrowRight className="w-5 h-5 ml-2 inline" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="section bg-neutral-900">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-headline text-white mb-6">
+              Ready to Stop Losing Money?
+            </h2>
+            <p className="text-body-lg text-neutral-300 mb-8">
+              Join 50+ Malaysian F&B businesses reducing waste and increasing profits with Servora AI.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => {
+                  const formSection = document.querySelector('.card-elevated');
+                  formSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="btn-cta"
+              >
+                Get Your Free Audit
+              </button>
+              <button 
+                onClick={() => navigate('/pricing')}
+                className="btn-secondary"
+              >
+                View Pricing
+              </button>
+            </div>
+
+            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-neutral-400">
+              <div className="trust-badge text-neutral-400">
+                <Shield className="w-4 h-4" />
+                <span>30-day money-back guarantee</span>
+              </div>
+              <div className="trust-badge text-neutral-400">
+                <Check className="w-4 h-4" />
+                <span>Cancel anytime after 90 days</span>
+              </div>
+              <div className="trust-badge text-neutral-400">
+                <Check className="w-4 h-4" />
+                <span>99.9% uptime SLA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-2xl font-bold text-purple-400 mb-4">Sheerssoft</div>
-              <p className="text-gray-400">
-                AI-powered operational intelligence platform for Malaysia's F&B industry.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">Features</button></li>
-                <li><button onClick={() => navigate('/landing')} className="hover:text-white transition-colors">Get Servora AI</button></li>
-                <li><button onClick={() => navigate('/signup')} className="hover:text-white transition-colors">Free Trial</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">Help Center</button></li>
-                <li><button className="hover:text-white transition-colors">Contact Us</button></li>
-                <li><button className="hover:text-white transition-colors">API Documentation</button></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><button className="hover:text-white transition-colors">About</button></li>
-                <li><button className="hover:text-white transition-colors">Blog</button></li>
-                <li><button className="hover:text-white transition-colors">Careers</button></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Sheers Software Sdn Bhd. All rights reserved. | Servora AI</p>
+      <footer className="border-t border-neutral-200 py-8">
+        <div className="container">
+          <div className="text-center text-sm text-neutral-600">
+            <p className="mb-2">© 2025 Servora AI by Sheerssoft. All rights reserved.</p>
+            <p className="text-xs text-neutral-500">
+              Contact: <a href="mailto:a.basyir@sheerssoft.com" className="text-primary-500 hover:text-primary-700">a.basyir@sheerssoft.com</a>
+            </p>
           </div>
         </div>
       </footer>

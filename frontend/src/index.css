@@ -8,12 +8,106 @@
   }
   
   body {
-    @apply bg-background text-text-primary;
+    @apply bg-background text-text-primary font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-neutral-900;
   }
 }
 
 @layer components {
-  /* Glass Design System */
+  /* Servora AI Design System - AG1 Inspired */
+  
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-primary-500 hover:bg-primary-700 text-white font-medium px-8 py-4 rounded-button transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-cta {
+    @apply bg-cta-500 hover:bg-cta-600 active:bg-cta-700 text-white font-medium px-8 py-4 rounded-button transition-all duration-200 shadow-cta hover:shadow-elevated disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-neutral-50 text-neutral-900 font-medium px-8 py-4 rounded-button border-2 border-neutral-300 transition-all duration-200;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent hover:bg-neutral-50 text-neutral-900 font-medium px-6 py-3 rounded-button transition-all duration-200;
+  }
+  
+  /* Card Styles */
+  .card {
+    @apply bg-white border border-neutral-200 rounded-card-lg p-8 shadow-card;
+  }
+  
+  .card-elevated {
+    @apply bg-white border border-neutral-200 rounded-card-lg p-8 shadow-elevated hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  /* Form Styles */
+  .input-field {
+    @apply bg-white border-2 border-neutral-300 rounded-button px-4 py-3 text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-neutral-700 mb-2;
+  }
+  
+  /* Section Containers */
+  .section {
+    @apply py-section px-4;
+  }
+  
+  .section-hero {
+    @apply pt-hero-top pb-hero-bottom px-4;
+  }
+  
+  .section-faq {
+    @apply pt-faq-top pb-faq-bottom px-4;
+  }
+  
+  .container {
+    @apply max-w-content mx-auto;
+  }
+  
+  /* Stats/Metrics Display */
+  .stat-card {
+    @apply text-center p-6;
+  }
+  
+  .stat-value {
+    @apply text-4xl font-bold text-primary-500 mb-2;
+  }
+  
+  .stat-label {
+    @apply text-sm text-neutral-600 font-medium;
+  }
+  
+  /* Trust Indicators */
+  .trust-badge {
+    @apply flex items-center gap-2 text-sm text-neutral-600;
+  }
+  
+  /* Gradient Backgrounds (Use Sparingly) */
+  .gradient-primary {
+    background: linear-gradient(135deg, #00A7A7, #007878);
+  }
+  
+  .gradient-cta {
+    background: linear-gradient(135deg, #FF6B35, #E55A2B);
+  }
+  
+  /* Modal Styles */
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50;
+  }
+  
+  .modal {
+    @apply bg-white rounded-modal p-8 max-w-md w-full mx-4 shadow-elevated;
+  }
+  
+  /* Glass Design System (for dashboard/app UI) */
   .glass-card {
     @apply bg-white/80 backdrop-blur-md border border-white/20 rounded-lg shadow-lg;
   }
@@ -27,37 +121,19 @@
   }
   
   .glass-nav-item.active {
-    @apply bg-primary/10 text-primary font-medium;
+    @apply bg-primary-500/10 text-primary-500 font-medium;
   }
   
-  .glass-button {
-    @apply bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  /* Utility Classes */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent;
   }
   
-  .glass-button-secondary {
-    @apply bg-white/80 hover:bg-white text-text-primary font-medium py-2 px-4 rounded-md border border-white/20 transition-all duration-200;
+  .text-gradient-cta {
+    @apply bg-gradient-to-r from-cta-500 to-cta-700 bg-clip-text text-transparent;
   }
   
-  .glass-input {
-    @apply bg-white/60 backdrop-blur-sm border border-white/30 rounded-md px-3 py-2 text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200;
-  }
-  
-  /* Modal Styles */
-  .modal-backdrop {
-    @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50;
-  }
-  
-  .modal {
-    @apply glass-card p-6 max-w-md w-full mx-4;
-  }
-  
-  /* Form Styles */
-  .input {
-    @apply glass-input w-full mb-3;
-  }
-  
-  /* Transition Utilities */
-  .transition-default {
-    @apply transition-all duration-200 ease-in-out;
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1;
   }
 }
