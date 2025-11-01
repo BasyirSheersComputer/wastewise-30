@@ -62,7 +62,7 @@ steps:
       - '--timeout'
       - '300'
       - '--set-env-vars'
-      - 'NODE_ENV=production'
+      - 'NODE_ENV=production,PORT=8080'
   
   # Deploy frontend service
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
