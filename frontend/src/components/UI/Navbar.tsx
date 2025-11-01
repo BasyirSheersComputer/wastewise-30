@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../logo.png';
 
 interface NavbarProps {
   variant?: 'landing' | 'pricing' | 'dark' | 'sidebar';
@@ -73,12 +72,10 @@ export default function Navbar({
 
   const renderLogo = () => (
     <div className={styles.logo}>
-      <img 
-        src={logo} 
-        alt="WasteWise Logo" 
-        className="h-8 w-8 object-contain"
-      />
-      <span className={styles.logoText}>WasteWise</span>
+      <div className="w-8 h-8 bg-primary-500 rounded flex items-center justify-center">
+        <span className="text-white font-bold">S</span>
+      </div>
+      <span className={styles.logoText}>Servora AI</span>
     </div>
   );
 
