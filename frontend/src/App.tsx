@@ -290,14 +290,12 @@ function App() {
         <Route path="/checkout" element={<CheckoutFlow />} />
         <Route path="/checkout/success" element={<CheckoutSuccessNew />} />
 
-        {/* Onboarding/Trial - With Sidebar */}
+        {/* Onboarding/Trial - Standalone (no sidebar for clean UX) */}
         <Route
           path="/onboarding"
           element={
             <RequireAuth>
-              <AuthenticatedLayout>
-                <OnboardingForm />
-              </AuthenticatedLayout>
+              <OnboardingForm />
             </RequireAuth>
           }
         />
