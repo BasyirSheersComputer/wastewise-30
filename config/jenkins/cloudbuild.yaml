@@ -52,11 +52,15 @@ steps:
       - '--cpu'
       - '1'
       - '--min-instances'
-      - '1'
+      - '0'
       - '--max-instances'
-      - '10'
+      - '5'
+      - '--concurrency'
+      - '80'
+      - '--timeout'
+      - '300'
       - '--set-env-vars'
-      - 'NODE_ENV=production'
+      - 'NODE_ENV=production,SUPABASE_URL=https://fbdqrqknqphcyxbmnuaf.supabase.co,SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZHFycWtucXBoY3l4Ym1udWFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0NzkwNDgsImV4cCI6MjA2ODA1NTA0OH0.ywEEaFhppnloTSLmAMxJby0bOIzCyxkT_exH6k2qxWI,CORS_ORIGIN=https://wastewise-frontend-451983642521.asia-southeast1.run.app'
   
   # Deploy frontend service
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'

@@ -9,7 +9,7 @@ services:
         VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
         VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
         VITE_STRIPE_PUBLISHABLE_KEY: ${VITE_STRIPE_PUBLISHABLE_KEY}
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://wastewise-backend:3000}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://wastewise-backend:8080}
         VITE_TRIAL_PERIOD_DAYS: ${VITE_TRIAL_PERIOD_DAYS:-30}
     container_name: wastewise-frontend
     restart: always
@@ -36,17 +36,17 @@ services:
     container_name: wastewise-backend
     restart: always
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:8080:8080"
     env_file:
       - .env
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=8080
       - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:8080}
     networks:
       - wastewise-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 3

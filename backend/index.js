@@ -56,7 +56,8 @@ try {
 }
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+// Cloud Run injects PORT env var, default to 8080 for consistency
+const PORT = process.env.PORT || 8080;
 
 // Security middleware
 app.use(helmet());
@@ -74,11 +75,28 @@ app.use('/api/', limiter);
 
 // CORS configuration for Cloud Run
 const corsOptions = {
-  origin: [
-    process.env.CORS_ORIGIN || 'http://localhost:5173',
-    'https://wastewise-frontend-*.run.app',
-    'https://*.run.app'
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
+    if (!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:8080',
+      'http://localhost:3000',
+      'https://wastewise-frontend-451983642521.asia-southeast1.run.app',
+      'https://servora-ai.sheerssoft.com',
+      'http://servora-ai.sheerssoft.com',
+      process.env.CORS_ORIGIN
+    ].filter(Boolean);
+    
+    // Check if origin is in allowed list or matches run.app pattern
+    if (allowedOrigins.includes(origin) || origin.endsWith('.run.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -111,7 +129,7 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     timestamp: new Date().toISOString(),
-    version: '1.0.0',
+    version: '1.1.0',
     message: 'Backend is running successfully',
     environment: process.env.NODE_ENV || 'development'
   });
