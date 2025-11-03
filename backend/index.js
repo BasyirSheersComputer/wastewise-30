@@ -35,6 +35,7 @@ import integrationsRoutes from './routes/integrations.js';
 import aiUfeRoutes from './routes/aiUfe.js';
 import integrationTestRoutes from './routes/integrationTest.js';
 import chatRoutes from './routes/chat.js';
+import leadsRoutes from './routes/leads.js';
 
 dotenv.config();
 
@@ -59,17 +60,24 @@ const app = express();
 // Cloud Run injects PORT env var, default to 8080 for consistency
 const PORT = process.env.PORT || 8080;
 
+// Trust proxy - required for Cloud Run and rate limiting
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
 
 // Compression middleware
 app.use(compression());
 
-// Rate limiting
+// Rate limiting (with proxy support for Cloud Run)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  // Trust the X-Forwarded-For header from proxy (Cloud Run)
+  validate: { xForwardedForHeader: false }
 });
 app.use('/api/', limiter);
 
@@ -248,6 +256,7 @@ app.use('/api/integrations', integrationsRoutes);
 app.use('/api/ai-ufe', aiUfeRoutes);
 app.use('/api/integration-test', integrationTestRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/leads', leadsRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {

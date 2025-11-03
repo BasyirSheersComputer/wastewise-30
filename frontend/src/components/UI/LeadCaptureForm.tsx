@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Check, ArrowRight, AlertCircle } from 'lucide-react';
+import apiService from '../../services/api';
 
 interface LeadCaptureFormProps {
   source?: string;
@@ -32,51 +33,23 @@ export default function LeadCaptureForm({
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/leads/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          source,
-          timestamp: new Date().toISOString(),
-          timezone: 'Asia/Kuala_Lumpur'
-        })
+      const response = await apiService.submitLead({
+        ...formData,
+        source,
+        interest: 'waste_audit'
       });
 
-      if (response.ok) {
+      if (response.success) {
         setFormSubmitted(true);
         
-        // Send email notification
-        await fetch('/api/leads/notify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: 'a.basyir@sheerssoft.com',
-            subject: `New Lead: ${source} - ${formData.company}`,
-            body: `
-New lead from ${source}:
-
-Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Company: ${formData.company}
-Source: ${source}
-Timestamp: ${new Date().toLocaleString('en-MY', { timeZone: 'Asia/Kuala_Lumpur' })}
-
-Next Steps:
-1. Call within 24 hours
-2. Conduct free waste audit
-3. Present customized ROI projection
-4. Close or nurture
-            `.trim()
-          })
-        });
+        // Note: Email notifications are handled by the backend
+        console.log('Lead submitted successfully:', response);
 
         if (onSuccess) {
           onSuccess();
         }
       } else {
-        setFormError('Something went wrong. Please try again.');
+        setFormError(response.error || 'Something went wrong. Please try again.');
       }
     } catch (error) {
       console.error('Form submission error:', error);

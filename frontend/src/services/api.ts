@@ -1,5 +1,5 @@
 // Comprehensive API service for backend communication
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 // Types for API responses
 interface ApiResponse<T = any> {
@@ -422,6 +422,22 @@ class ApiService {
 
   async getInventoryOptimization(outletId: string): Promise<ApiResponse<InventoryOptimization>> {
     return this.request(`/api/analytics/inventory-optimization?outlet_id=${outletId}`);
+  }
+
+  // ===========================================
+  // LEADS / CONTACT FORM
+  // ===========================================
+
+  async submitLead(leadData: {
+    name: string;
+    email: string;
+    phone?: string;
+    company?: string;
+    message?: string;
+    source?: string;
+    interest?: string;
+  }): Promise<ApiResponse> {
+    return this.post('/api/leads/submit', leadData);
   }
 
   // ===========================================

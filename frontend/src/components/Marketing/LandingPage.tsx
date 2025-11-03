@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, TrendingUp, Clock, DollarSign, Shield, ArrowRight, AlertCircle } from 'lucide-react';
+import apiService from '../../services/api';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -18,30 +19,17 @@ export default function LandingPage() {
     setFormError('');
 
     try {
-      const response = await fetch('/api/leads/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          source: 'landing_page_hero',
-          timestamp: new Date().toISOString()
-        })
+      const response = await apiService.submitLead({
+        ...formData,
+        source: 'landing_page_hero',
+        interest: 'general'
       });
 
-      if (response.ok) {
+      if (response.success) {
         setFormSubmitted(true);
-        // Send email notification
-        await fetch('/api/leads/notify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: 'a.basyir@sheerssoft.com',
-            subject: `New Lead: Landing Page - ${formData.company}`,
-            lead: formData
-          })
-        });
+        console.log('Lead submitted successfully:', response);
       } else {
-        setFormError('Something went wrong. Please try again.');
+        setFormError(response.error || 'Something went wrong. Please try again.');
       }
     } catch (error) {
       console.error('Form submission error:', error);
