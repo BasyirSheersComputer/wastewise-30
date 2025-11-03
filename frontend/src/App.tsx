@@ -50,6 +50,7 @@ import CSVUpload from "./components/UI/CSVUpload";
 import Login from "./components/Auth/Login";
 import EmailConfirmation from "./components/Auth/EmailConfirmation";
 import WelcomeToTrial from "./components/Auth/WelcomeToTrial";
+import AuthCallback from "./components/Auth/AuthCallback";
 
 import HomePage from "./components/Marketing/LandingPage";
 import DetailedLandingPage from "./components/Marketing/DetailedLandingPage";
@@ -281,6 +282,7 @@ function App() {
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />
         <Route path="/demo" element={<ProductDemo />} />
         

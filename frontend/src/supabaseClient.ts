@@ -25,18 +25,33 @@ const supabaseKey = getEnvVar('VITE_SUPABASE_ANON_KEY');
 
 // Check if environment variables are set
 if (!supabaseUrl || !supabaseKey || supabaseUrl === 'undefined' || supabaseKey === 'undefined') {
-  console.warn('⚠️ Supabase environment variables are not set or invalid!')
-  console.warn('Using mock authentication for development...')
-  console.warn('VITE_SUPABASE_URL:', supabaseUrl ? 'set' : 'not set')
-  console.warn('VITE_SUPABASE_ANON_KEY:', supabaseKey ? 'set' : 'not set')
+  console.error('⚠️ Supabase environment variables are not set or invalid!')
+  console.error('Using mock authentication for development...')
+  console.error('VITE_SUPABASE_URL:', supabaseUrl ? 'set' : 'not set')
+  console.error('VITE_SUPABASE_ANON_KEY:', supabaseKey ? 'set' : 'not set')
+  console.error('This will prevent Google OAuth and other features from working!')
 }
 
 // Create real client only if we have valid Supabase credentials
 const realSupabase = (supabaseUrl && supabaseKey && 
   !supabaseUrl.includes('placeholder') && 
   !supabaseKey.includes('placeholder')) 
-  ? createClient(supabaseUrl, supabaseKey)
+  ? createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true
+      }
+    })
   : null;
+
+// Log which client is being used
+if (realSupabase) {
+  console.log('✅ Using real Supabase client for authentication');
+  console.log('Supabase URL:', supabaseUrl);
+} else {
+  console.warn('⚠️ Using MOCK Supabase client - OAuth will not work!');
+}
 
 // Mock authentication for development
 let mockSession: any = null;
