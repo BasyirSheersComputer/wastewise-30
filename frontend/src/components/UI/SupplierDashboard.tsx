@@ -16,48 +16,56 @@ import {
   CheckCircle2,
   Clock
 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 export default function SupplierDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Supplier Metrics
+  // Supplier Metrics (Outcome-Focused)
   const metrics = [
     {
       id: 1,
-      name: 'Active Suppliers',
-      value: '18',
-      change: '+2',
+      name: 'Time Saved Weekly',
+      value: '18.5 hrs',
+      subtitle: 'RM 4,200 labor value',
+      change: '+3.5 hrs',
       trend: 'up',
-      icon: Briefcase,
-      color: 'primary'
+      icon: Clock,
+      color: 'success',
+      description: 'From automated ordering & coordination'
     },
     {
       id: 2,
-      name: 'On-Time Delivery',
-      value: '94.5%',
-      change: '+3.2%',
+      name: 'Stockout Prevention',
+      value: 'RM 8,400',
+      subtitle: 'Monthly losses avoided',
+      change: '+12.5%',
       trend: 'up',
-      icon: CheckCircle2,
-      color: 'success'
+      icon: AlertCircle,
+      color: 'success',
+      description: 'Zero stockouts this month'
     },
     {
       id: 3,
-      name: 'Monthly Spend',
-      value: 'RM 28,500',
-      change: '-5.3%',
+      name: 'Procurement Savings',
+      value: 'RM 6,800',
+      subtitle: 'vs manual ordering',
+      change: '-8.3%',
       trend: 'down',
       icon: DollarSign,
-      color: 'success'
+      color: 'success',
+      description: 'Better pricing & reduced waste'
     },
     {
       id: 4,
-      name: 'Pending Orders',
-      value: '12',
-      change: '+3',
+      name: 'Auto-Orders Placed',
+      value: '24',
+      subtitle: 'This month',
+      change: '+8',
       trend: 'up',
       icon: Package,
-      color: 'primary'
+      color: 'primary',
+      description: 'Automated procurement workflow'
     }
   ];
 
@@ -160,11 +168,23 @@ export default function SupplierDashboard() {
 
   return (
     <div className="p-8 space-y-6">
-      {/* Header */}
+      {/* Header - Outcome Focused */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-900">Supplier Management</h1>
-          <p className="text-neutral-600 mt-1">Track suppliers, orders, and optimize procurement</p>
+          <h1 className="text-2xl font-bold text-neutral-900">Supplier Integration & Automated Ordering</h1>
+          <p className="text-neutral-600 mt-1">
+            Save 15-20 hours weekly on coordination • Prevent RM 5-10k in stockout losses • Automated procurement workflow
+          </p>
+          <div className="flex items-center gap-4 mt-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-success-50 border border-success-200 rounded-lg">
+              <CheckCircle2 className="w-4 h-4 text-success-600" />
+              <span className="text-sm font-medium text-success-700">Zero stockouts this month</span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-primary-50 border border-primary-200 rounded-lg">
+              <Clock className="w-4 h-4 text-primary-600" />
+              <span className="text-sm font-medium text-primary-700">18.5 hours saved weekly</span>
+            </div>
+          </div>
         </div>
         
         <div className="flex items-center gap-3">
@@ -175,14 +195,14 @@ export default function SupplierDashboard() {
         </div>
       </div>
 
-      {/* Metrics */}
+      {/* Outcome-Focused Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {metrics.map((metric) => {
           const Icon = metric.icon;
           
           return (
             <div key={metric.id} className="bg-white rounded-xl border border-neutral-200 p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-3">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
                   metric.color === 'success' ? 'bg-success-50' : 'bg-primary-50'
                 }`}>
@@ -194,7 +214,9 @@ export default function SupplierDashboard() {
                 <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                   metric.trend === 'down' && metric.color === 'success'
                     ? 'bg-success-50 text-success-700'
-                    : 'bg-success-50 text-success-700'
+                    : metric.trend === 'up' && metric.color === 'success'
+                    ? 'bg-success-50 text-success-700'
+                    : 'bg-primary-50 text-primary-700'
                 }`}>
                   {metric.trend === 'up' ? (
                     <TrendingUp className="w-3 h-3" />
@@ -207,7 +229,9 @@ export default function SupplierDashboard() {
               
               <div>
                 <h3 className="text-sm font-medium text-neutral-600 mb-1">{metric.name}</h3>
-                <p className="text-3xl font-bold text-neutral-900">{metric.value}</p>
+                <p className="text-3xl font-bold text-neutral-900 mb-1">{metric.value}</p>
+                <p className="text-xs text-neutral-500 mb-2">{metric.subtitle}</p>
+                <p className="text-xs text-neutral-600 leading-relaxed">{metric.description}</p>
               </div>
             </div>
           );
@@ -275,6 +299,83 @@ export default function SupplierDashboard() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Automated Ordering Insights */}
+      <div className="bg-gradient-to-br from-primary-50 to-white rounded-xl border border-primary-200 p-6">
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h2 className="text-lg font-bold text-neutral-900 mb-2">Automated Ordering System</h2>
+            <p className="text-sm text-neutral-600">
+              AI-powered procurement reduces manual work by 15-20 hours weekly and prevents costly stockouts
+            </p>
+          </div>
+          <div className="px-3 py-1.5 bg-success-500 text-white rounded-lg text-sm font-medium">
+            Active & Running
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Automation Stats */}
+          <div className="bg-white rounded-lg p-4 border border-neutral-200">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center">
+                <Package className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-neutral-900">24</p>
+                <p className="text-xs text-neutral-600">Auto-orders this month</p>
+              </div>
+            </div>
+            <p className="text-xs text-neutral-500">
+              System automatically generates purchase orders based on real-time inventory levels and demand forecasts
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg p-4 border border-neutral-200">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-success-500 flex items-center justify-center">
+                <CheckCircle2 className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-neutral-900">100%</p>
+                <p className="text-xs text-neutral-600">Stockout prevention rate</p>
+              </div>
+            </div>
+            <p className="text-xs text-neutral-500">
+              Zero stockouts this month, preventing RM 8,400 in lost sales and customer dissatisfaction
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg p-4 border border-neutral-200">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-warning flex items-center justify-center">
+                <Clock className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-neutral-900">18.5</p>
+                <p className="text-xs text-neutral-600">Hours saved weekly</p>
+              </div>
+            </div>
+            <p className="text-xs text-neutral-500">
+              Eliminates manual coordination calls, emails, and order tracking - worth RM 4,200 monthly
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 p-4 bg-white/50 rounded-lg border border-primary-100">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-neutral-900 mb-1">How It Works</p>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                WasteWise monitors your inventory in real-time, predicts demand using AI, and automatically generates purchase orders 
+                when stock levels hit reorder points. Suppliers receive orders directly, and you get notifications for approval. 
+                This eliminates manual tracking and ensures you never run out of critical ingredients.
+              </p>
+            </div>
           </div>
         </div>
       </div>
