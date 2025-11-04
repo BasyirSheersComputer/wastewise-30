@@ -1,0 +1,17 @@
+# Python Requirements for WasteWise AI Features
+# Install with: pip install -r requirements.txt
+
+# Prophet for time-series forecasting
+prophet==1.1.5
+
+# Data manipulation
+pandas==2.2.0
+numpy==1.26.0
+
+# PDF parsing (optional, for enhanced PDF support)
+PyPDF2==3.0.1
+pdfplumber==0.10.3
+
+# Additional utilities
+python-dateutil==2.8.2
+

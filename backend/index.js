@@ -36,6 +36,7 @@ import aiUfeRoutes from './routes/aiUfe.js';
 import integrationTestRoutes from './routes/integrationTest.js';
 import chatRoutes from './routes/chat.js';
 import leadsRoutes from './routes/leads.js';
+import fileUploadRoutes from './routes/fileUpload.js';
 
 dotenv.config();
 
@@ -257,6 +258,7 @@ app.use('/api/ai-ufe', aiUfeRoutes);
 app.use('/api/integration-test', integrationTestRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/leads', leadsRoutes);
+app.use('/api/files', fileUploadRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {
