@@ -1,6 +1,6 @@
 // SubscriptionContext.tsx - Subscription state management
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { createClient } from '@supabase/supabase-js';
 import {
   SubscriptionInfo,
   SubscriptionTier,
@@ -11,6 +11,17 @@ import {
   getTierConfig,
   getUpgradeMessage
 } from '../utils/subscriptionUtils';
+
+// Initialize Supabase client
+const getEnvVar = (key: string): string | undefined => {
+  if (import.meta.env[key]) return import.meta.env[key];
+  if (typeof window !== 'undefined' && (window as any).__ENV__?.[key]) return (window as any).__ENV__[key];
+  return undefined;
+};
+
+const supabaseUrl = getEnvVar('VITE_SUPABASE_URL') || '';
+const supabaseKey = getEnvVar('VITE_SUPABASE_ANON_KEY') || '';
+const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 interface SubscriptionContextType {
   subscription: SubscriptionInfo | null;
@@ -27,14 +38,42 @@ interface SubscriptionContextType {
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
 
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const [user, setUser] = useState<any>(null);
   const [subscription, setSubscription] = useState<SubscriptionInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Monitor auth state
+  useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
+    // Get current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      authSubscription.unsubscribe();
+    };
+  }, []);
+
   const fetchSubscription = async () => {
-    if (!user) {
-      setSubscription(null);
+    if (!user || !supabase) {
+      setSubscription({
+        tier: 'growth',  // Default to growth for trial users
+        status: 'trial',
+        isTrialExpired: false,
+        hasActiveSubscription: true,
+        daysLeft: 30
+      });
       setLoading(false);
       return;
     }
@@ -43,9 +82,18 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/billing/subscription`, {
+      // Get access token
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
+
+      if (!accessToken) {
+        throw new Error('No access token available');
+      }
+
+      const apiUrl = getEnvVar('VITE_API_URL') || getEnvVar('VITE_API_BASE_URL') || 'http://localhost:5000/api';
+      const response = await fetch(`${apiUrl}/billing/subscription`, {
         headers: {
-          'Authorization': `Bearer ${user.session?.access_token}`
+          'Authorization': `Bearer ${accessToken}`
         }
       });
 
@@ -56,12 +104,12 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       const data = await response.json();
       
       const subscriptionInfo: SubscriptionInfo = {
-        tier: (data.subscriptionPlan || 'quick-win') as SubscriptionTier,
+        tier: (data.subscriptionPlan || 'growth') as SubscriptionTier,
         status: (data.subscriptionStatus || 'trial') as SubscriptionStatus,
         trialEnd: data.trialEnd,
         isTrialExpired: data.isTrialExpired || false,
         hasActiveSubscription: ['active', 'trialing'].includes(data.subscriptionStatus),
-        daysLeft: data.daysLeft || 0
+        daysLeft: data.daysLeft || 30
       };
 
       setSubscription(subscriptionInfo);
@@ -69,9 +117,9 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
       console.error('Error fetching subscription:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
       
-      // Set default trial subscription on error
+      // Set default trial subscription on error (Growth tier for demo)
       setSubscription({
-        tier: 'quick-win',
+        tier: 'growth',
         status: 'trial',
         isTrialExpired: false,
         hasActiveSubscription: true,

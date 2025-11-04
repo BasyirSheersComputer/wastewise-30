@@ -20,6 +20,8 @@ steps:
       - '--build-arg'
       - 'VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder'
       - '--build-arg'
+      - 'VITE_API_URL=https://wastewise-backend-451983642521.asia-southeast1.run.app/api'
+      - '--build-arg'
       - 'VITE_API_BASE_URL=https://wastewise-backend-451983642521.asia-southeast1.run.app'
       - '--build-arg'
       - 'VITE_TRIAL_PERIOD_DAYS=30'
@@ -93,7 +95,7 @@ steps:
       - '--timeout'
       - '60'
       - '--set-env-vars'
-      - 'VITE_API_BASE_URL=https://wastewise-backend-451983642521.asia-southeast1.run.app,VITE_TRIAL_PERIOD_DAYS=30,VITE_SUPABASE_URL=https://fbdqrqknqphcyxbmnuaf.supabase.co,VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZHFycWtucXBoY3l4Ym1udWFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0NzkwNDgsImV4cCI6MjA2ODA1NTA0OH0.ywEEaFhppnloTSLmAMxJby0bOIzCyxkT_exH6k2qxWI,VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder'
+      - 'VITE_API_URL=https://wastewise-backend-451983642521.asia-southeast1.run.app/api,VITE_API_BASE_URL=https://wastewise-backend-451983642521.asia-southeast1.run.app,VITE_TRIAL_PERIOD_DAYS=30,VITE_SUPABASE_URL=https://fbdqrqknqphcyxbmnuaf.supabase.co,VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZiZHFycWtucXBoY3l4Ym1udWFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0NzkwNDgsImV4cCI6MjA2ODA1NTA0OH0.ywEEaFhppnloTSLmAMxJby0bOIzCyxkT_exH6k2qxWI,VITE_STRIPE_PUBLISHABLE_KEY=pk_test_placeholder'
 
 # Images to be pushed to Container Registry
 images:
