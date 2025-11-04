@@ -153,25 +153,25 @@ export default function FeatureLocked({
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Save 15-20 hours weekly on coordination</span>
+                    <span className="text-neutral-700"><strong>Save 15-20 hours weekly</strong> on supplier coordination (RM 3,000-5,000 labor value)</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Prevent RM 5-10k in stockout losses monthly</span>
+                    <span className="text-neutral-700"><strong>Prevent RM 5-10k in stockout losses</strong> monthly through automated reordering</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Automated ordering workflow</span>
+                    <span className="text-neutral-700"><strong>Automated ordering workflow</strong> - System generates purchase orders automatically</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Zero stockouts guarantee</span>
+                    <span className="text-neutral-700"><strong>Zero stockouts guarantee</strong> - Never run out of critical ingredients</span>
                   </div>
                 </>
               )}
@@ -181,19 +181,25 @@ export default function FeatureLocked({
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Complete training for entire team</span>
+                    <span className="text-neutral-700"><strong>Complete training for unlimited staff</strong> - No per-user fees</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Waste reduction best practices</span>
+                    <span className="text-neutral-700"><strong>Waste reduction best practices</strong> - Proven methods to reduce waste by 35-45%</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Progress tracking and certification</span>
+                    <span className="text-neutral-700"><strong>Progress tracking & certification</strong> - Track completion and issue certificates</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm">
+                    <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-2 h-2 rounded-full bg-success-500"></div>
+                    </div>
+                    <span className="text-neutral-700"><strong>Ongoing training updates</strong> - New content and improvements included</span>
                   </div>
                 </>
               )}
@@ -203,25 +209,31 @@ export default function FeatureLocked({
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Custom integrations with existing systems</span>
+                    <span className="text-neutral-700"><strong>Custom POS/ERP integrations</strong> - Seamlessly connect existing systems</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Multi-location centralized dashboard</span>
+                    <span className="text-neutral-700"><strong>Multi-location centralized dashboard</strong> - Manage unlimited outlets from one place</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">Dedicated technical account manager</span>
+                    <span className="text-neutral-700"><strong>Dedicated technical account manager</strong> - Direct access to technical experts</span>
                   </div>
                   <div className="flex items-start gap-2 text-sm">
                     <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <div className="w-2 h-2 rounded-full bg-success-500"></div>
                     </div>
-                    <span className="text-neutral-700">24/7 priority support</span>
+                    <span className="text-neutral-700"><strong>24/7 priority support</strong> - Response within minutes, not hours</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-sm">
+                    <div className="w-5 h-5 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-2 h-2 rounded-full bg-success-500"></div>
+                    </div>
+                    <span className="text-neutral-700"><strong>40-50% waste reduction</strong> - Highest tier results with custom optimization</span>
                   </div>
                 </>
               )}
@@ -231,8 +243,9 @@ export default function FeatureLocked({
           {/* Guarantee Badge */}
           <div className="bg-success-50 border border-success-200 rounded-lg p-4 mb-6">
             <p className="text-sm font-medium text-success-800 text-center">
-              {suggestedTier === 'growth' && '✓ 60-Day Savings Guarantee - Save RM 30k monthly or pay nothing'}
-              {suggestedTier === 'enterprise' && '✓ 90-Day ROI Guarantee - 3x ROI or full refund + penalty'}
+              {suggestedTier === 'quick-win' && '✓ 30-Day Money-Back Guarantee - See measurable improvement or full refund'}
+              {suggestedTier === 'growth' && '✓ 60-Day Savings Guarantee - Save minimum RM 30,000 monthly or pay nothing'}
+              {suggestedTier === 'enterprise' && '✓ 90-Day Transformation Guarantee - Complete transformation or work for free until achieved'}
             </p>
           </div>
 
