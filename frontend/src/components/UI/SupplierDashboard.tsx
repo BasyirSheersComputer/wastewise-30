@@ -17,9 +17,29 @@ import {
   Clock
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useSubscription } from '../../contexts/SubscriptionContext';
+import FeatureLocked from '../Subscription/FeatureLocked';
 
 export default function SupplierDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { hasFeature, loading } = useSubscription();
+
+  // Show loading state while checking subscription
+  if (loading) {
+    return (
+      <div className="p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-neutral-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if user has access to supplier integration (requires Growth or Enterprise)
+  if (!hasFeature('supplier_integration')) {
+    return <FeatureLocked feature="supplier_integration" showInline={true} />;
+  }
 
   // Supplier Metrics (Outcome-Focused)
   const metrics = [
