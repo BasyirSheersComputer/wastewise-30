@@ -63,6 +63,7 @@ import OnboardingForm from "./components/Auth/OnboardingForm";
 import TrialEnded from "./components/Auth/TrialEnded";
 
 import { supabase } from "./supabaseClient";
+import { SubscriptionProvider } from "./contexts/SubscriptionContext";
 
 import UserSettings from "./components/UI/UserSettings";
 import IdleWarning from "./components/UI/IdleWarning";
@@ -271,8 +272,9 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
 function App() {
 
   return (
-    <Router>
-      <Routes>
+    <SubscriptionProvider>
+      <Router>
+        <Routes>
         {/* ==================== PUBLIC ROUTES ==================== */}
         {/* Marketing & Auth - Asana-style /home for public pages */}
         <Route path="/" element={<HomePage />} />
@@ -418,6 +420,7 @@ function App() {
           }
         />
         <Route path="/staff" element={<Navigate to="/dashboard/staff" replace />} />
+        <Route path="/training" element={<Navigate to="/dashboard/staff" replace />} />
         <Route
           path="/dashboard/reports"
           element={
@@ -492,7 +495,8 @@ function App() {
           }
         />
       </Routes>
-    </Router>
+      </Router>
+    </SubscriptionProvider>
   );
 }
 
